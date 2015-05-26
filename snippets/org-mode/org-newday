@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: org-newday
+# key: nd
+# binding: C-c n d
+# --
+* <`(format-time-string "%Y-%m-%d %a")`>
+** Personal
+   - $0
+** Professional
+   - $1

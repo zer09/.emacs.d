@@ -1,0 +1,17 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: emptydoc
+# key: ed
+# binding:
+# --
+\documentclass{scrartcl}
+
+\usepackage{boilerplate}
+${morepackages}
+
+\ttl{${title}}
+
+\begin{document}
+\maketitle
+
+$0
+\end{document}

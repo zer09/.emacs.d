@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: displaymath
+# key: dm
+# --
+
+\[ $0 \]

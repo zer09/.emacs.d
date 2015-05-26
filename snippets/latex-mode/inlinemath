@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: inlinemath
+# key: i
+# --
+\\(`yas-selected-text`$1\\)$0

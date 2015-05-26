@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: deflist-entry
+# binding: <M-S-return>
+# --
+
+
+${title}
+: $0
