@@ -53,7 +53,7 @@
 ;; Powerline ;;
 
 (add-to-list 'load-path "~/.emacs.d/lisp/emacs-powerline")
-(require 'powerline)
+(require 'powerline nil t)
 
 ;; Powerline ;;
 
@@ -61,7 +61,7 @@
 
 ;; Elapsed time (stowatch)
 
-(require 'elapsed)
+(require 'elapsed nil t)
 
 ;; Outline
 
@@ -242,7 +242,7 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/ProofGeneral/generic/")
 (add-to-list 'load-path "~/.emacs.d/lisp/own/company-coq/")
 
-(require 'proof-site)
+(require 'proof-site nil t)
 
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
@@ -270,4 +270,4 @@
 ;; Agda
 
 (add-to-list 'load-path "/home/clement/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/")
-(require 'agda2)
+(require 'agda2 nil t)
