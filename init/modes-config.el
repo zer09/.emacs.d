@@ -15,6 +15,18 @@
               ido-auto-merge-work-directories-length -1
               ido-create-new-buffer 'always)
 
+;; Easy escape
+
+(add-to-list 'load-path "~/.emacs.d/lisp/own/easy-escape")
+
+(when (require 'easy-escape nil t)
+  (add-hook 'prog-mode-hook 'easy-escape-minor-mode))
+
+;; TRAMP
+
+(when-os 'windows
+  (setq tramp-mode nil))
+
 ;; Prettify
 
 (defconst prettify-symbols-greek-alist '(("Alpha" . ?Α) ("Beta" . ?Β) ("Gamma" . ?Γ)
@@ -271,3 +283,19 @@
 
 (add-to-list 'load-path "/home/clement/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/")
 (require 'agda2 nil t)
+
+;; Dafny
+
+(add-to-list 'load-path "/home/clement/.emacs.d/lisp/own/boogie-friends/emacs/")
+(require 'dafny-mode nil t)
+(require 'boogie-mode nil t)
+
+(defun setup-boogie-friends ()
+  (when-os 'gnu/linux
+    (setq flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe")
+    (setq flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
+  (when-os 'windows
+    (setq flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe")
+    (setq flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe")))
+
+(add-hook 'boogie-friends-hook #'setup-boogie-friends)

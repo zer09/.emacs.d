@@ -26,7 +26,8 @@
 (define-key keybindings-minor-mode-map (kbd "C-c m") 'magit-status)
 (define-key keybindings-minor-mode-map (kbd "C-c o") 'find-file-here)
 
-(define-key keybindings-minor-mode-map "\M-;" 'comment-or-uncomment-region-or-line)
+(define-key keybindings-minor-mode-map (kbd "C-M-;") 'comment-dwim)
+(define-key keybindings-minor-mode-map (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
 ;; Move quickly between windows
 (define-key keybindings-minor-mode-map (kbd "C-x <right>") 'windmove-right)
@@ -82,6 +83,9 @@
 ;; Open line and indent properly
 (define-key keybindings-minor-mode-map (kbd "C-o") 'open-and-indent-next-line)
 (define-key keybindings-minor-mode-map (kbd "<C-M-return>") 'open-and-indent-next-line)
+
+;; Find recent
+(define-key keybindings-minor-mode-map (kbd "C-x C-r") 'recentf-open-files)
 
 ;; Folding and unfolding
 (global-set-key (kbd "C-c C-/") 'hs-hide-all)

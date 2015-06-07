@@ -21,7 +21,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (csharp-mode auto-complete wgrep-ag ag windresize wgrep diminish multiple-cursors latex-extra f ws-butler visual-regexp tuareg smex rainbow-delimiters popup markdown-mode magit latex-preview-pane julia-mode json-rpc ido-ubiquitous flycheck-ocaml expand-region epc elpy company-math company-auctex ace-jump-mode))))
+    (flycheck-package omnisharp csharp-mode auto-complete wgrep-ag ag windresize wgrep diminish multiple-cursors latex-extra f ws-butler visual-regexp tuareg smex rainbow-delimiters popup markdown-mode magit latex-preview-pane julia-mode json-rpc ido-ubiquitous flycheck-ocaml expand-region epc elpy company-math company-auctex ace-jump-mode))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
