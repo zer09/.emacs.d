@@ -53,11 +53,6 @@
 
 (setq-default compilation-scroll-output 'first-error)
 
-;; Company
-
-(add-hook 'after-init-hook 'global-company-mode)
-(with-eval-after-load 'company (diminish 'company-mode))
-
 ;; Recentf
 
 (add-hook 'after-init-hook 'recentf-mode)
@@ -67,17 +62,15 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/emacs-powerline")
 (require 'powerline nil t)
 
-;; Powerline ;;
+;; Elapsed time (stopwatch)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/own/elapsed")
-
-;; Elapsed time (stowatch)
-
 (require 'elapsed nil t)
 
 ;; Outline
 
-(with-eval-after-load 'outline (diminish 'outline-minor-mode))
+(with-eval-after-load 'outline
+  (diminish 'outline-minor-mode))
 
 ;; Ediff ;;
 
@@ -91,6 +84,7 @@
 ;; Magit ;;
 
 (setq magit-last-seen-setup-instructions "1.4.0")
+
 (with-eval-after-load 'magit
   (setq-default magit-diff-refine-hunk 'all
                 magit-diff-options '("--minimal" "--ignore-all-space"))
@@ -125,11 +119,6 @@
     (dotimes (i 10)
       (when (= p (point)) ad-do-it))))
 
-;; Company ;;
-
-;; (add-to-list 'load-path "~/.emacs.d/lisp/company-mode/")
-;; (require 'company)
-
 (defun company-yasnippet-or-completion ()
   (interactive)
   (let ((yas-fallback-behavior nil)
@@ -140,42 +129,39 @@
       (call-interactively #'company-complete-common))))
 
 (defun setup-company ()
-  (interactive)
+  (local-set-key [\C-return] 'company-manual-begin)
+  (add-to-list 'company-backends 'company-math-symbols-unicode)
+  (substitute-key-definition 'company-complete-common 'company-yasnippet-or-completion company-active-map))
 
+(with-eval-after-load 'company
   (setq-default company-idle-delay 0
                 company-tooltip-align-annotations t
                 company-dabbrev-code-everywhere t
                 company-require-match "never")
   (setq-default company-quickhelp-delay 0
                 company-quickhelp-max-lines 10) ;; Slows everything down
+  (diminish 'company-mode))
 
-  (local-set-key [\C-return] 'company-manual-begin)
-  (add-to-list 'company-backends 'company-math-symbols-unicode)
-  (substitute-key-definition 'company-complete-common 'company-yasnippet-or-completion company-active-map))
-
+(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'company-mode-hook #'setup-company)
-
-;; HTML
-(defun html-setup ()
-  (interactive)
-  (add-to-list 'load-path "~/.emacs.d/lisp/own/company-html/")
-  (require 'company-html)
-  (add-to-list 'company-backends #'company-html-tags))
-
-(add-hook 'html-mode-hook #'html-setup)
 
 ;; Elpy ;;
 
-(defun elpy-if-not-afs ()
-  (interactive)
-  (require 'elpy)
+(with-eval-after-load 'elpy
   (put 'pyvenv-workon 'safe-local-variable #'stringp)
 
-  (setq-default tab-width 4
-                indent-tabs-mode nil
-                python-shell-interpreter "python3"
-                python-check-command "/usr/local/bin/epylint")
+  (setq-default elpy-modules (delq 'elpy-module-highlight-indentation elpy-modules)
+                elpy-rpc-backend "jedi")
 
+  (let ((pylint-rc (concat "--rcfile=" (expand-file-name "~/.emacs.d/external-config/.pylintrc"))))
+    (when-os 'windows
+      (setq-default python-shell-interpreter "pythonw"
+                    python-check-command (concat "pylint " pylint-rc)))
+    (when-os 'gnu/linux
+      (setq-default python-shell-interpreter "python3"
+                    python-check-command (concat "epylint " pylint-rc)))))
+
+(defun elpy-if-not-afs ()
   (let* ((buffer-path (buffer-file-name))
          (true-path   (and buffer-path (file-truename buffer-path))))
     (if (and true-path (string-match-p (regexp-opt '("afs")) true-path))
@@ -184,37 +170,34 @@
                (hs-minor-mode -1)
                (unload-feature 'elpy))
       (elpy-enable)
-      (flycheck-mode -1) ;; elpy takes care of this
-      (setq-default elpy-modules (delq 'elpy-module-highlight-indentation elpy-modules)
-                    elpy-rpc-backend "jedi"
-                    elpy-rpc-python-command "python3")
+      (flycheck-mode -1) ;; elpy uses flymake
       (elpy-mode))))
 
 (add-hook 'python-mode-hook #'elpy-if-not-afs)
 
 ;; AucTex ;;
 
-(defun setup-auctex ()
-  (interactive)
-
+(with-eval-after-load 'auctex
   (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))
 
-  ;; (let ((prettify-alist (cl-loop for (k . v) in prettify-symbols-greek-alist
-                                 ;; collect (cons (concat "\\" k) v))))
   (setq-default TeX-master t ;; Use current file as master; overwrite using .dir-locals.el if needed
                 TeX-engine 'xetex
                 reftex-plug-into-AUCTeX t
                 LaTeX-verbatim-environments-local '("lstlisting")
-                TeX-command-extra-options "-shell-escape"
-                prettify-symbols-alist prettify-symbols-greek-alist)
+                TeX-command-extra-options "-shell-escape"))
 
-  (prettify-symbols-mode 1)
-  (flyspell-mode 1)
-  (flycheck-mode 1)
-  (yas-minor-mode 1)
+(defun setup-auctex ()
+  (interactive)
+
+  (setq prettify-symbols-alist prettify-symbols-greek-alist)
+
+  (prettify-symbols-mode)
+  (flyspell-mode)
+  (flycheck-mode)
+  (yas-minor-mode)
   (yas-reload-all)
 
-  (TeX-source-correlate-mode 1)
+  (TeX-source-correlate-mode)
   (company-auctex-init)
   (turn-on-reftex))
 
@@ -223,30 +206,32 @@
 
 ;; YASnippet
 
-(with-eval-after-load 'yasnippet (diminish 'yas-minor-mode))
+(with-eval-after-load 'yasnippet
+  (diminish 'yas-minor-mode))
 
 ;; Org ;;
 
-(defun setup-org ()
-  (flyspell-mode)
-  (setq-default org-log-done t
+(with-eval-after-load 'org
+  (setq-default org-log-done 'note
                 org-support-shift-select 'always
-                org-todo-keywords '((sequence "TODO(t)" "LATER(l)" "|" "DONE(d)"))))
-;; (setq-local user-full-name "Clément F Pit-\\kern0pt-Claudel") ;; Doesn't seem to work
+                org-use-fast-todo-selection 'prefix
+                org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(p)" "LATER(l)" "|" "DONE(d)"))))
+;; (setq-local user-full-name "Clément Pit-\\kern0pt-Claudel") ;; Doesn't seem to work
 
-(add-hook 'org-mode-hook #'setup-org)
+(add-hook 'org-mode-hook #'flyspell-mode)
 
 ;; Markdown ;;
 
-(defun setup-markdown ()
-  (flyspell-mode)
+(with-eval-after-load 'markdown-mode
   (define-key markdown-mode-map (kbd "C-c t") 'today)
   (define-key markdown-mode-map (kbd "C-c n") 'now)
-  (electric-indent-local-mode -1)
   (setq-default markdown-command "pandoc --mathjax --standalone"))
 
-(add-hook 'markdown-mode-hook #'setup-markdown)
+(defun setup-markdown ()
+  (flyspell-mode)
+  (electric-indent-local-mode -1))
 
+(add-hook 'markdown-mode-hook #'setup-markdown)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
 
 ;; Coq and Proof-General ;;
@@ -262,19 +247,21 @@
 
 (put #'company-coq-fold 'disabled nil)
 
+(with-eval-after-load 'company-coq
+  (setq-default company-coq-extra-symbols-cmd "SearchAbout -\"__\""
+                company-coq-dynamic-autocompletion t
+                company-coq-explicit-placeholders t
+                company-coq-prettify-symbols t)
+  (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode))
+
 (defun setup-coq ()
   (require 'company-coq)
   (diminish 'holes-mode)
   ;; (setq-default shr-use-fonts nil) ;; For presentation
-  (setq-default company-coq-extra-symbols-cmd "SearchAbout -\"__\""
-                company-coq-dynamic-autocompletion t
-                company-coq-explicit-placeholders t
-                company-coq-prettify-symbols t
-                prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵)
-                                         ("Qed." . ?■) ("Defined." . ?□)
-                                         ("Admitted." . ?😱) ("Time" . ?⏱) ("Fail" . ?⛐)
-                                         ,@prettify-symbols-greek-alist)) ;;☢
-  (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode)
+  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵)
+                                 ("Qed." . ?■) ("Defined." . ?□)
+                                 ("Admitted." . ?😱) ("Time" . ?⏱) ("Fail" . ?⛐)
+                                 ,@prettify-symbols-greek-alist)) ;;☢
   (company-coq-initialize))
 
 (add-hook 'coq-mode-hook #'setup-coq)
@@ -290,12 +277,15 @@
 (require 'dafny-mode nil t)
 (require 'boogie-mode nil t)
 
-(defun setup-boogie-friends ()
+(with-eval-after-load 'boogie-friends
   (when-os 'gnu/linux
     (setq flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
   (when-os 'windows
     (setq flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe")))
+
+(defun setup-boogie-friends ()
+  (diminish-undo 'flycheck-mode))
 
 (add-hook 'boogie-friends-hook #'setup-boogie-friends)

@@ -221,5 +221,5 @@
 
 (defmacro when-os (os &rest body)
   (declare (indent defun))
-  `((when (eq system-type os)
-      ,@body)))
+  `(when (eq system-type ,os)
+     ,@body))
