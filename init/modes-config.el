@@ -278,6 +278,7 @@
 (add-to-list 'load-path "/home/clement/.emacs.d/lisp/own/boogie-friends/emacs/")
 (require 'dafny-mode nil t)
 (require 'boogie-mode nil t)
+(require 'z3-smt2-mode nil t)
 
 (with-eval-after-load 'boogie-friends
   (setq boogie-prover-alternate-args '("/proverLog:input.smt2"))
