@@ -6,7 +6,8 @@
 
 (let ((chinese-font "WenQuanYi Micro Hei Mono")
       (fontset t)) ; "fontset-default"
-  (set-fontset-font fontset 'unicode (font-spec :name "Consolas"))
+  (set-fontset-font t (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
+  (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil 'append)
   (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'append)
   (set-fontset-font fontset '(#x4E00 . #x9FFF) (font-spec :name chinese-font))
   (set-fontset-font fontset '(#x3400 . #x4DFF) (font-spec :name chinese-font))

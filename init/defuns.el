@@ -116,7 +116,7 @@
   (interactive)
   (if (functionp #'comment-line)
       (call-interactively #'comment-line)
-    (let (beg end)
+    (let (beg end) ; Fallback for Emacs < 25
       (if (region-active-p)
           (setq beg (region-beginning) end (region-end))
         (setq beg (line-beginning-position) end (line-end-position)))
@@ -127,7 +127,7 @@
   "Sort words in region alphabetically (with \\[universal-argument], sorts in reverse)."
   (interactive "*P\nr")
   (let ((sort-fold-case (or fold-case (bound-and-true-p sort-fold-case))))
-(sort-regexp-fields nil "\\(\"\\(?2:[^\"]+\\)\"\\)\\|\\(?2:\\w+\\)" "\\2" beg end)))
+    (sort-regexp-fields nil "\\(\"\\(?2:[^\"]+\\)\"\\)\\|\\(?2:\\w+\\)" "\\2" beg end)))
 
 ;; Navigation ;;
 
@@ -203,6 +203,12 @@
   (fringe-mode '(4 . 4))
   (setq-default mode-line-format (unless hide-modeline (default-value 'mode-line-format))
                 cursor-type nil))
+
+(defun sh ()
+  (interactive)
+  (let ((same-window-regexps '("shell")))
+    (shell)))
+
 ;; Debugging ;;
 
 (defmacro with-timer (&rest body)
@@ -210,3 +216,18 @@
   `(let ((time (current-time)))
      ,@body
      (message "%.06f" (float-time (time-since time)))))
+
+;; Convenience for programming ;;
+
+(defmacro when-os (os &rest body)
+  (declare (indent defun))
+  `(when (eq system-type ,os)
+     ,@body))
+
+;; Extensions ;;
+
+(defun my-python-display-errors (errs)
+  "Clean up messy Python error messages."
+  (when (and errs (flycheck-may-use-echo-area-p))
+    (display-message-or-buffer (mapconcat #'flycheck-error-format-message-and-id errs "\n")
+                               flycheck-error-message-buffer)))
