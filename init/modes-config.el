@@ -24,7 +24,7 @@
 
 ;; TRAMP
 
-(when-os 'windows
+(when-os 'windows-nt
   (setq tramp-mode nil))
 
 ;; Prettify
@@ -155,7 +155,7 @@
                                (setq elpy-modules (delq mod elpy-modules))))
 
   (let ((pylint-rc (concat "--rcfile=" (expand-file-name "~/.emacs.d/external-config/.pylintrc"))))
-    (when-os 'windows
+    (when-os 'windows-nt
       (setq-default python-shell-interpreter "pythonw"
                     python-check-command (concat "pylint " pylint-rc)))
     (when-os 'gnu/linux
@@ -215,7 +215,7 @@
 
 (with-eval-after-load 'org
   (setq-default org-log-done 'note
-                org-support-shift-select 'always
+                org-support-shift-select t
                 org-use-fast-todo-selection 'prefix
                 org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(p)" "LATER(l)" "|" "DONE(d)"))))
 ;; (setq-local user-full-name "Clément Pit-\\kern0pt-Claudel") ;; Doesn't seem to work
@@ -286,7 +286,7 @@
     (setq flycheck-z3-smt2-executable "/build/MSR/z3/build/z3")
     (setq flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
-  (when-os 'windows
+  (when-os 'windows-nt
     (setq flycheck-z3-smt2-executable "C;/MSR/dafny/Binaries/z3.exe")
     (setq flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe")))
