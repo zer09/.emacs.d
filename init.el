@@ -33,7 +33,8 @@
   (load-init-file "fonts.el")
   (load-init-file "defuns.el")
   (load-init-file "modes-config.el")
-  (load-init-file "keybindings.el"))
+  (load-init-file "keybindings.el")
+  (load-init-file "os-specific.el"))
 
 ;; (cl-loop for x in (directory-files init-dir nil "\\.el\\'") collect `(load-init-file ,x))
 
