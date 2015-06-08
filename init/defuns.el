@@ -223,3 +223,11 @@
   (declare (indent defun))
   `(when (eq system-type ,os)
      ,@body))
+
+;; Extensions ;;
+
+(defun my-python-display-errors (errs)
+  "Clean up messy Python error messages."
+  (when (and errs (flycheck-may-use-echo-area-p))
+    (display-message-or-buffer (mapconcat #'flycheck-error-format-message-and-id errs "\n")
+                               flycheck-error-message-buffer)))

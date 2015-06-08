@@ -78,7 +78,7 @@
 
 ;; Eldoc ;;
 
-(diminish 'eldoc-mode "doc")
+(ignore-errors (diminish 'eldoc-mode "doc"))
 (setq-default eldoc-idle-delay 0)
 
 ;; Magit ;;
@@ -150,8 +150,9 @@
 (with-eval-after-load 'elpy
   (put 'pyvenv-workon 'safe-local-variable #'stringp)
 
-  (setq-default elpy-modules (delq 'elpy-module-highlight-indentation elpy-modules)
-                elpy-rpc-backend "jedi")
+  (setq-default elpy-rpc-backend "jedi"
+                elpy-modules (dolist (mod '(elpy-module-highlight-indentation elpy-module-flymake))
+                               (setq elpy-modules (delq mod elpy-modules))))
 
   (let ((pylint-rc (concat "--rcfile=" (expand-file-name "~/.emacs.d/external-config/.pylintrc"))))
     (when-os 'windows
@@ -159,7 +160,9 @@
                     python-check-command (concat "pylint " pylint-rc)))
     (when-os 'gnu/linux
       (setq-default python-shell-interpreter "python3"
-                    python-check-command (concat "epylint " pylint-rc)))))
+                    python-check-command (concat "epylint " pylint-rc))))
+
+  (set (make-local-variable 'flycheck-display-errors-function) #'my-python-display-errors))
 
 (defun elpy-if-not-afs ()
   (let* ((buffer-path (buffer-file-name))
@@ -170,7 +173,6 @@
                (hs-minor-mode -1)
                (unload-feature 'elpy))
       (elpy-enable)
-      (flycheck-mode -1) ;; elpy uses flymake
       (elpy-mode))))
 
 (add-hook 'python-mode-hook #'elpy-if-not-afs)
@@ -278,10 +280,13 @@
 (require 'boogie-mode nil t)
 
 (with-eval-after-load 'boogie-friends
+  (setq boogie-prover-alternate-args '("/proverLog:input.smt2"))
   (when-os 'gnu/linux
+    (setq flycheck-z3-smt2-executable "/build/MSR/z3/build/z3")
     (setq flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
   (when-os 'windows
+    (setq flycheck-z3-smt2-executable "C;/MSR/dafny/Binaries/z3.exe")
     (setq flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe")
     (setq flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe")))
 
