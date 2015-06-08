@@ -1,0 +1,15 @@
+[SPELLING]
+# spelling-dict=en_US # Spell-checking is too strict
+
+[MESSAGES]
+# [F0401] Invalid imports
+# [C0326] Invalid var names
+# [C0103] Invalid arg names
+# [C0111] Missing docstrings
+# [W0141] Use of map
+# [C0325] Unnecessary parens after 'assert' keyword
+# [W0142] Used * or ** magic
+# [E501] Line too long
+# blank line at end of file [W391]
+# blank line contains whitespace [W293]
+disable=F0401,C0326,C0103,C0111,W0141,C0325,W0142,E501,W391,W293
