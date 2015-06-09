@@ -221,7 +221,7 @@
 
 (defmacro when-os (os &rest body)
   (declare (indent defun))
-  `(when (eq system-type ,os)
+  `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
      ,@body))
 
 ;; Extensions ;;

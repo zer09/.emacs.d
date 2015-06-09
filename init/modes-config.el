@@ -1,4 +1,4 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -281,15 +281,16 @@
 (require 'z3-smt2-mode nil t)
 
 (with-eval-after-load 'boogie-friends
-  (setq boogie-prover-alternate-args '("/proverLog:input.smt2"))
+  ;; (setq-default boogie-prover-alternate-args '("/proverLog:input.smt2"))
   (when-os 'gnu/linux
-    (setq flycheck-z3-smt2-executable "/build/MSR/z3/build/z3")
-    (setq flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe")
-    (setq flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
-  (when-os 'windows-nt
-    (setq flycheck-z3-smt2-executable "C;/MSR/dafny/Binaries/z3.exe")
-    (setq flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe")
-    (setq flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe")))
+    (setq-default flycheck-z3-smt2-executable "/build/MSR/z3/build/z3"
+                  flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe"
+                  flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
+  (when-os '(windows-nt cygwin)
+    (setq-default flycheck-z3-smt2-executable "C:/MSR/dafny/Binaries/z3.exe"
+                  flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe"
+                  flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe"
+                  boogie-friends-profile-analyzer-executable "C:/Program Files (x86)/Microsoft Research/Vcc/Binaries/Z3AxiomProfiler.exe")))
 
 (defun setup-boogie-friends ()
   (diminish-undo 'flycheck-mode))
