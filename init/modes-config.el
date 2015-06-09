@@ -275,7 +275,7 @@
 
 ;; Dafny
 
-(add-to-list 'load-path "/home/clement/.emacs.d/lisp/own/boogie-friends/emacs/")
+(add-to-list 'load-path "~/.emacs.d/lisp/boogie-friends/emacs/")
 (require 'dafny-mode nil t)
 (require 'boogie-mode nil t)
 (require 'z3-smt2-mode nil t)
