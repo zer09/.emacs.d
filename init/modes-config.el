@@ -17,7 +17,7 @@
 
 ;; Easy escape
 
-(add-to-list 'load-path "~/.emacs.d/lisp/own/easy-escape")
+(add-to-list 'load-path "~/.emacs.d/lisp/easy-escape")
 
 (when (require 'easy-escape nil t)
   (add-hook 'prog-mode-hook 'easy-escape-minor-mode))
@@ -64,7 +64,7 @@
 
 ;; Elapsed time (stopwatch)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/own/elapsed")
+(add-to-list 'load-path "~/.emacs.d/lisp/elapsed")
 (require 'elapsed nil t)
 
 ;; Outline
@@ -239,7 +239,7 @@
 ;; Coq and Proof-General ;;
 
 (add-to-list 'load-path "~/.emacs.d/lisp/ProofGeneral/generic/")
-(add-to-list 'load-path "~/.emacs.d/lisp/own/company-coq/")
+(add-to-list 'load-path "~/.emacs.d/lisp/company-coq/")
 
 (require 'proof-site nil t)
 
