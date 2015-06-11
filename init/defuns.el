@@ -204,10 +204,10 @@
   (setq-default mode-line-format (unless hide-modeline (default-value 'mode-line-format))
                 cursor-type nil))
 
-(defun sh ()
-  (interactive)
+(defun sh (arg)
+  (interactive "P")
   (let ((same-window-regexps '("shell")))
-    (shell)))
+    (call-interactively #'shell)))
 
 ;; Debugging ;;
 
