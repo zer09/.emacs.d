@@ -20,7 +20,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/easy-escape")
 
 (when (require 'easy-escape nil t)
-  (add-hook 'prog-mode-hook 'easy-escape-minor-mode))
+  (add-hook 'lisp-mode-hook 'easy-escape-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode))
 
 ;; TRAMP
 
@@ -270,8 +271,41 @@
 
 ;; Agda
 
-(add-to-list 'load-path "/home/clement/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/")
+(add-to-list 'load-path "~/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/")
 (require 'agda2 nil t)
+
+;; Haskell
+
+(add-to-list 'load-path "~/.emacs.d/lisp/haskell-prettify/")
+
+(with-eval-after-load 'haskell-mode
+  (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+(with-eval-after-load 'haskell-cabal
+  (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-compile))
+
+(with-eval-after-load 'haskell-mode ;; From the manual
+  (define-key haskell-mode-map (kbd "C-x C-d") nil)
+  (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
+  (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-file)
+  (define-key haskell-mode-map (kbd "C-c C-b") 'haskell-interactive-switch)
+  (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+  (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
+  (define-key haskell-mode-map (kbd "C-c M-.") nil)
+  (define-key haskell-mode-map (kbd "C-c C-d") nil))
+
+(defun setup-haskell-prettify ()
+  (require 'haskell-prettify)
+  (setq prettify-symbols-alist haskell-prettify-symbols-alist)
+  (prettify-symbols-mode))
+
+(defun setup-haskell ()
+  (setup-haskell-prettify)
+  (haskell-indentation-mode)
+  (add-hook 'completion-at-point-functions 'haskell-process-completions-at-point nil t))
+
+(add-hook 'haskell-mode-hook #'setup-haskell)
+(add-hook 'haskell-interactive-mode-hook #'setup-haskell-prettify)
 
 ;; Dafny
 
@@ -285,7 +319,8 @@
   (when-os 'gnu/linux
     (setq-default flycheck-z3-smt2-executable "/build/MSR/z3/build/z3"
                   flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe"
-                  flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"))
+                  flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"
+                  boogie-friends-profile-analyzer-executable "/build/MSR/vcc/vcc/Tools/Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe"))
   (when-os '(windows-nt cygwin)
     (setq-default flycheck-z3-smt2-executable "C:/MSR/dafny/Binaries/z3.exe"
                   flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe"
