@@ -3,16 +3,10 @@
 (defun load-init-file (name)
   (load-file (expand-file-name name init-dir)))
 
-(when (< emacs-major-version 25)
-  (when (string-equal emacs-version "24.3.1")
-    (load-init-file "compat244.el"))
-  (load-init-file "compat25.el"))
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+(load-init-file "compatibility.el")
+(load-init-file "package.el")
+;; Must be kept here
+;; (package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -21,13 +15,12 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp auto-complete wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex rainbow-delimiters popup json-rpc epc elpy company-auctex ace-jump-mode))))
+    (highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex rainbow-delimiters popup json-rpc epc elpy company-auctex ace-jump-mode))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (defun load-init-files ()
   (interactive)
-  (load-init-file "package.el")
   (load-init-file "general.el")
   (load-init-file "server.el")
   (load-init-file "fonts.el")
@@ -43,10 +36,10 @@
 ;; Custom theme
 (load-theme 'tangomod-dark t)
 
+(put 'narrow-to-region 'disabled nil)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(proof-locked-face ((t (:background "blue" :underline t)))))
-(put 'narrow-to-region 'disabled nil)
+ )

@@ -8,3 +8,8 @@
               package-enable-at-startup nil) ;; Load packages immediately
 
 (package-initialize)
+
+(when-os 'gnu/linux
+  (when (< emacs-major-version 25)
+    ;; Packages are mirrored on a separate folder; re-compile them
+    (byte-recompile-directory package-user-dir)))

@@ -217,13 +217,6 @@
      ,@body
      (message "%.06f" (float-time (time-since time)))))
 
-;; Convenience for programming ;;
-
-(defmacro when-os (os &rest body)
-  (declare (indent defun))
-  `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
-     ,@body))
-
 ;; Extensions ;;
 
 (defun my-python-display-errors (errs)
