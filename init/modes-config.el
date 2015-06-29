@@ -180,7 +180,7 @@
 
 ;; AucTex ;;
 
-(with-eval-after-load 'auctex
+(with-eval-after-load 'latex
   (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))
 
   (setq-default TeX-master t ;; Use current file as master; overwrite using .dir-locals.el if needed
@@ -189,10 +189,18 @@
                 LaTeX-verbatim-environments-local '("lstlisting")
                 TeX-command-extra-options "-shell-escape"))
 
+(defun LaTeX-wrap-in-math (start end)
+  (interactive "r")
+  (when (and (region-active-p) start end)
+    (let ((math (buffer-substring start end)))
+      (delete-region start end)
+      (insert (concat "\\(" math "\\)")))))
+
 (defun setup-auctex ()
   (interactive)
 
   (setq prettify-symbols-alist prettify-symbols-greek-alist)
+  (define-key LaTeX-mode-map (kbd "C-c w") #'LaTeX-wrap-in-math)
 
   (prettify-symbols-mode)
   (flyspell-mode)
@@ -261,18 +269,44 @@
   (require 'company-coq)
   (diminish 'holes-mode)
   ;; (setq-default shr-use-fonts nil) ;; For presentation
-  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵)
-                                 ("Qed." . ?■) ("Defined." . ?□)
-                                 ("Admitted." . ?😱) ("Time" . ?⏱) ("Fail" . ?⛐)
+  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷)
+                                 ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?⛐)
+                                 ("Time" . ?⏱) ("Fail" . ?😱)
                                  ,@prettify-symbols-greek-alist)) ;;☢
   (company-coq-initialize))
 
 (add-hook 'coq-mode-hook #'setup-coq)
 
+(defconst coq-compilers-alist
+  '((default "coqtop")
+    (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-I" "/build/cpdt/src/" "-coqlib" "/build/coq-8.4pl2/")))
+    (coq-trunk . ("/build/coq-trunk-pr/bin/coqtop" . ("-emacs" "-I" "/build/cpdt/src/" "-coqlib" "/build/coq-trunk-pr/")))))
+
+(require 'dash)
+
+(defun coq-change-compiler (compiler-and-args)
+  (interactive
+   (let ((compiler-and-args (completing-read "Compiler: " coq-compilers-alist)))
+     (list (or (alist-get (intern compiler-and-args) coq-compilers-alist) compiler-and-args))))
+  (when (consp compiler-and-args)
+    (progn
+      (message "Compiler set to %s %s"
+               (setq coq-prog-name (car compiler-and-args))
+               (setq coq-prog-args (cdr compiler-and-args)))
+      (when (functionp #'proof-shell-exit) (proof-shell-exit)))))
+
 ;; Agda
 
-(add-to-list 'load-path "~/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/")
-(require 'agda2 nil t)
+(require 'agda2 "~/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/agda2.el" t)
+
+(defun setup-agda ()
+  (require 'agda-prettify "~/.emacs.d/lisp/agda-prettify/agda-prettify.el")
+  (add-to-list 'agda2-include-dirs "/build/agda-stdlib/src/")
+  (customize-set-variable 'agda2-highlight-face-groups 'default-faces)
+  (setq prettify-symbols-alist agda-prettify-symbols-alist)
+  (prettify-symbols-mode))
+
+(add-hook 'agda2-mode-hook #'setup-agda)
 
 ;; Haskell
 
