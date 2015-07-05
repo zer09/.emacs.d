@@ -1,4 +1,4 @@
- ;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Modes configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -14,6 +14,14 @@
               ido-case-fold t
               ido-auto-merge-work-directories-length -1
               ido-create-new-buffer 'always)
+
+;; Eww
+
+(defun setup-eww ()
+  (interactive)
+  (setq-local show-trailing-whitespace nil))
+
+(add-hook 'eww-mode-hook #'setup-eww)
 
 ;; Easy escape
 
