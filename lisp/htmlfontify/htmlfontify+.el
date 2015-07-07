@@ -56,3 +56,5 @@
             (write-region (point-min) (point-max) temp-file nil 'no-message))
           (kill-buffer html-buffer)
           (browse-url-of-file temp-file))))))
+
+(provide 'htmlfontify+)
