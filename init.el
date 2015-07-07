@@ -29,10 +29,10 @@
   (load-init-file "server.el")
   (load-init-file "fonts.el")
   (load-init-file "defuns.el")
-  (load-init-file "modes.el")
   (load-init-file "modes-config.el")
   (load-init-file "keybindings.el")
-  (load-init-file "os-specific.el"))
+  (load-init-file "os-specific.el")
+  (load-init-file "autoloads.el"))
 
 ;; (cl-loop for x in (directory-files init-dir nil "\\.el\\'") collect `(load-init-file ,x))
 

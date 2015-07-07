@@ -35,6 +35,7 @@
                                    "<style type=\"text/css\">*{font-family: Consolas,Cambria !important;}</style>"
                                    style)))
 
+;;;###autoload
 (defun hfy+-buffer ()
   "Same as `htmlfontify-buffer', but also renders composed characters."
   (interactive)
