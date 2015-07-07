@@ -288,6 +288,10 @@
 (defun setup-coq ()
   (require 'company-coq)
   (diminish 'holes-mode)
+
+  (when-os 'windows-nt
+    (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
+
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷)
                                  ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?⛐)
@@ -299,8 +303,8 @@
 
 (defconst coq-compilers-alist
   '((default "coqtop")
-    (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-I" "/build/cpdt/src/" "-coqlib" "/build/coq-8.4pl2/")))
-    (coq-trunk . ("/build/coq-trunk-pr/bin/coqtop" . ("-emacs" "-I" "/build/cpdt/src/" "-coqlib" "/build/coq-trunk-pr/")))))
+    (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4pl2/")))
+    (coq-trunk . ("/build/coq-trunk-pr/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-trunk-pr/")))))
 
 (require 'dash)
 
@@ -367,7 +371,8 @@
 (require 'z3-smt2-mode nil t)
 
 (with-eval-after-load 'boogie-friends
-  ;; (setq-default boogie-prover-alternate-args '("/proverLog:input.smt2"))
+  (setq-default boogie-prover-alternate-args '("/pretty:0"))
+  (setq-default dafny-prover-alternate-args '("/pretty:0"))
   (when-os 'gnu/linux
     (setq-default flycheck-z3-smt2-executable "/build/MSR/z3/build/z3"
                   flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe"
