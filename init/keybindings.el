@@ -54,6 +54,9 @@
 ;; visual centering
 (define-key keybindings-minor-mode-map (kbd "C-c l") 'center-visual-lines)
 
+;; refactoring
+(define-key keybindings-minor-mode-map (kbd "C-<menu>") 'emr-show-refactor-menu)
+
 ;; rgrep
 (define-key keybindings-minor-mode-map (kbd "C-c s") 'ag)
 
