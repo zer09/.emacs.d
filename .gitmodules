@@ -1,0 +1,12 @@
+[submodule "lisp/boogie-friends"]
+	path = lisp/boogie-friends
+	url = https://github.com/boogie-org/boogie-friends.git
+[submodule "lisp/easy-escape"]
+	path = lisp/easy-escape
+	url = https://github.com/cpitclaudel/easy-escape.git
+[submodule "lisp/emacs-powerline"]
+	path = lisp/emacs-powerline
+	url = https://github.com/jonathanchu/emacs-powerline
+[submodule "lisp/racket-mode"]
+	path = lisp/racket-mode
+	url = https://github.com/greghendershott/racket-mode.git
