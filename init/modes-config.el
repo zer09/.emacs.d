@@ -2,7 +2,7 @@
 ;; Modes configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; IDO ;;
+;; IDO
 
 (require 'ido)
 
@@ -36,7 +36,13 @@
 (when-os 'windows-nt
   (setq tramp-mode nil))
 
+;; Custom mode for messages
+
+(require 'eml-mode "~/.emacs.d/lisp/bits-n-pieces/eml-mode.el" t)
+
 ;; Prettify
+
+(add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
 
 (defconst prettify-symbols-greek-alist '(("Alpha" . ?Α) ("Beta" . ?Β) ("Gamma" . ?Γ)
                                          ("Delta" . ?Δ) ("Epsilon" . ?Ε) ("Zeta" . ?Ζ)
@@ -314,7 +320,7 @@
 (require 'agda2 "~/.cabal/share/x86_64-linux-ghc-7.8.3/Agda-2.4.3/emacs-mode/agda2.el" t)
 
 (defun setup-agda ()
-  (require 'agda-prettify "~/.emacs.d/lisp/agda-prettify/agda-prettify.el")
+  (require 'agda-prettify)
   (add-to-list 'agda2-include-dirs "/build/agda-stdlib/src/")
   (customize-set-variable 'agda2-highlight-face-groups 'default-faces)
   (setq prettify-symbols-alist agda-prettify-symbols-alist)
@@ -323,8 +329,6 @@
 (add-hook 'agda2-mode-hook #'setup-agda)
 
 ;; Haskell
-
-(add-to-list 'load-path "~/.emacs.d/lisp/haskell-prettify/")
 
 (with-eval-after-load 'haskell-mode
   (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-compile))
