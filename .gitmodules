@@ -10,3 +10,6 @@
 [submodule "lisp/racket-mode"]
 	path = lisp/racket-mode
 	url = https://github.com/greghendershott/racket-mode.git
+[submodule "lisp/company-coq"]
+	path = lisp/company-coq
+	url = https://github.com/cpitclaudel/company-coq.git
