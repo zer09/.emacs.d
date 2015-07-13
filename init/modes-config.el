@@ -115,7 +115,8 @@
 
 (with-eval-after-load 'flycheck
   (diminish 'flycheck-mode "fc")
-  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+                flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 ;; Insert accented characters
 ;; (load-library "iso-transl")
@@ -385,6 +386,8 @@
                   boogie-friends-profile-analyzer-executable "C:/Program Files (x86)/Microsoft Research/Vcc/Binaries/Z3AxiomProfiler.exe")))
 
 (defun setup-boogie-friends ()
-  (diminish-undo 'flycheck-mode))
+  (diminish-undo 'flycheck-mode)
+  (setq-local dafny-prover-background-args '("/printTooltips"))
+  (setq-local flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 (add-hook 'boogie-friends-hook #'setup-boogie-friends)
