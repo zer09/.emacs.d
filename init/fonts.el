@@ -4,16 +4,16 @@
 
 ;; Chinese characters fallbacks ;;
 
-(let ((chinese-font "WenQuanYi Micro Hei Mono")
+(let ((cjk-font "WenQuanYi Micro Hei Mono")
       (fontset t)) ; "fontset-default"
   (set-fontset-font t (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
   (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil 'append)
   (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'append)
-  (set-fontset-font fontset '(#x4E00 . #x9FFF) (font-spec :name chinese-font))
-  (set-fontset-font fontset '(#x3400 . #x4DFF) (font-spec :name chinese-font))
-  (set-fontset-font fontset '(#x20000 . #x2A6DF) (font-spec :name chinese-font))
-  (set-fontset-font fontset '(#xF900 . #xFAFF) (font-spec :name chinese-font))
-  (set-fontset-font fontset '(#x2F800 . #x2FA1F) (font-spec :name chinese-font)))
+  (set-fontset-font fontset '(#x4E00 . #x9FFF) (font-spec :name cjk-font))
+  (set-fontset-font fontset '(#x3400 . #x4DFF) (font-spec :name cjk-font))
+  (set-fontset-font fontset '(#x20000 . #x2A6DF) (font-spec :name cjk-font))
+  (set-fontset-font fontset '(#xF900 . #xFAFF) (font-spec :name cjk-font))
+  (set-fontset-font fontset '(#x2F800 . #x2FA1F) (font-spec :name cjk-font)))
   ;; (set-fontset-font fontset 'greek (font-spec :name "Consolas")) ;; useless if 'append is added to Symbola
   ;; (set-fontset-font fontset '(#x1F600 . #x1F64F) (font-spec :name "Segoe UI Emoji"))
 
