@@ -301,7 +301,7 @@
 (add-hook 'coq-mode-hook #'setup-coq)
 
 (defconst coq-compilers-alist
-  '((default "coqtop")
+  '((default . ("coqtop" . ("-emacs")))
     (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4pl2/")))
     (coq-trunk . ("/build/coq-trunk-pr/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-trunk-pr/")))))
 
