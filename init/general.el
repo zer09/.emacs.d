@@ -11,9 +11,9 @@
 (setq-default initial-major-mode 'fundamental-mode
               initial-frame-alist '((fullscreen . maximized))) ;; Start in full screen (see also -mm)
 (tool-bar-mode -1)
-(scroll-bar-mode -1)
 (column-number-mode)
 (fringe-mode '(8 . 8))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 ;; (set-face-attribute 'fringe nil :background "#FFFFFF") ;; Set by theme
 
 ;; Interaction

@@ -9,7 +9,9 @@
 # [W0141] Use of map
 # [C0325] Unnecessary parens after 'assert' keyword
 # [W0142] Used * or ** magic
-# [E501] Line too long
+# [E501], [C0301] Line too long
+# W0622:Redefining built-in 'id'
 # blank line at end of file [W391]
 # blank line contains whitespace [W293]
-disable=F0401,C0326,C0103,C0111,W0141,C0325,W0142,E501,W391,W293
+# R0913:Too many arguments (6/5)
+disable=F0401,C0326,C0103,C0111,W0141,C0325,W0142,E501,C0301,W0622,W391,W293,R0913

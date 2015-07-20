@@ -114,10 +114,9 @@
 (with-eval-after-load 'flycheck
   (diminish 'flycheck-mode "fc")
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)
-                flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
-
-;; Insert accented characters
-;; (load-library "iso-transl")
+                flycheck-display-errors-function #'flycheck-pos-tip-error-messages
+                flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
+  (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))
 
 ;; DocView ;;
 
@@ -174,17 +173,15 @@
                 elpy-modules (dolist (mod '(elpy-module-highlight-indentation elpy-module-flymake))
                                (setq elpy-modules (delq mod elpy-modules))))
 
-  (let ((pylint-rc (concat "--rcfile=" (expand-file-name "~/.emacs.d/external-config/.pylintrc"))))
-    (when-os 'windows-nt
-      (setq-default python-shell-interpreter "pythonw"
-                    python-check-command (concat "pylint " pylint-rc)))
-    (when-os 'gnu/linux
-      (setq-default python-shell-interpreter "python3"
-                    python-check-command (concat "epylint " pylint-rc))))
 
-  (set (make-local-variable 'flycheck-display-errors-function) #'my-python-display-errors))
 
-(defun elpy-if-not-afs ()
+  (when-os 'windows-nt
+    (setq-default python-shell-interpreter "pythonw"))
+  (when-os 'gnu/linux
+    (setq-default python-shell-interpreter "python3")))
+
+(defun setup-elpy ()
+  (set (make-local-variable 'flycheck-display-errors-function) #'my-python-display-errors)
   (let* ((buffer-path (buffer-file-name))
          (true-path   (and buffer-path (file-truename buffer-path))))
     (if (and true-path (string-match-p (regexp-opt '("afs")) true-path))
@@ -195,7 +192,7 @@
       (elpy-enable)
       (elpy-mode))))
 
-(add-hook 'python-mode-hook #'elpy-if-not-afs)
+(add-hook 'python-mode-hook #'setup-elpy)
 
 ;; AucTex ;;
 

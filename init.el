@@ -1,11 +1,13 @@
 ;; Custom theme
 (load-theme 'tangomod-dark t)
 
+(require 'bytecomp)
 (defconst init-dir "~/.emacs.d/init/")
 
 (defun load-init-file (name)
-  (let ((start-time (current-time)))
-    (load (expand-file-name name init-dir) nil t t t)
+  (let ((start-time (current-time))
+        (path       (expand-file-name name init-dir)))
+    (byte-recompile-file path nil 0 t)
     (message "[%s] %.2fs" name (float-time (time-since start-time)))))
 
 (load-init-file "compatibility.el")
@@ -21,7 +23,7 @@
  '(frame-background-mode (quote dark))
  '(package-selected-packages
    (quote
-    (aggressive-indent emr flycheck-pos-tip highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex ace-jump-mode))))
+    (jinja2-mode aggressive-indent emr flycheck-pos-tip highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex ace-jump-mode))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
