@@ -169,11 +169,11 @@
 (with-eval-after-load 'elpy
   (put 'pyvenv-workon 'safe-local-variable #'stringp)
 
-  (setq-default elpy-rpc-backend "jedi"
-                elpy-modules (dolist (mod '(elpy-module-highlight-indentation elpy-module-flymake))
-                               (setq elpy-modules (delq mod elpy-modules))))
-
-
+  (let ((elpy-disabled '(elpy-module-highlight-indentation elpy-module-flymake)))
+    (setq-default elpy-rpc-backend "jedi"
+                  elpy-modules (cl-loop for x in elpy-modules
+                                        unless (memq x elpy-disabled)
+                                        collect x)))
 
   (when-os 'windows-nt
     (setq-default python-shell-interpreter "pythonw"))
