@@ -8,13 +8,12 @@
 
 (when (< emacs-major-version 25)
   (when-os 'gnu/linux
-    (let* ((sync-script (expand-file-name "rsync-packages.sh" user-emacs-directory))
-           (sync-cmd    (format "%s %d" sync-script emacs-major-version))
-           (user-dir    (expand-file-name (format "elpa-%d" emacs-major-version) user-emacs-directory)))
-      (when (file-exists-p sync-script)
-        (unless (eq (shell-command sync-cmd) 0)
-          (warn "Syncing packages (%s) failed" sync-cmd))
-      (setq package-user-dir user-dir))))
+    ;; rsync packages to elpa-(version), including only the .el files.
+    (setq package-user-dir (expand-file-name (format "elpa-%d" emacs-major-version) user-emacs-directory))
+    (let* ((sync-fmt "rsync -a --delete ~/.emacs.d/elpa/ '%s' --filter='-p *.elc' --filter='-p __pycache__/'")
+           (sync-cmd (format sync-fmt package-user-dir)))
+      (unless (eq (shell-command sync-cmd) 0)
+        (warn "Syncing packages (%s) failed" sync-cmd))))
   (when (string-equal emacs-version "24.3.1")
     (load-init-file "compat244.el"))
   (load-init-file "compat25.el"))
