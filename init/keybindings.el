@@ -35,14 +35,19 @@
 (define-key keybindings-minor-mode-map (kbd "C-x <up>")    'windmove-up)
 (define-key keybindings-minor-mode-map (kbd "C-x <down>")  'windmove-down)
 
+;; Windresize
+(define-key keybindings-minor-mode-map (kbd "C-x /") 'windresize)
+
 ;; Multiple cursors
 (define-key keybindings-minor-mode-map (kbd "C-S-c")   'mc/edit-lines)
 (define-key keybindings-minor-mode-map (kbd "C->")     'mc/mark-next-like-this)
 (define-key keybindings-minor-mode-map (kbd "C-<")     'mc/mark-previous-like-this)
-(define-key keybindings-minor-mode-map (kbd "C-c C-<") 'mc/mark-all-like-this)
+(define-key keybindings-minor-mode-map (kbd "C-c C->") 'mc/mark-all-like-this)
 
-;; Ace jump — quick moving to position
-(define-key keybindings-minor-mode-map (kbd "C-c SPC") 'ace-jump-mode)
+;; Avy — quick moving to position
+(define-key keybindings-minor-mode-map (kbd "C-c SPC") 'avy-goto-char)
+(define-key keybindings-minor-mode-map (kbd "M-g w") 'avy-goto-word-1)
+(define-key keybindings-minor-mode-map (kbd "M-g f") 'avy-goto-line)
 
 ;; smex — ido in M-x menu
 (define-key keybindings-minor-mode-map (kbd "M-x") 'smex)

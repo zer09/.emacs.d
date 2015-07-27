@@ -25,9 +25,15 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/easy-escape")
 
-(when (require 'easy-escape nil t)
-  (add-hook 'lisp-mode-hook 'easy-escape-minor-mode)
-  (add-hook 'emacs-lisp-mode-hook 'easy-escape-minor-mode))
+;; Lisps
+
+(defun setup-lisp ()
+  (when (require 'easy-escape nil t)
+    (easy-escape-minor-mode))
+  (aggressive-indent-mode))
+
+(add-hook 'lisp-mode-hook 'setup-lisp)
+(add-hook 'emacs-lisp-mode-hook 'setup-lisp)
 
 ;; TRAMP
 
@@ -42,26 +48,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
 
-(defconst prettify-symbols-greek-alist '(("Alpha" . ?Α) ("Beta" . ?Β) ("Gamma" . ?Γ)
-                                         ("Delta" . ?Δ) ("Epsilon" . ?Ε) ("Zeta" . ?Ζ)
-                                         ("Eta" . ?Η) ("Theta" . ?Θ) ("Iota" . ?Ι)
-                                         ("Kappa" . ?Κ) ("Lambda" . ?Λ) ("Mu" . ?Μ)
-                                         ("Nu" . ?Ν) ("Xi" . ?Ξ) ("Omicron" . ?Ο)
-                                         ("Pi" . ?Π) ("Rho" . ?Ρ) ("Sigma" . ?Σ)
-                                         ("Tau" . ?Τ) ("Upsilon" . ?Υ) ("Phi" . ?Φ)
-                                         ("Chi" . ?Χ) ("Psi" . ?Ψ) ("Omega" . ?Ω)
-                                         ("alpha" . ?α) ("beta" . ?β) ("gamma" . ?γ)
-                                         ("delta" . ?δ) ("epsilon" . ?ε) ("zeta" . ?ζ)
-                                         ("eta" . ?η) ("theta" . ?θ) ("iota" . ?ι)
-                                         ("kappa" . ?κ) ("lambda" . ?λ) ("mu" . ?μ)
-                                         ("nu" . ?ν) ("xi" . ?ξ) ("omicron" . ?ο)
-                                         ("pi" . ?π) ("rho" . ?ρ) ("sigma" . ?σ)
-                                         ("tau" . ?τ) ("upsilon" . ?υ) ("phi" . ?φ)
-                                         ("chi" . ?χ) ("psi" . ?ψ) ("omega" . ?ω)
-                                         ("varepsilon" . ?ε) ("varkappa" . ?ϰ)
-                                         ("varphi" . ?φ) ("varpi" . ?ϖ)
-                                         ("varsigma" . ?ς)))
-
 ;; Compilation
 
 (setq-default compilation-scroll-output 'first-error)
@@ -70,15 +56,21 @@
 
 (add-hook 'after-init-hook 'recentf-mode)
 
+;; multiple-cursors ;;
+
+(with-eval-after-load 'multiple-cursors-core
+  (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
+  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
+
 ;; Powerline ;;
 
-(add-to-list 'load-path "~/.emacs.d/lisp/emacs-powerline")
-(require 'powerline nil t)
+(setq sml/theme 'dark)
+(sml/setup)
+(set-face-attribute 'sml/modes nil :foreground "gray70")
 
 ;; Elapsed time (stopwatch)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/elapsed")
-(require 'elapsed nil t)
+(require 'elapsed "~/.emacs.d/lisp/elapsed/elapsed.el" t)
 
 ;; Outline
 
@@ -100,7 +92,8 @@
 
 (with-eval-after-load 'magit
   (setq-default magit-diff-refine-hunk 'all
-                magit-diff-options '("--minimal" "--ignore-all-space"))
+                magit-push-always-verify nil
+                magit-diff-arguments '("--minimal" "--ignore-all-space"))
   (let ((magit-faces '(magit-diff-added magit-diff-removed magit-diff-our magit-diff-base magit-diff-their
                                         magit-diff-context magit-diff-added-highlight magit-diff-removed-highlight
                                         magit-diff-our-highlight magit-diff-base-highlight magit-diff-their-highlight
@@ -111,8 +104,10 @@
 
 ;; FlyCheck ;;
 
+(require 'flycheck "~/.emacs.d/lisp/flycheck/flycheck.el")
+
 (with-eval-after-load 'flycheck
-  (diminish 'flycheck-mode "fc")
+  ;; (diminish 'flycheck-mode "fc")
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)
                 flycheck-display-errors-function #'flycheck-pos-tip-error-messages
                 flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
@@ -182,6 +177,11 @@
 
 (defun setup-elpy ()
   (set (make-local-variable 'flycheck-display-errors-function) #'my-python-display-errors)
+
+  (require 'python-prettify)
+  (setq-local prettify-symbols-alist python-prettify-symbols-alist)
+  (prettify-symbols-mode)
+
   (let* ((buffer-path (buffer-file-name))
          (true-path   (and buffer-path (file-truename buffer-path))))
     (if (and true-path (string-match-p (regexp-opt '("afs")) true-path))
@@ -215,6 +215,7 @@
 (defun setup-auctex ()
   (interactive)
 
+  (require 'greek-prettify)
   (setq prettify-symbols-alist prettify-symbols-greek-alist)
   (define-key LaTeX-mode-map (kbd "C-c w") #'LaTeX-wrap-in-math)
 
@@ -239,7 +240,7 @@
 ;; Org ;;
 
 (with-eval-after-load 'org
-  (setq-default org-log-done 'note
+  (setq-default org-log-done 'time
                 org-support-shift-select t
                 org-use-fast-todo-selection 'prefix
                 org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(p)" "LATER(l)" "|" "DONE(d)"))))
@@ -260,6 +261,21 @@
 
 (add-hook 'markdown-mode-hook #'setup-markdown)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+
+;; ispell ;;
+
+(with-eval-after-load 'ispell
+  (setq ispell-parser 'use-mode-name))
+
+;; GPG files ;;
+
+(defun setup-gpg-maybe ()
+  (when (and buffer-file-name (string-match epa-file-name-regexp buffer-file-name))
+    (message "Backup inhibited for this file")
+    (setq-local backup-inhibited t)
+    (auto-save-mode -1)))
+
+(add-hook 'find-file-hook #'setup-gpg-maybe)
 
 ;; Coq and Proof-General ;;
 
@@ -289,6 +305,7 @@
     (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
 
   ;; (setq-default shr-use-fonts nil) ;; For presentation
+  (require 'greek-prettify)
   (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷)
                                  ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?⛐)
                                  ("Time" . ?⏱) ("Fail" . ?😱)

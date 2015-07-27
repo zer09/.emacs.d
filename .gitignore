@@ -13,3 +13,4 @@
 /url/
 /elpa-*/
 /init/*.elc
+/init/local.el
