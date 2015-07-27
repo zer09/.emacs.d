@@ -49,6 +49,9 @@
 (define-key keybindings-minor-mode-map (kbd "M-g w") 'avy-goto-word-1)
 (define-key keybindings-minor-mode-map (kbd "M-g f") 'avy-goto-line)
 
+;; Dafny' test suite
+(define-key keybindings-minor-mode-map (kbd "C-c C-d") 'dafny-test-suite-open-diff)
+
 ;; smex — ido in M-x menu
 (define-key keybindings-minor-mode-map (kbd "M-x") 'smex)
 (define-key keybindings-minor-mode-map (kbd "C-c M-x") 'execute-extended-command) ;; old M-x
