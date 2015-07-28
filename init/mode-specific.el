@@ -34,6 +34,7 @@
 ;;; multiple-cursors
 
 (with-eval-after-load 'multiple-cursors-core
+  (define-key mc/keymap (kbd "M-T") 'mc/reverse-regions)
   (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
   (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
 
