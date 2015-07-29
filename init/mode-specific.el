@@ -23,6 +23,10 @@
 
 (require 'elapsed "~/.emacs.d/lisp/elapsed/elapsed.el" t)
 
+;;; Spelling
+(when-os 'windows-nt
+  (setq-default ispell-program-name "c:/Program Files (x86)/Aspell/bin/aspell.exe"))
+
 ;;; Compilation
 
 (setq-default compilation-scroll-output 'first-error)

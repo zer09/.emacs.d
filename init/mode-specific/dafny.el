@@ -21,7 +21,7 @@
 
 (defun setup-boogie-friends ()
   (diminish-undo 'flycheck-mode)
-  (setq-local dafny-prover-background-args '("/printTooltips"))
+  (add-to-list 'dafny-prover-background-args "/printTooltips")
   (setq-local flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 (add-hook 'boogie-friends-hook #'setup-boogie-friends)

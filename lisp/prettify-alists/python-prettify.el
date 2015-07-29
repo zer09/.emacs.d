@@ -13,8 +13,10 @@
     ("or" . ?∨)
     ("and" . ?∧)
     ("None" . ?⊥)
-    ("in" . ?∈)
     ("set()" . ?∅)
-    ("not in" . ?∉)))
+    ("not in" . ?∉)
+    ("in" . ?∈)
+    ("is not" . ?≢)
+    ("is" . ?≡)))
 
 (provide 'python-prettify)

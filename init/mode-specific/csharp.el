@@ -1,7 +1,8 @@
 (defun setup-csharp ()
   (setq-local c-basic-offset 2)
-  (require 'omnisharp "~/.emacs.d/lisp/omnisharp-emacs/omnisharp.el" t)
-  (omnisharp-mode))
+  (when-os 'gnu/linux
+    (require 'omnisharp "~/.emacs.d/lisp/omnisharp-emacs/omnisharp.el" t)
+    (omnisharp-mode)))
 
 (with-eval-after-load 'csharp-mode
   (setq-default csharp-want-imenu nil)) ;; Horribly slow
