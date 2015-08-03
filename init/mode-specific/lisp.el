@@ -1,4 +1,5 @@
 (defun setup-lisp ()
+  ;; (setq flycheck-disabled-checkers '(emacs-lisp-checkdoc))
   (when (require 'easy-escape nil t)
     (easy-escape-minor-mode))
   (aggressive-indent-mode)

@@ -30,7 +30,6 @@
 
 (defun load-init-files ()
   (interactive)
-  (load-init-file "local.el")
   (load-init-file "custom.el")
   (load-init-file "general.el")
   (load-init-file "fonts.el")
@@ -39,6 +38,7 @@
   (load-init-file "os-specific.el")
   (load-init-file "keybindings.el")
   (load-init-file "autoloads.el")
-  (load-init-file "properties.el"))
+  (load-init-file "properties.el")
+  (load-init-file "local.el"))
 
 (load-init-files)

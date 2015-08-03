@@ -216,3 +216,15 @@
   `(let ((time (current-time)))
      ,@body
      (message "%.06f" (float-time (time-since time)))))
+
+(defmacro with-profiler (&rest body)
+  "Wrap each for in BODY in a timer macro."
+  (declare (indent defun))
+  `(progn
+     ,@(mapcar (lambda (form)
+                 `(let ((start (current-time)))
+                    ,form
+                    (message "[%.02f] %s"
+                             (float-time (time-since start))
+                             (quote ,form))))
+               body)))

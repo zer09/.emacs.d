@@ -10,13 +10,13 @@
     (setq-default flycheck-z3-smt2-executable "/build/MSR/z3/build/z3"
                   flycheck-dafny-executable "/build/MSR/dafny/Binaries/Dafny.exe"
                   flycheck-boogie-executable "/build/MSR/boogie/Binaries/Boogie.exe"
-                  flycheck-inferior-dafny-executable "/build/MSR/dafny/Binaries/DafnyRepl.exe"
+                  flycheck-inferior-dafny-executable "/build/MSR/dafny/Binaries/DafnyServer.exe"
                   boogie-friends-profile-analyzer-executable "/build/MSR/vcc/vcc/Tools/Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe"))
   (when-os '(windows-nt cygwin)
     (setq-default flycheck-z3-smt2-executable "C:/MSR/dafny/Binaries/z3.exe"
                   flycheck-dafny-executable "C:/MSR/dafny/Binaries/Dafny.exe"
                   flycheck-boogie-executable "C:/MSR/boogie/Binaries/Boogie.exe"
-                  flycheck-inferior-dafny-executable "C:/MSR/dafny/Binaries/DafnyRepl.exe"
+                  flycheck-inferior-dafny-executable "C:/MSR/dafny/Binaries/DafnyServer.exe"
                   boogie-friends-profile-analyzer-executable "C:/Program Files (x86)/Microsoft Research/Vcc/Binaries/Z3AxiomProfiler.exe")))
 
 (defun setup-boogie-friends ()
