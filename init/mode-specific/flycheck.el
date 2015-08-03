@@ -7,7 +7,6 @@
       abs-name)))
 
 (with-eval-after-load 'flycheck
-  ;; (diminish 'flycheck-mode "fc")
   (setq-default flycheck-display-errors-function #'flycheck-pos-tip-error-messages
                 flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
   (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))

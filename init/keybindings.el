@@ -64,6 +64,7 @@
 
 ;; refactoring
 (define-key keybindings-minor-mode-map (kbd "C-<menu>") 'emr-show-refactor-menu)
+(define-key keybindings-minor-mode-map (kbd "C-<apps>") 'emr-show-refactor-menu)
 
 ;; rgrep
 (define-key keybindings-minor-mode-map (kbd "C-c s") 'ag)
