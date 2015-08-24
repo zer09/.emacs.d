@@ -177,7 +177,7 @@
 
 (defun adjust-font-size (delta)
   (let* ((old-size (face-attribute 'default :height))
-         (new-size (max (max delta (- delta)) (min 200 (+ delta old-size)))))
+         (new-size (max (max delta (- delta)) (min 400 (+ delta old-size)))))
     (setq original-font-size (or original-font-size old-size))
     (set-face-attribute 'default nil :height new-size)
     (message "Font size set to %d (was %d)" (face-attribute 'default :height) old-size)))

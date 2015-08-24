@@ -10,6 +10,7 @@
 (defun org-beamer-headless ()
   "Export current file to LaTeX, ommitting the preamble."
   (interactive)
+  (require 'org)
   (let* ((fname (or buffer-file-name ""))
          (org-fname (replace-regexp-in-string "\.org\\'" ".tex" fname))
          (org-export-show-temporary-export-buffer nil))

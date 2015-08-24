@@ -10,6 +10,7 @@
  '(package-selected-packages
    (quote
     (shut-up jquery-doc js2-mode smart-mode-line avy json-mode jinja2-mode aggressive-indent emr flycheck-pos-tip highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex)))
+ '(safe-local-variable-values (quote ((dafny-prover-local-args "/autoTriggers:1"))))
  '(tooltip-delay 0.3))
 
 (custom-set-faces

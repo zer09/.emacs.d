@@ -16,10 +16,9 @@
   (setq tramp-mode nil))
 
 ;; Presentations
-(require 'demo-mode)
+(require 'demo-mode  "~/.emacs.d/lisp/demo-mode/demo-mode.el" t)
 
 ;;; Email
-
 (require 'eml-mode "~/.emacs.d/lisp/bits-n-pieces/eml-mode.el" t)
 
 ;;; Elapsed time (stopwatch)
