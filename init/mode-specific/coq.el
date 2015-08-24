@@ -9,6 +9,9 @@
               proof-splash-enable nil
               proof-three-window-mode-policy 'hybrid)
 
+(when-os 'windows-nt
+  (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
+
 (put #'company-coq-fold 'disabled nil)
 
 (with-eval-after-load 'company-coq
@@ -21,9 +24,6 @@
 (defun setup-coq ()
   (require 'company-coq)
   (diminish 'holes-mode)
-
-  (when-os 'windows-nt
-    (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
 
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (require 'greek-prettify)

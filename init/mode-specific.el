@@ -15,6 +15,9 @@
 (when-os 'windows-nt
   (setq tramp-mode nil))
 
+;; Presentations
+(require 'demo-mode)
+
 ;;; Email
 
 (require 'eml-mode "~/.emacs.d/lisp/bits-n-pieces/eml-mode.el" t)
@@ -77,6 +80,10 @@
 
 (with-eval-after-load 'ispell
   (setq-default ispell-parser 'use-mode-name))
+
+;;; Frame files
+
+(add-to-list 'auto-mode-alist '("\\.frame\\'" . csharp-mode))
 
 ;;; All the rest
 
