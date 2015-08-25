@@ -11,16 +11,20 @@
 (require 'bytecomp)
 (defconst init-dir "~/.emacs.d/init/")
 
-(defun load-init-file (name)
+(defun load-with-optional-compilation (path compile)
+  (let* ((elc      (byte-compile-dest-file path))
+         (_        (when compile (byte-recompile-file path nil 0)))
+         (load-elc (and  compile (file-exists-p elc))))
+    (load (if load-elc elc path) nil t)))
+
+(defun load-init-file (relative-path)
   (let* ((start-time (current-time))
-         (path       (expand-file-name name init-dir))
-         (elc        (byte-compile-dest-file path)))
-    (setq name (file-name-nondirectory name))
+         (path       (expand-file-name relative-path init-dir))
+         (fname      (file-name-nondirectory relative-path)))
     (if (file-exists-p path)
-        (progn (byte-recompile-file path nil 0)
-               (load (if (file-exists-p elc) elc path) nil t)
-               (message "%.2fs [%s]" (float-time (time-since start-time)) name))
-      (message "[%s] skipped" name))))
+        (progn (load-with-optional-compilation path (= emacs-major-version 25))
+               (message "%.2fs [%s]" (float-time (time-since start-time)) fname))
+      (message "[%s] skipped" fname))))
 
 ;;; Basic initialization
 (load-init-file "compatibility.el")
@@ -42,3 +46,4 @@
   (load-init-file "local.el"))
 
 (load-init-files)
+(put 'dired-find-alternate-file 'disabled nil)
