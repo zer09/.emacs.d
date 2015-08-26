@@ -19,6 +19,8 @@
 ;; (set-face-attribute 'fringe nil :background "#FFFFFF") ;; Set by theme
 
 ;; Interaction
+(setq-default visible-bell t)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq-default inhibit-startup-message t
               inhibit-startup-echo-area-message t
