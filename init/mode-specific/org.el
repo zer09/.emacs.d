@@ -3,9 +3,7 @@
                 org-support-shift-select t
                 org-use-fast-todo-selection 'prefix
                 org-todo-keywords '((sequence "TODO(t)" "IN PROGRESS(p)" "LATER(l)" "|" "DONE(d)"))
-                org-latex-listings t
-                org-latex-custom-lang-environments '((dafny "Verbatim") (dafny-indented "IndentedVerbatim"))))
-
+                org-latex-listings t))
 
 (defun org-beamer-headless ()
   "Export current file to LaTeX, ommitting the preamble."
