@@ -10,6 +10,9 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
 
+;; diff
+(setq-default diff-switches '("-u" "-Z"))
+
 ;;; TRAMP
 
 (when-os 'windows-nt
