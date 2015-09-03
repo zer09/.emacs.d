@@ -19,7 +19,8 @@
 ;; (set-face-attribute 'fringe nil :background "#FFFFFF") ;; Set by theme
 
 ;; Interaction
-(setq-default visible-bell t)
+(setq-default visible-bell t
+              ring-bell-function 'ignore)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq-default inhibit-startup-message t
@@ -34,6 +35,8 @@
 ;; Behaviour
 (xterm-mouse-mode)
 (setq-default fast-but-imprecise-scrolling t)
+
+(setq-default tooltip-delay 0.3)
 
 ;; Backups and temp files
 (setq-default backup-directory-alist `(("." . "~/.emacs-backups"))
