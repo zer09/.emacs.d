@@ -14,15 +14,11 @@
   (define-key haskell-mode-map (kbd "C-c M-.") nil)
   (define-key haskell-mode-map (kbd "C-c C-d") nil))
 
-(defun setup-haskell-prettify ()
-  (require 'haskell-prettify)
-  (setq prettify-symbols-alist haskell-prettify-symbols-alist)
-  (prettify-symbols-mode))
+(require 'haskell-prettify "~/.emacs.d/lisp/prettify-alists/haskell-prettify.el" t)
+(haskell-prettify-setup 'haskell-mode 'haskell-interactive-mode)
 
 (defun setup-haskell ()
-  (setup-haskell-prettify)
   (haskell-indentation-mode)
   (add-hook 'completion-at-point-functions 'haskell-process-completions-at-point nil t))
 
 (add-hook 'haskell-mode-hook #'setup-haskell)
-(add-hook 'haskell-interactive-mode-hook #'setup-haskell-prettify)

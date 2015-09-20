@@ -2,7 +2,12 @@
 ;; General customization ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq-default load-prefer-newer t) ;; Don't load outdated elc files
+;; Envoding
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+
+;; Don't load outdated elc files
+(setq-default load-prefer-newer t)
 
 ;; GC
 (setq-default gc-cons-threshold (* 8 1000 1000))
@@ -58,6 +63,7 @@
                             (eldoc-mode)
                             (flycheck-mode)
                             (ws-butler-mode)
+                            (page-break-lines-mode)
                             (which-function-mode)))
 
 ;; All text modes

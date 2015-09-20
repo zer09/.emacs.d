@@ -28,8 +28,8 @@
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (require 'greek-prettify)
   (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷)
-                                 ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?⛐)
-                                 ("Time" . ?⏱) ("Fail" . ?😱)
+                                 ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?😱)
+                                 ("Time" . ?⏱) ("Fail" . ?⛐)
                                  ,@prettify-symbols-greek-alist)) ;;☢
   (company-coq-initialize))
 

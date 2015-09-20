@@ -6,5 +6,10 @@
   (aggressive-indent-mode)
   (setq-local tab-width 8))
 
+(defun setup-emacs-lisp ()
+  (setup-lisp)
+  (when (require 'nameless nil t)
+    (nameless-mode)))
+
 (add-hook 'lisp-mode-hook 'setup-lisp)
-(add-hook 'emacs-lisp-mode-hook 'setup-lisp)
+(add-hook 'emacs-lisp-mode-hook 'setup-emacs-lisp)
