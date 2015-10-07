@@ -2,30 +2,23 @@
 ;; Font settings ;;
 ;;;;;;;;;;;;;;;;;;;
 
-;; Chinese characters fallbacks ;;
+(defun my-set-font-fallbacks (fontset)
+  "Add fallbacks to FONTSET."
+  (let ((cjk-font (font-spec :name "WenQuanYi Micro Hei Mono")))
+    (set-fontset-font fontset (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
+    (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil 'append)
+    (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'append)
+    ;; (set-fontset-font fontset 'greek (font-spec :name "Consolas")) ;; useless if 'append is added to Symbola
+    ;; (set-fontset-font fontset '(#x1F600 . #x1F64F) (font-spec :name "Segoe UI Emoji"))
+    (set-fontset-font fontset '(#x4E00 . #x9FFF) cjk-font nil 'append)
+    (set-fontset-font fontset '(#x3400 . #x4DFF) cjk-font nil 'append)
+    (set-fontset-font fontset '(#x20000 . #x2A6DF) cjk-font nil 'append)
+    (set-fontset-font fontset '(#xF900 . #xFAFF) cjk-font nil 'append)
+    (set-fontset-font fontset '(#x2F800 . #x2FA1F) cjk-font nil 'append)))
 
-(let ((cjk-font "WenQuanYi Micro Hei Mono")
-      (fontset t)) ; "fontset-default"
-  (set-fontset-font t (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
-  (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil 'append)
-  (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'append)
-  (set-fontset-font fontset '(#x4E00 . #x9FFF) (font-spec :name cjk-font))
-  (set-fontset-font fontset '(#x3400 . #x4DFF) (font-spec :name cjk-font))
-  (set-fontset-font fontset '(#x20000 . #x2A6DF) (font-spec :name cjk-font))
-  (set-fontset-font fontset '(#xF900 . #xFAFF) (font-spec :name cjk-font))
-  (set-fontset-font fontset '(#x2F800 . #x2FA1F) (font-spec :name cjk-font)))
-  ;; (set-fontset-font fontset 'greek (font-spec :name "Consolas")) ;; useless if 'append is added to Symbola
-  ;; (set-fontset-font fontset '(#x1F600 . #x1F64F) (font-spec :name "Segoe UI Emoji"))
-
-;; «»‹›“”‘’〖〗【】「」『』〈〉《》〔〕ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ
-;; αβγδεζηθικλμνξοπρςτυφχψω ¤$¢€₠£¥ ©®™²³ §¶†‡※ •◦‣✓●■◆○□◇★☆♠♣♥♦♤♧♡♢
-;; ᴁᴂᴈ ♩♪♫♬♭♮♯ “” ‘’ ¿¡ ¶§ª - ‐ ‑ ‒ – — ― … ° ⌈⌉ ⌊⌋ ∏∑∫ ×÷ ⊕⊖⊗⊘⊙⊚⊛∙∘
-;; ′″‴ ∼∂√ ≔× ⁱ⁰¹²³ ₀₁₂ π∞± ∎ ∀¬∧∨∃⊦∵∴∅∈∉⊂⊃⊆⊇⊄⋂⋃ ≠≤≥≮≯≫≪≈≡ ℕℤℚℝℂ
-;; ←→↑↓ ↔ ↖↗↙↘ ⇐⇒⇑⇓ ⇔⇗ ⇦⇨⇧⇩ ↞↠↟↡ ↺↻ ☞☜☝☟ ⌘⌥‸ ⇧⌤↑↓→←⇞⇟↖↘ ⌫ ⌦ ⎋⏏↶↷◀▶▲▼
-;; ◁▷△▽ ⇄ ⇤ ⇥ ↹↵↩⏎ ⌧⌨␣ ⌶ ⎗⎘⎙⎚⌚⌛ ✂✄✉✍ ①②③④⑤⑥⑦⑧⑨⓪ 卐卍
-;; ✝✚✡☥⎈☭☪☮☺☹☯☰☱☲☳☴☵☶☷☠☢☣☤♲♳⌬♨♿☉☼☾☽♀♂♔♕♖♗♘♙♚♛♜♝♞♟❦　、。！，：林花謝
-;; 了春紅，太匆匆。無奈朝來寒雨，晚來風。胭脂淚，留人醉，幾時重，自
-;; 是人生長恨，水長東。
+(mapc #'my-set-font-fallbacks (fontset-list))
+;; Use "fontset-statup instead of "fontset-default", because (fontset-list)
+;; returns an extra fontset after fontset-startup but before "fontset-default"
 
 ;; DejaVu Sans Mono
 ;; Symbola

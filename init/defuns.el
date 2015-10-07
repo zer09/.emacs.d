@@ -180,6 +180,7 @@
          (new-size (max (max delta (- delta)) (min 400 (+ delta old-size)))))
     (setq original-font-size (or original-font-size old-size))
     (set-face-attribute 'default nil :height new-size)
+    (mapc #'my-set-font-fallbacks (fontset-list)) ; Changing the default size creates a new fontset, with incorrect fallbacks
     (message "Font size set to %d (was %d)" (face-attribute 'default :height) old-size)))
 
 (defun zoom-in ()
