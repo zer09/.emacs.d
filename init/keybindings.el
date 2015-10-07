@@ -113,3 +113,11 @@
 (add-hook 'minibuffer-setup-hook (lambda () (keybindings-minor-mode 0)))
 (add-hook 'after-init-hook 'keybindings-global-mode)
 (diminish 'keybindings-minor-mode)
+
+(defadvice load (after override-other-minor-modes)
+  "Ensure that keybindings-minor-mode always gets priority."
+  (unless (eq (caar minor-mode-map-alist) 'my-keys-minor-mode)
+    (let ((my-bindings (assq 'keybindings-minor-mode minor-mode-map-alist)))
+      (assq-delete-all 'keybindings-minor-mode minor-mode-map-alist)
+      (add-to-list 'minor-mode-map-alist my-bindings))))
+(ad-activate 'load)

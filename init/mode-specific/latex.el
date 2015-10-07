@@ -20,6 +20,7 @@
   (require 'greek-prettify)
   (setq prettify-symbols-alist prettify-symbols-greek-alist)
   (define-key LaTeX-mode-map (kbd "C-c w") #'LaTeX-wrap-in-math)
+  (define-key LaTeX-mode-map (kbd "M-RET") #'LaTeX-insert-item)
 
   (prettify-symbols-mode)
   (flyspell-mode)

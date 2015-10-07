@@ -18,7 +18,8 @@
               cursor-type 'bar)
 (tool-bar-mode -1)
 (column-number-mode)
-(fringe-mode '(8 . 8))
+(when (fboundp 'set-fringe-mode)
+  (set-fringe-mode '(8 . 8)))
 (when (fboundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 ;; (set-face-attribute 'fringe nil :background "#FFFFFF") ;; Set by theme
@@ -57,13 +58,14 @@
 (show-paren-mode)
 (delete-selection-mode) ;; Replace selected text upon typing
 
+(global-page-break-lines-mode)
+
 ;; All program modes
 (add-hook 'prog-mode-hook (lambda ()
                             (hs-minor-mode)
                             (eldoc-mode)
                             (flycheck-mode)
                             (ws-butler-mode)
-                            (page-break-lines-mode)
                             (which-function-mode)))
 
 ;; All text modes

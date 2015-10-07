@@ -15,7 +15,8 @@
   (define-key haskell-mode-map (kbd "C-c C-d") nil))
 
 (require 'haskell-prettify "~/.emacs.d/lisp/prettify-alists/haskell-prettify.el" t)
-(haskell-prettify-setup 'haskell-mode 'haskell-interactive-mode)
+(add-hook 'haskell-mode-hook 'haskell-prettify-enable)
+(add-hook 'haskell-interactive-mode-hook 'haskell-prettify-enable)
 
 (defun setup-haskell ()
   (haskell-indentation-mode)

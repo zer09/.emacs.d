@@ -155,19 +155,13 @@
     ("=?" . ?≟)
     ("..." . ?…)))
 
+;;;###autoload
 (defun haskell-prettify-enable ()
   "Enable prettification for Haskell symbols."
   (prettify-symbols-mode -1)
   (setq-local prettify-symbols-alist (append prettify-symbols-alist
                                              haskell-prettify-symbols-alist))
   (prettify-symbols-mode))
-
-;;;###autoload
-(defun haskell-prettify-setup (&rest modes)
-  "Turn on prettification for each mode in MODES."
-  (dolist (mode modes)
-    (add-hook (intern (concat (symbol-name mode) "-hook"))
-              #'haskell-prettify-enable)))
 
 (provide 'haskell-prettify)
 ;;; haskell-prettify.el ends here
