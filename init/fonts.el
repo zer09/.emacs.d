@@ -16,9 +16,13 @@
     (set-fontset-font fontset '(#xF900 . #xFAFF) cjk-font nil 'append)
     (set-fontset-font fontset '(#x2F800 . #x2FA1F) cjk-font nil 'append)))
 
-(mapc #'my-set-font-fallbacks (fontset-list))
-;; Use "fontset-statup instead of "fontset-default", because (fontset-list)
-;; returns an extra fontset after fontset-startup but before "fontset-default"
+(defun my-reset-all-font-fallbacks ()
+  "Set fallbacks for all fontsets.
+This is needed as scaling creates new fontsets, and just setting
+fontset-default or fontset-startup doesn't solve the scaling
+problem."
+  (when (and window-system (fboundp 'fontset-list))
+    (mapc #'my-set-font-fallbacks (fontset-list))))
 
 ;; DejaVu Sans Mono
 ;; Symbola
