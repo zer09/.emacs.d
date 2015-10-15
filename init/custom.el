@@ -9,8 +9,38 @@
  '(frame-background-mode (quote dark))
  '(package-selected-packages
    (quote
-    (page-break-lines flycheck yaml-mode nameless shut-up jquery-doc js2-mode smart-mode-line avy json-mode jinja2-mode aggressive-indent emr flycheck-pos-tip highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex)))
- '(safe-local-variable-values (quote ((dafny-prover-local-args "/autoTriggers:1")))))
+    (which-key hide-lines page-break-lines flycheck yaml-mode nameless shut-up jquery-doc js2-mode smart-mode-line avy json-mode jinja2-mode aggressive-indent emr flycheck-pos-tip highlight-symbol haskell-mode company ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex)))
+ '(safe-local-variable-values
+   (quote
+    ((TeX-command-extra-options . "-shell-escape")
+     (eval progn
+           (let
+               ((coq-root-directory
+                 (when buffer-file-name
+                   (locate-dominating-file buffer-file-name ".dir-locals.el")))
+                (coq-project-find-file
+                 (and
+                  (boundp
+                   (quote coq-project-find-file))
+                  coq-project-find-file)))
+             (set
+              (make-local-variable
+               (quote tags-file-name))
+              (concat coq-root-directory "TAGS"))
+             (setq camldebug-command-name
+                   (concat coq-root-directory "dev/ocamldebug-coq"))
+             (unless coq-project-find-file
+               (set
+                (make-local-variable
+                 (quote compile-command))
+                (concat "make -C " coq-root-directory))
+               (set
+                (make-local-variable
+                 (quote compilation-search-path))
+                (cons coq-root-directory nil)))
+             (when coq-project-find-file
+               (setq default-directory coq-root-directory))))
+     (dafny-prover-local-args "/autoTriggers:1")))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
