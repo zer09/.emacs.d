@@ -1,5 +1,5 @@
 (ido-mode)
-(add-hook 'after-init-hook 'ido-ubiquitous-mode)
+(add-hook 'after-init-hook '(lambda () (optionally (ido-ubiquitous-mode))))
 
 (setq-default ido-everywhere t
               ido-enable-flex-matching t

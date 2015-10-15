@@ -9,8 +9,8 @@
 (defmacro optionally (&rest body)
   "Run BODY without interrupting loading upon failure."
   (declare (indent defun))
-  `(with-demoted-errors
-       ,@body))
+  `(ignore-errors
+     ,@body))
 
 (when (< emacs-major-version 25)
   (when-os 'gnu/linux
