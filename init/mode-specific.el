@@ -40,13 +40,6 @@
 
 (add-hook 'after-init-hook 'recentf-mode)
 
-;;; multiple-cursors
-
-(with-eval-after-load 'multiple-cursors-core
-  (define-key mc/keymap (kbd "M-T") 'mc/reverse-regions)
-  (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
-  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
-
 ;;; Powerline
 
 (setq sml/theme 'dark)

@@ -4,10 +4,15 @@
 
 (defun my-set-font-fallbacks (fontset)
   "Add fallbacks to FONTSET."
-  (let ((cjk-font (font-spec :name "WenQuanYi Micro Hei Mono")))
-    (set-fontset-font fontset (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
-    (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil 'append)
-    (set-fontset-font fontset 'unicode (font-spec :name "Symbola") nil 'append)
+  (let ((cjk-font (font-spec :name "WenQuanYi Micro Hei Mono"))
+        (size     (face-attribute 'default :height)))
+    (set-fontset-font fontset 'unicode (font-spec :name "Consolas") nil)
+    ;; (set-fontset-font fontset (cons ?∀ ?∀) "Symbola" nil 'prepend)
+    ;; (set-fontset-font fontset (cons ?≜ ?≜) "XITS Math" nil 'prepend)
+    ;; (set-fontset-font fontset (cons ?⇒ ?⇒) "DejaVu Sans Mono" nil 'prepend)
+    ;; (set-fontset-font fontset (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
+    ;; (set-fontset-font fontset 'unicode (font-spec :name "FreeMono") nil 'append) ; :size (* 0.12 size)
+    (set-fontset-font fontset 'unicode (font-spec :name "SymbolaMonospace") nil 'append)
     ;; (set-fontset-font fontset 'greek (font-spec :name "Consolas")) ;; useless if 'append is added to Symbola
     ;; (set-fontset-font fontset '(#x1F600 . #x1F64F) (font-spec :name "Segoe UI Emoji"))
     (set-fontset-font fontset '(#x4E00 . #x9FFF) cjk-font nil 'append)
@@ -23,6 +28,8 @@ fontset-default or fontset-startup doesn't solve the scaling
 problem."
   (when (and window-system (fboundp 'fontset-list))
     (mapc #'my-set-font-fallbacks (fontset-list))))
+
+(my-reset-all-font-fallbacks)
 
 ;; DejaVu Sans Mono
 ;; Symbola

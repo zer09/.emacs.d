@@ -27,7 +27,7 @@
 
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (require 'greek-prettify)
-  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷)
+  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷) ;≔
                                  ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?😱)
                                  ("Time" . ?⏱) ("Fail" . ?⛐)
                                  ,@prettify-symbols-greek-alist)) ;;☢
@@ -38,14 +38,14 @@
 (defconst coq-compilers-alist
   '((default . ("coqtop" . ("-emacs")))
     (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4pl2/")))
+    (profiler-8.4pl4 . ("/build/coq-8.4-profiler/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4-profiler/")))
     (coq-trunk . ("/build/coq-trunk-pr/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-trunk-pr/")))))
 
-(require 'dash)
-
 (defun coq-change-compiler (compiler-and-args)
+  "Change Coq compiler to COMPILER-AND-ARGS."
   (interactive
    (let ((compiler-and-args (completing-read "Compiler: " coq-compilers-alist)))
-     (list (or (alist-get (intern compiler-and-args) coq-compilers-alist) compiler-and-args))))
+     (list (alist-get (intern compiler-and-args) coq-compilers-alist))))
   (when (consp compiler-and-args)
     (progn
       (message "Compiler set to %s %s"

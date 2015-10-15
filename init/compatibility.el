@@ -6,6 +6,12 @@
   `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
      ,@body))
 
+(defmacro optionally (&rest body)
+  "Run BODY without interrupting loading upon failure."
+  (declare (indent defun))
+  `(with-demoted-errors
+       ,@body))
+
 (when (< emacs-major-version 25)
   (when-os 'gnu/linux
     ;; rsync packages to elpa-(version), including only the .el files.

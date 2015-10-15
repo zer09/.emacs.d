@@ -44,6 +44,11 @@
 (define-key keybindings-minor-mode-map (kbd "C-<")     'mc/mark-previous-like-this)
 (define-key keybindings-minor-mode-map (kbd "C-c C->") 'mc/mark-all-like-this)
 
+(with-eval-after-load 'multiple-cursors-core
+  (define-key mc/keymap (kbd "M-T") 'mc/reverse-regions)
+  (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
+  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
+
 ;; Avy — quick moving to position
 (define-key keybindings-minor-mode-map (kbd "C-c SPC") 'avy-goto-char)
 (define-key keybindings-minor-mode-map (kbd "M-g w") 'avy-goto-word-1)

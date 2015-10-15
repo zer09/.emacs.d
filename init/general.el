@@ -58,18 +58,18 @@
 (show-paren-mode)
 (delete-selection-mode) ;; Replace selected text upon typing
 
-(global-page-break-lines-mode)
+(optionally (global-page-break-lines-mode))
 
 ;; All program modes
 (add-hook 'prog-mode-hook (lambda ()
                             (hs-minor-mode)
                             (eldoc-mode)
-                            (flycheck-mode)
-                            (ws-butler-mode)
-                            (which-function-mode)))
+                            (which-function-mode)
+                            (optionally (flycheck-mode))
+                            (optionally (ws-butler-mode))))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
-                            (flyspell-mode)
-                            (ws-butler-mode)
+                            (optionally (flyspell-mode))
+                            (optionally (ws-butler-mode))
                             (visual-line-mode)))

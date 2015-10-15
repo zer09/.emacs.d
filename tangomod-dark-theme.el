@@ -51,11 +51,11 @@ Semantic, and Ansi-Color faces are included.")
    'tangomod-dark
    ;; Ensure sufficient contrast on low-color terminals.
    `(default ((((class color) (min-colors 4096))
-           (:foreground ,alum-1 :background ,alum-6))
+               (:foreground ,alum-1 :background ,alum-6))
 	      (((class color) (min-colors 256))
-           (:foreground ,alum-1 :background "#222"))
+               (:foreground ,alum-1 :background "#222"))
 	      (,class
-           (:foreground ,alum-1 :background "black"))))
+               (:foreground ,alum-1 :background "black"))))
    `(cursor ((,class (:background ,butter-1))))
    ;; Highlighting faces
    `(fringe ((,class (:background ,alum-7))))
@@ -67,8 +67,8 @@ Semantic, and Ansi-Color faces are included.")
    `(trailing-whitespace ((,class (:background ,red-3))))
    ;; Mode line faces
    `(mode-line ((,class
-         ;; (:box (:line-width -1 :style released-button)
-          (:background ,alum-2 :foreground ,alum-6))))
+                 ;; (:box (:line-width -1 :style released-button)
+                 (:background ,alum-2 :foreground ,alum-6))))
    `(mode-line-inactive ((,class
                           ;; (:box (:line-width -1 :style released-button)
                           (:background ,alum-5 :foreground ,alum-1))))
@@ -157,7 +157,7 @@ Semantic, and Ansi-Color faces are included.")
   (custom-theme-set-variables
    'tangomod-dark
    `(ansi-color-names-vector [,alum-7 ,red-0 ,cham-0 ,butter-1
-			      ,blue-1 ,plum-1 ,blue-0 ,alum-1])))
+                                      ,blue-1 ,plum-1 ,blue-0 ,alum-1])))
 
 (provide-theme 'tangomod-dark)
 

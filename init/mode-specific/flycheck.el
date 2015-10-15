@@ -1,4 +1,4 @@
-(require 'flycheck "~/.emacs.d/lisp/flycheck/flycheck.el")
+(require 'flycheck "~/.emacs.d/lisp/flycheck/flycheck.el" t)
 
 (defun my-flycheck-locate-config-file (fname &rest _)
   (let* ((config-dir (expand-file-name "external-config" user-emacs-directory))
