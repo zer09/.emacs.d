@@ -11,39 +11,39 @@
 (require 'bytecomp)
 (defconst init-dir "~/.emacs.d/init/")
 
-(defun load-with-optional-compilation (path compile)
-  (let* ((elc      (byte-compile-dest-file path))
-         (_        (when compile (byte-recompile-file path nil 0)))
-         (load-elc (and  compile (file-exists-p elc))))
-    (load (if load-elc elc path) nil t)))
+(defmacro with-timer (message &rest body)
+  "Show MESSAGE after running BODY."
+  (declare (indent defun))
+  `(let* ((start-time (current-time)))
+     ,@body
+     (message "%.2fs [%s]" (float-time (time-since start-time)) ,message)))
 
-(defun load-init-file (relative-path)
-  (let* ((start-time (current-time))
-         (path       (expand-file-name relative-path init-dir))
-         (fname      (file-name-nondirectory relative-path)))
+(defun init-load-file (relative-path)
+  "Load `init-dir'/RELATIVE-PATH, possibly compiling it first."
+  (let ((path (expand-file-name relative-path init-dir)))
     (if (file-exists-p path)
-        (progn (load-with-optional-compilation path (= emacs-major-version 25))
-               (message "%.2fs [%s]" (float-time (time-since start-time)) fname))
-      (message "[%s] skipped" fname))))
+        (with-timer (file-name-nondirectory relative-path)
+          (if (= emacs-major-version 25)
+              (byte-recompile-file path nil 0 nil))
+          (let ((bin-path (byte-compile-dest-file path)))
+            (load (if (file-exists-p bin-path) bin-path path) nil t)))
+      (warn "[%s] skipped" relative-path))))
 
 ;;; Basic initialization
-(load-init-file "compatibility.el")
-(load-init-file "package.el")
-
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(defun load-init-files ()
-  (interactive)
-  (load-init-file "custom.el")
-  (load-init-file "general.el")
-  (load-init-file "fonts.el")
-  (load-init-file "defuns.el")
-  (load-init-file "mode-specific.el")
-  (load-init-file "os-specific.el")
-  (load-init-file "keybindings.el")
-  (load-init-file "autoloads.el")
-  (load-init-file "properties.el")
-  (load-init-file "local.el"))
+(defconst init-files '("custom.el"
+                       "compatibility.el"
+                       "package.el"
+                       "general.el"
+                       "fonts.el"
+                       "defuns.el"
+                       "mode-specific.el"
+                       "os-specific.el"
+                       "keybindings.el"
+                       "autoloads.el"
+                       "properties.el"
+                       "local.el"))
 
-(load-init-files)
-(put 'dired-find-alternate-file 'disabled nil)
+(setq-default load-prefer-newer t)
+(mapc #'init-load-file init-files)

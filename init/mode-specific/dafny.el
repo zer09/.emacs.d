@@ -1,9 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/boogie-friends/emacs/")
 
-(require 'dafny-mode nil t)
-(require 'boogie-mode nil t)
-(require 'z3-smt2-mode nil t)
-
 (with-eval-after-load 'boogie-friends
   (let (root z3-exe)
     (when-os 'gnu/linux           (setq root "/build/MSR/" z3-exe "z3"))
@@ -16,11 +12,12 @@
                   flycheck-dafny-executable (expand-file-name "dafny/Binaries/Dafny.exe" root)
                   flycheck-boogie-executable (expand-file-name "boogie/Binaries/Boogie.exe" root)
                   flycheck-inferior-dafny-executable (expand-file-name "dafny/Binaries/DafnyServer.exe" root)
-                  boogie-friends-profile-analyzer-executable "C:/MSR/Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe")))
+                  boogie-friends-profile-analyzer-executable (expand-file-name "Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe" root))))
 
-(defun setup-boogie-friends ()
+(defun setup-dafny ()
   (diminish-undo 'flycheck-mode)
   (add-to-list 'dafny-prover-background-args "/printTooltips")
+  (add-to-list 'dafny-prover-background-args "/autoTriggers:1")
   (setq-local flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
-(add-hook 'boogie-friends-hook #'setup-boogie-friends)
+(add-hook 'dafny-mode-hook #'setup-dafny)

@@ -7,7 +7,9 @@
 
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
-              proof-three-window-mode-policy 'hybrid)
+              proof-three-window-mode-policy 'hybrid
+              coq-compile-parallel-in-background t
+              coq-pre-v85 t)
 
 (when-os 'windows-nt
   (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
@@ -19,11 +21,14 @@
                 company-coq-dynamic-autocompletion t
                 company-coq-explicit-placeholders t
                 company-coq-prettify-symbols t)
-  (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode))
+  (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode)
+  (define-key company-coq-map (kbd "<f10>") #'coq-compile-before-require-toggle))
 
 (defun setup-coq ()
-  (require 'company-coq)
   (diminish 'holes-mode)
+
+  (require 'cpc-alerts)
+  (cpc-alerts-mode)
 
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (require 'greek-prettify)
@@ -31,6 +36,8 @@
                                  ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?😱)
                                  ("Time" . ?⏱) ("Fail" . ?⛐)
                                  ,@prettify-symbols-greek-alist)) ;;☢
+
+  (require 'company-coq)
   (company-coq-initialize))
 
 (add-hook 'coq-mode-hook #'setup-coq)

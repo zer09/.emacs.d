@@ -18,10 +18,10 @@
 ;; Local keybindings ;;
 
 ;; Unoverridable shortcuts from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
-(defvar keybindings-minor-mode-map (make-keymap) "keybindings-minor-mode keymap.")
+(defvar keybindings-minor-mode-map (make-keymap))
 
-(define-key keybindings-minor-mode-map [\M-up] 'move-line-up)
-(define-key keybindings-minor-mode-map [\M-down] 'move-line-down)
+(define-key keybindings-minor-mode-map (kbd "<M-up>") #'move-line-up)
+(define-key keybindings-minor-mode-map (kbd "<M-down>") #'move-line-down)
 
 (define-key keybindings-minor-mode-map (kbd "C-c m") 'magit-status)
 (define-key keybindings-minor-mode-map (kbd "C-c o") 'find-file-here)
@@ -45,6 +45,7 @@
 (define-key keybindings-minor-mode-map (kbd "C-c C->") 'mc/mark-all-like-this)
 
 (with-eval-after-load 'multiple-cursors-core
+  (define-key mc/keymap (kbd "M-I") 'mc/insert-numbers)
   (define-key mc/keymap (kbd "M-T") 'mc/reverse-regions)
   (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
   (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
@@ -53,9 +54,6 @@
 (define-key keybindings-minor-mode-map (kbd "C-c SPC") 'avy-goto-char)
 (define-key keybindings-minor-mode-map (kbd "M-g w") 'avy-goto-word-1)
 (define-key keybindings-minor-mode-map (kbd "M-g f") 'avy-goto-line)
-
-;; Dafny' test suite
-(define-key keybindings-minor-mode-map (kbd "C-c C-d") 'dafny-test-suite-open-diff)
 
 ;; smex — ido in M-x menu
 (define-key keybindings-minor-mode-map (kbd "M-x") 'smex)
@@ -98,7 +96,6 @@
 (define-key keybindings-minor-mode-map (kbd "C-M-<") 'prev-slide)
 
 ;; Open line and indent properly
-(define-key keybindings-minor-mode-map (kbd "C-o") 'open-and-indent-next-line)
 (define-key keybindings-minor-mode-map (kbd "<C-M-return>") 'open-and-indent-next-line)
 
 ;; Find recent

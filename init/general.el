@@ -2,27 +2,23 @@
 ;; General customization ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Envoding
+;; Encoding
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-;; Don't load outdated elc files
-(setq-default load-prefer-newer t)
-
 ;; GC
-(setq-default gc-cons-threshold (* 8 1000 1000))
+;; FIXME does removing this make company-coq nicer? (setq-default gc-cons-threshold (* 8 1000 1000))
 
 ;; Appearance
 (setq-default initial-major-mode 'fundamental-mode
               initial-frame-alist '((fullscreen . maximized)) ;; Start in full screen (see also -mm)
-              cursor-type 'bar)
+              cursor-type 'bar
+              x-gtk-use-system-tooltips nil)
+
 (tool-bar-mode -1)
 (column-number-mode)
-(when (fboundp 'set-fringe-mode)
-  (set-fringe-mode '(8 . 8)))
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
-;; (set-face-attribute 'fringe nil :background "#FFFFFF") ;; Set by theme
+(trycall set-fringe-mode '(8 . 8))
+(trycall scroll-bar-mode -1)
 
 ;; Interaction
 (setq-default visible-bell t
@@ -40,9 +36,11 @@
 
 ;; Behaviour
 (xterm-mouse-mode)
+(setq-default tooltip-delay 0.3)
 (setq-default fast-but-imprecise-scrolling t)
 
-(setq-default tooltip-delay 0.3)
+(savehist-mode)
+(trycall save-place-mode)
 
 ;; Backups and temp files
 (setq-default backup-directory-alist `(("." . "~/.emacs-backups"))
@@ -58,18 +56,20 @@
 (show-paren-mode)
 (delete-selection-mode) ;; Replace selected text upon typing
 
-(optionally (global-page-break-lines-mode))
-
 ;; All program modes
 (add-hook 'prog-mode-hook (lambda ()
-                            (hs-minor-mode)
+                            (ruler-mode)
                             (eldoc-mode)
                             (which-function-mode)
-                            (optionally (flycheck-mode))
-                            (optionally (ws-butler-mode))))
+                            (trycall flycheck-mode)
+                            (trycall ws-butler-mode)))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
-                            (optionally (flyspell-mode))
-                            (optionally (ws-butler-mode))
+                            (ruler-mode)
+                            (trycall flyspell-mode)
+                            (trycall ws-butler-mode)
                             (visual-line-mode)))
+
+;;; Disabled functions
+(put 'dired-find-alternate-file 'disabled nil)

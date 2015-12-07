@@ -2,12 +2,10 @@
 ;; Modes configuration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; easy-escape
-
 (require 'easy-escape "~/.emacs.d/lisp/easy-escape/easy-escape.el" t)
+(require 'always-make-directory "~/.emacs.d/lisp/always-make-directory/always-make-directory.el" t)
 
 ;;; prettify
-
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
 
 ;; diff
@@ -33,18 +31,31 @@
   (setq-default ispell-program-name "c:/Program Files (x86)/Aspell/bin/aspell.exe"))
 
 ;;; Compilation
-
 (setq-default compilation-scroll-output 'first-error)
 
-;;; Recentf
+;;; OCAML
+(defun tuareg-breaks-which-function-mode ()
+  (which-function-mode -1))
 
+(add-hook 'tuareg-mode-hook (tuareg-breaks-which-function-mode))
+
+;;; Recentf
 (add-hook 'after-init-hook 'recentf-mode)
+(setq recentf-max-saved-items 100)
+
+;;; Which key
+(which-key-mode)
+(diminish 'which-key-mode)
+
+;;; Page breaks
+(trycall global-page-break-lines-mode)
+(optionally (diminish 'page-break-lines-mode))
 
 ;;; Powerline
 
 (setq sml/theme 'dark)
-(sml/setup)
-(set-face-attribute 'sml/modes nil :foreground "gray70")
+(trycall sml/setup)
+(optionally (set-face-attribute 'sml/modes nil :foreground "gray70"))
 
 ;;; Outline
 
@@ -82,5 +93,5 @@
 
 ;;; All the rest
 
-(cl-loop for file in (directory-files "~/.emacs.d/init/mode-specific/" t ".*\\.el\\'")
-         do (load-init-file file))
+(defconst init-mode-specific-dir (expand-file-name "mode-specific/" init-dir))
+(mapc #'init-load-file (directory-files init-mode-specific-dir t ".*\\.el\\'"))

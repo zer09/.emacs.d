@@ -75,18 +75,21 @@
       (move-to-column column t))))
 
 (defun move-line-down (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines down."
+  "Move region or current line ARG lines down."
   (interactive "*p")
-  (move-text-internal arg))
+  (if (eq major-mode 'org-mode)
+      (org-metadown)
+    (move-text-internal arg)))
 
 (defun move-line-up (arg)
-  "Move region (transient-mark-mode active) or current line
-  arg lines up."
+  "Move region or current line ARG lines up."
   (interactive "*p")
-  (move-text-internal (- arg)))
+  (if (eq major-mode 'org-mode)
+      (org-metaup)
+    (move-text-internal (- arg))))
 
 (defun make-title-line ()
+  "Wrap current line in comment delimiters."
   (interactive)
   (forward-line 0)
   (re-search-forward "^[; ]*\\(.*?\\)[; ]*$" (point-at-eol))
@@ -103,7 +106,7 @@
     (newline 2)))
 
 (defun open-and-indent-next-line ()
-  "Open a line above the current one, move there, and indent."
+  "SPlit current line and indent both."
   (interactive)
   (save-excursion
     (insert "\n")
@@ -199,6 +202,7 @@
 (defun prepare-for-screenshot (&optional hide-modeline)
   (interactive "P")
   (load-theme 'tangomod t)
+  (ruler-mode -1)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (fringe-mode '(4 . 4))

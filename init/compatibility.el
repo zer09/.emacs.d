@@ -12,6 +12,12 @@
   `(ignore-errors
      ,@body))
 
+(defmacro trycall (func &rest args)
+  "Call (FUNC ARGS) is FUNC is a bound function symbol."
+  (declare (debug t))
+  `(when (fboundp (quote ,func))
+     (,func ,@args)))
+
 (when (< emacs-major-version 25)
   (when-os 'gnu/linux
     ;; rsync packages to elpa-(version), including only the .el files.
@@ -21,7 +27,11 @@
       (unless (eq (shell-command sync-cmd) 0)
         (warn "Syncing packages (%s) failed" sync-cmd))))
   (when (string-equal emacs-version "24.3.1")
-    (load-init-file "compat244.el"))
-  (load-init-file "compat25.el"))
+    (init-load-file "compat244.el"))
+  (init-load-file "compat25.el"))
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:
 
 ;;; compatibility.el ends here
