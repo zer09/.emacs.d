@@ -7,6 +7,7 @@
 
 ;;; prettify
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
+(setq-default prettify-symbols-unprettify-at-point 'right-edge)
 
 ;; diff
 (setq-default diff-switches '("-u" "-Z"))
@@ -23,8 +24,10 @@
 (require 'eml-mode "~/.emacs.d/lisp/bits-n-pieces/eml-mode.el" t)
 
 ;;; Elapsed time (stopwatch)
-
 (require 'elapsed "~/.emacs.d/lisp/elapsed/elapsed.el" t)
+
+;;; ag
+(setq-default ag-highlight-search t)
 
 ;;; Spelling
 (when-os 'windows-nt

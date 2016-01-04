@@ -7,20 +7,26 @@
                                         unless (memq x elpy-disabled)
                                         collect x)))
 
+
+  (let ((elpy-disabled-bindings '("<S-return>" "<C-S-return>" "<C-return>" "M-TAB"
+                                  "<C-down>" "<C-up>" "<C-left>" "<C-right>"
+                                  "<M-down>" "<M-up>" "<M-left>" "<M-right>")))
+    (cl-loop for binding in elpy-disabled-bindings
+             do (define-key elpy-mode-map (kbd binding) nil)))
+
   (when-os 'windows-nt
     (setq-default python-shell-interpreter "pythonw"))
   (when-os 'gnu/linux
     (setq-default python-shell-interpreter "python3")))
 
-(defun my-python-display-errors (errs)
-  "Clean up messy Python error messages."
-  (when (and errs (flycheck-may-use-echo-area-p))
-    (display-message-or-buffer (mapconcat #'flycheck-error-format-message-and-id errs "\n")
-                               flycheck-error-message-buffer)))
+;; (defun my-python-display-errors (errs)
+;;   "Clean up messy Python ERRS."
+;;   (when (and errs (flycheck-may-use-echo-area-p))
+;;     (display-message-or-buffer (mapconcat #'flycheck-error-format-message-and-id errs "\n")
+;;                                flycheck-error-message-buffer)))
 
 (defun setup-elpy ()
-  (set (make-local-variable 'flycheck-display-errors-function) #'my-python-display-errors)
-
+  "Setup elpy."
   (require 'python-prettify)
   (setq-local prettify-symbols-alist python-prettify-symbols-alist)
   (prettify-symbols-mode)

@@ -11,8 +11,8 @@
     ;; (set-fontset-font fontset (cons ?≜ ?≜) "XITS Math" nil 'prepend)
     ;; (set-fontset-font fontset (cons ?⇒ ?⇒) "DejaVu Sans Mono" nil 'prepend)
     ;; (set-fontset-font fontset (cons ?≔ ?≔) "FreeSerif" nil 'prepend)
-    ;; (set-fontset-font fontset 'unicode (font-spec :name "FreeMono") nil 'append) ; :size (* 0.12 size)
-    (set-fontset-font fontset 'unicode (font-spec :name "Segoe UI Emoji") nil 'append) ;; '(#x1F600 . #x1F64F)
+    ;; (set-fontset-font fontset (cons ?  ? ) "FreeSerif" nil 'prepend) ;; FIXME Thin space
+    (set-fontset-font fontset 'unicode (font-spec :name "Segoe UI Emoji monospacified for Consolas") nil 'append) ;; '(#x1F600 . #x1F64F)
     (set-fontset-font fontset 'unicode (font-spec :name "Symbola monospacified for Consolas") nil 'append)
     ;; (set-fontset-font fontset 'unicode (font-spec :name "Asana Math monospacified for Consolas") nil 'append)
     ;; (set-fontset-font fontset 'unicode (font-spec :name "Tex Gyre Schola Math monospacified for Consolas") nil 'append)
@@ -33,6 +33,9 @@ problem."
     (mapc #'my-set-font-fallbacks (fontset-list))))
 
 (my-reset-all-font-fallbacks)
+
+;; TODO: COuld this be moved to .Xresources?
+(set-face-attribute 'variable-pitch nil :family "Fira Sans")
 
 ;; Font selection ;;
 ;; Faster than custom-set-faces

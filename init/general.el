@@ -19,6 +19,7 @@
 (column-number-mode)
 (trycall set-fringe-mode '(8 . 8))
 (trycall scroll-bar-mode -1)
+(setq-default overlay-arrow-string "")
 
 ;; Interaction
 (setq-default visible-bell t
@@ -36,8 +37,11 @@
 
 ;; Behaviour
 (xterm-mouse-mode)
-(setq-default tooltip-delay 0.3)
-(setq-default fast-but-imprecise-scrolling t)
+(setq-default tooltip-delay 0.3
+              set-mark-command-repeat-pop t
+              fast-but-imprecise-scrolling t
+              eval-expression-print-length nil
+              eval-expression-print-level nil)
 
 (savehist-mode)
 (trycall save-place-mode)

@@ -1,41 +1,3 @@
-(with-eval-after-load 'org
-  (setq-default org-log-done 'time
-                org-support-shift-select t
-                org-use-fast-todo-selection 'prefix
-                org-odd-levels-only t
-                org-hide-leading-stars t
-                org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
-                ;; org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))
-                ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)"))
-                ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✔(d)" "✘(c)"))
-                ;; org-todo-keywords '((sequence "☐(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "☑(d)" "☒(c)"))
-                org-latex-listings t)
-
-  (define-key org-mode-map (kbd "<M-S-right>") #'org-shiftright)
-  (define-key org-mode-map (kbd "<M-S-left>") #'org-shiftleft)
-  (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
-  (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
-
-  (define-key org-mode-map (kbd "<M-S-kp-right>") #'org-shiftmetaright)
-  (define-key org-mode-map (kbd "<M-S-kp-left>") #'org-shiftmetaleft)
-  (define-key org-mode-map (kbd "<M-S-kp-up>") #'org-shiftmetaup)
-  (define-key org-mode-map (kbd "<M-S-kp-down>") #'org-shiftmetadown)
-
-  (define-key org-mode-map (kbd "<S-right>") nil)
-  (define-key org-mode-map (kbd "<S-left>") nil)
-  (define-key org-mode-map (kbd "<S-up>") nil)
-  (define-key org-mode-map (kbd "<S-down>") nil)
-
-  (define-key org-mode-map (kbd "<C-S-right>") nil)
-  (define-key org-mode-map (kbd "<C-S-left>") nil)
-  (define-key org-mode-map (kbd "<C-S-up>") nil)
-  (define-key org-mode-map (kbd "<C-S-down>") nil)
-
-  (define-key org-mode-map (kbd "<C-S-kp-right>") #'org-shiftcontrolright)
-  (define-key org-mode-map (kbd "<C-S-kp-left>") #'org-shiftcontrolleft)
-  (define-key org-mode-map (kbd "<C-S-kp-up>") #'org-shiftcontrolup)
-  (define-key org-mode-map (kbd "<C-S-kp-down>") #'org-shiftcontroldown))
-
 (defun org-beamer-headless ()
   "Export current file to LaTeX, ommitting the preamble."
   (interactive)
@@ -95,6 +57,78 @@
   (font-lock-add-keywords nil '(("^\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.2))) append)))
   ;; (font-lock-add-keywords nil '(("^\\*\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.0))) append)))
   )
+
+(defun init-truncate-time (time)
+  "Remove the time component of TIME."
+  (pcase-let ((`(_ _ _ ,day ,month ,year) (decode-time time)))
+    (encode-time 0 0 0 day month year)))
+
+(defun init-org-check-before-or-on-date (&optional date)
+  "Check if there are deadlines or scheduled entries before or on DATE."
+  (interactive "P")
+  (cond
+   ((null date) (setq date (init-truncate-time (org-current-time))))
+   ((consp date) (setq date (org-read-date nil t))))
+  (message "DATE: %S" date)
+  (let ((case-fold-search nil)
+        (regexp (org-re-timestamp 'scheduled-or-deadline))
+        (callback
+         (lambda ()
+           "Check whether this task is scheduled in the past, and not completed."
+           (let ((t1 (org-time-string-to-time (match-string 1))))
+             (and (not (save-match-data (org-entry-is-done-p)))
+                  (or (equal t1 date)
+                      (time-less-p t1 date)))))))
+    (message "%d entries before %s"
+             (org-occur regexp nil callback) date)))
+
+(with-eval-after-load 'org
+  (setq-default org-log-done 'time
+                org-support-shift-select t
+                org-use-fast-todo-selection t
+                org-odd-levels-only t
+                org-hide-leading-stars t
+                org-completion-use-ido t
+                org-latex-listings t
+                org-special-ctrl-a/e nil
+                org-return-follows-link t
+                org-ellipsis " …" ;; ▸ 🞂 ▼ ▶ ⏩
+                org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
+                ;; org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))
+                ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)"))
+                ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✔(d)" "✘(c)"))
+                ;; org-todo-keywords '((sequence "☐(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "☑(d)" "☒(c)"))
+                )
+
+  (set-face-attribute 'org-todo nil :bold nil)
+  (set-face-attribute 'org-done nil :bold nil)
+
+  (define-key org-mode-map (kbd "C-c t") #'init-org-check-before-or-on-date)
+
+  (define-key org-mode-map (kbd "<M-S-right>") #'org-shiftright)
+  (define-key org-mode-map (kbd "<M-S-left>") #'org-shiftleft)
+  (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
+  (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
+
+  (define-key org-mode-map (kbd "<M-kp-6>") #'org-shiftmetaright)
+  (define-key org-mode-map (kbd "<M-kp-4>") #'org-shiftmetaleft)
+  (define-key org-mode-map (kbd "<M-kp-8>") #'org-shiftmetaup)
+  (define-key org-mode-map (kbd "<M-kp-2>") #'org-shiftmetadown)
+
+  (define-key org-mode-map (kbd "<S-right>") nil)
+  (define-key org-mode-map (kbd "<S-left>") nil)
+  (define-key org-mode-map (kbd "<S-up>") nil)
+  (define-key org-mode-map (kbd "<S-down>") nil)
+
+  (define-key org-mode-map (kbd "<C-S-right>") nil)
+  (define-key org-mode-map (kbd "<C-S-left>") nil)
+  (define-key org-mode-map (kbd "<C-S-up>") nil)
+  (define-key org-mode-map (kbd "<C-S-down>") nil)
+
+  (define-key org-mode-map (kbd "<C-kp-6>") #'org-shiftcontrolright)
+  (define-key org-mode-map (kbd "<C-kp-4>") #'org-shiftcontrolleft)
+  (define-key org-mode-map (kbd "<C-kp-8>") #'org-shiftcontrolup)
+  (define-key org-mode-map (kbd "<C-kp-2>") #'org-shiftcontroldown))
 
 (add-hook 'org-after-todo-statistics-hook #'init-org-todo-update-summary)
 (add-hook 'org-after-todo-state-change-hook #'init-org-todo-state-change)

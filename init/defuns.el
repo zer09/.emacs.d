@@ -50,43 +50,27 @@
                        (end-of-line))
              while (and (= 0 (forward-line 1)) (<= (point) end)))))
 
-;; Adapted from http://www.emacswiki.org/emacs/move-text.el
-(defun move-text-internal (arg)
-  (if (and mark-active transient-mark-mode)
-      (progn (when (> (point) (mark))
-               (exchange-point-and-mark))
-             (let ((column (current-column))
-                   (text (delete-and-extract-region (point) (mark))))
-               (forward-line arg)
-               (move-to-column column t)
-               (set-mark (point))
-               (insert text)
-               (exchange-point-and-mark)
-               (setq deactivate-mark nil)))
-    (let ((column (current-column)))
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-        (forward-line)
-        (when (or (< arg 0) (not (eobp)))
-          (transpose-lines arg)
-          (when (< arg 0)
-            (forward-line -1)))
-        (forward-line -1))
-      (move-to-column column t))))
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (let* ((col (current-column))
+         (start (point-at-bol))
+         (end (min (point-max) (1+ (point-at-eol))))
+         (line-text (delete-and-extract-region start end)))
+    (forward-line n)
+    (insert line-text)
+    (forward-line -1)
+    (forward-char col)))
 
-(defun move-line-down (arg)
-  "Move region or current line ARG lines down."
-  (interactive "*p")
-  (if (eq major-mode 'org-mode)
-      (org-metadown)
-    (move-text-internal arg)))
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (- (or n 1))))
 
-(defun move-line-up (arg)
-  "Move region or current line ARG lines up."
-  (interactive "*p")
-  (if (eq major-mode 'org-mode)
-      (org-metaup)
-    (move-text-internal (- arg))))
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (or n 1)))
 
 (defun make-title-line ()
   "Wrap current line in comment delimiters."
@@ -205,7 +189,6 @@
   (ruler-mode -1)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
-  (fringe-mode '(4 . 4))
   (setq-default mode-line-format (unless hide-modeline (default-value 'mode-line-format))
                 cursor-type nil))
 
@@ -215,12 +198,6 @@
     (call-interactively #'shell)))
 
 ;; Debugging ;;
-
-(defmacro with-timer (&rest body)
-  "Measure the time it takes to evaluate BODY."
-  `(let ((time (current-time)))
-     ,@body
-     (message "%.06f" (float-time (time-since time)))))
 
 (defmacro with-profiler (&rest body)
   "Wrap each for in BODY in a timer macro."

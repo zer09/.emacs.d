@@ -15,8 +15,9 @@
   "Show MESSAGE after running BODY."
   (declare (indent defun))
   `(let* ((start-time (current-time)))
-     ,@body
-     (message "%.2fs [%s]" (float-time (time-since start-time)) ,message)))
+     (prog1
+         ,@body
+       (message "%.2fs [%s]" (float-time (time-since start-time)) ,message))))
 
 (defun init-load-file (relative-path)
   "Load `init-dir'/RELATIVE-PATH, possibly compiling it first."
@@ -47,3 +48,8 @@
 
 (setq-default load-prefer-newer t)
 (mapc #'init-load-file init-files)
+
+;; (require 'mu4e)
+;; (require 'mu4e-contrib)
+;; (setq mu4e-html2text-command 'mu4e-shr2text)
+(put 'upcase-region 'disabled nil)

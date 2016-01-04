@@ -15,6 +15,10 @@
 (define-key 'help-command (kbd "C-k") 'find-function-on-key)
 (define-key 'help-command (kbd "C-v") 'find-variable)
 
+;; Overridable keys
+
+(global-set-key (kbd "C-c t") (lambda () (interactive) (find-file "~/desktop/TODO.org")))
+
 ;; Local keybindings ;;
 
 ;; Unoverridable shortcuts from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
@@ -22,6 +26,8 @@
 
 (define-key keybindings-minor-mode-map (kbd "<M-up>") #'move-line-up)
 (define-key keybindings-minor-mode-map (kbd "<M-down>") #'move-line-down)
+
+(define-key keybindings-minor-mode-map (kbd "<C-return>") 'company-manual-begin)
 
 (define-key keybindings-minor-mode-map (kbd "C-c m") 'magit-status)
 (define-key keybindings-minor-mode-map (kbd "C-c o") 'find-file-here)
