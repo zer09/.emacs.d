@@ -105,30 +105,41 @@
 
   (define-key org-mode-map (kbd "C-c t") #'init-org-check-before-or-on-date)
 
-  (define-key org-mode-map (kbd "<M-S-right>") #'org-shiftright)
-  (define-key org-mode-map (kbd "<M-S-left>") #'org-shiftleft)
-  (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
-  (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
-
-  (define-key org-mode-map (kbd "<M-kp-6>") #'org-shiftmetaright)
-  (define-key org-mode-map (kbd "<M-kp-4>") #'org-shiftmetaleft)
-  (define-key org-mode-map (kbd "<M-kp-8>") #'org-shiftmetaup)
-  (define-key org-mode-map (kbd "<M-kp-2>") #'org-shiftmetadown)
+  ;; Move usual S-* commands to keypad
+  (define-key org-mode-map (kbd "<S-kp-right>") #'org-shiftright)
+  (define-key org-mode-map (kbd "<S-kp-left>") #'org-shiftleft)
+  (define-key org-mode-map (kbd "<S-kp-up>") #'org-shiftup)
+  (define-key org-mode-map (kbd "<S-kp-down>") #'org-shiftdown)
 
   (define-key org-mode-map (kbd "<S-right>") nil)
   (define-key org-mode-map (kbd "<S-left>") nil)
   (define-key org-mode-map (kbd "<S-up>") nil)
   (define-key org-mode-map (kbd "<S-down>") nil)
 
+  (define-key org-mode-map (kbd "<M-kp-6>") #'org-shiftmetaright)
+  (define-key org-mode-map (kbd "<M-kp-4>") #'org-shiftmetaleft)
+  (define-key org-mode-map (kbd "<M-kp-8>") #'org-shiftmetaup)
+  (define-key org-mode-map (kbd "<M-kp-2>") #'org-shiftmetadown)
+
+  (define-key org-mode-map (kbd "<C-kp-6>") #'org-shiftcontrolright)
+  (define-key org-mode-map (kbd "<C-kp-4>") #'org-shiftcontrolleft)
+  (define-key org-mode-map (kbd "<C-kp-8>") #'org-shiftcontrolup)
+  (define-key org-mode-map (kbd "<C-kp-2>") #'org-shiftcontroldown)
+
   (define-key org-mode-map (kbd "<C-S-right>") nil)
   (define-key org-mode-map (kbd "<C-S-left>") nil)
   (define-key org-mode-map (kbd "<C-S-up>") nil)
   (define-key org-mode-map (kbd "<C-S-down>") nil)
 
-  (define-key org-mode-map (kbd "<C-kp-6>") #'org-shiftcontrolright)
-  (define-key org-mode-map (kbd "<C-kp-4>") #'org-shiftcontrolleft)
-  (define-key org-mode-map (kbd "<C-kp-8>") #'org-shiftcontrolup)
-  (define-key org-mode-map (kbd "<C-kp-2>") #'org-shiftcontroldown))
+  ;; Move S-[rlud] to M-S-[rlup]
+  (define-key org-mode-map (kbd "<M-S-right>") #'org-shiftright)
+  (define-key org-mode-map (kbd "<M-S-left>") #'org-shiftleft)
+  (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
+  (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
+
+  (define-key org-mode-map (kbd "<C-M-up>") #'org-move-subtree-up)
+  (define-key org-mode-map (kbd "<C-M-down>") #'org-move-subtree-down))
+
 
 (add-hook 'org-after-todo-statistics-hook #'init-org-todo-update-summary)
 (add-hook 'org-after-todo-state-change-hook #'init-org-todo-state-change)

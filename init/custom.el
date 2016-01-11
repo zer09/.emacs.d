@@ -10,7 +10,7 @@
  '(frame-background-mode (quote dark))
  '(package-selected-packages
    (quote
-    (noflet magit-gh-pulls color-theme-solarized emojify pos-tip alert use-package pyvenv which-key hide-lines page-break-lines flycheck yaml-mode nameless shut-up jquery-doc js2-mode smart-mode-line avy json-mode jinja2-mode aggressive-indent emr highlight-symbol haskell-mode ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex)))
+    (company tldr noflet magit-gh-pulls color-theme-solarized emojify pos-tip use-package pyvenv which-key hide-lines page-break-lines flycheck yaml-mode nameless shut-up jquery-doc js2-mode smart-mode-line avy json-mode jinja2-mode aggressive-indent emr highlight-symbol haskell-mode ag markdown-mode company-math csharp-mode expand-region ido-ubiquitous julia-mode magit multiple-cursors yasnippet flycheck-package omnisharp wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode rainbow-delimiters popup json-rpc epc elpy company-auctex)))
  '(safe-local-variable-values
    (quote
     ((python-shell-interpreter . "python2")

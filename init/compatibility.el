@@ -15,8 +15,8 @@
 (defmacro trycall (func &rest args)
   "Call (FUNC ARGS) is FUNC is a bound function symbol."
   (declare (debug t))
-  `(when (fboundp (quote ,func))
-     (,func ,@args)))
+  `(when (fboundp ,func)
+     (funcall ,func ,@args)))
 
 (when (< emacs-major-version 25)
   (when-os 'gnu/linux

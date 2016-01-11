@@ -1,6 +1,3 @@
-(add-to-list 'load-path "~/.emacs.d/lisp/company-mode/")
-(require 'company)
-
 (defun company-yasnippet-or-completion ()
   (interactive)
   (let ((yas-fallback-behavior nil)

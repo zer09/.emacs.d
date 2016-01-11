@@ -155,6 +155,15 @@
 ;; Interaction ;;
 (require 'cl-lib)
 
+(defun shred ()
+  "Delete current file and kill buffer."
+  (interactive)
+  (let ((fname (buffer-file-name)))
+    (set-buffer-modified-p nil)
+    (kill-buffer (current-buffer))
+    (when buffer-file-name
+      (delete-file fname))))
+
 (defun undedicate-all ()
   (interactive)
   (cl-loop for window in (window-list)

@@ -5,4 +5,4 @@
               ido-create-new-buffer 'always)
 
 (ido-mode)
-(add-hook 'after-init-hook '(lambda () (trycall ido-ubiquitous-mode)))
+(add-hook 'after-init-hook '(lambda () (trycall #'ido-ubiquitous-mode)))

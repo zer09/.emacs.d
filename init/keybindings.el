@@ -54,7 +54,10 @@
   (define-key mc/keymap (kbd "M-I") 'mc/insert-numbers)
   (define-key mc/keymap (kbd "M-T") 'mc/reverse-regions)
   (define-key mc/keymap (kbd "C-,") 'mc/unmark-next-like-this)
-  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this))
+  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this)
+  (define-key mc/keymap (kbd "C-.") 'mc/skip-to-next-like-this)
+  ;; This one is great:
+  (define-key mc/keymap (kbd "C-'") 'mc-hide-unmatched-lines-mode))
 
 ;; Avy — quick moving to position
 (define-key keybindings-minor-mode-map (kbd "C-c SPC") 'avy-goto-char)

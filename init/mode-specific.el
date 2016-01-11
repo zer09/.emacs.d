@@ -44,20 +44,27 @@
 
 ;;; Recentf
 (add-hook 'after-init-hook 'recentf-mode)
-(setq recentf-max-saved-items 100)
+(setq recentf-max-saved-items 1000)
+
+;;; Occur and read-regexp
+(setq-default read-regexp-defaults-function
+              (lambda () (regexp-quote (symbol-name (symbol-at-point)))))
 
 ;;; Which key
 (which-key-mode)
 (diminish 'which-key-mode)
 
+;; Alert
+(setq-default alert-default-style 'libnotify)
+
 ;;; Page breaks
-(trycall global-page-break-lines-mode)
+(trycall #'global-page-break-lines-mode)
 (optionally (diminish 'page-break-lines-mode))
 
 ;;; Powerline
 
 (setq sml/theme 'dark)
-(trycall sml/setup)
+(trycall #'sml/setup)
 (optionally (set-face-attribute 'sml/modes nil :foreground "gray70"))
 
 ;;; Outline

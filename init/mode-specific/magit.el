@@ -1,6 +1,7 @@
 (with-eval-after-load 'magit
   (setq-default magit-diff-refine-hunk 'all
                 magit-push-always-verify nil
+                git-commit-summary-max-length 72
                 magit-diff-arguments '("--minimal" "--ignore-all-space"))
   (let ((magit-faces '(magit-diff-added magit-diff-removed magit-diff-our magit-diff-base magit-diff-their
                                         magit-diff-context magit-diff-added-highlight magit-diff-removed-highlight

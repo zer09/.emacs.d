@@ -17,8 +17,8 @@
 
 (tool-bar-mode -1)
 (column-number-mode)
-(trycall set-fringe-mode '(8 . 8))
-(trycall scroll-bar-mode -1)
+(trycall #'set-fringe-mode '(8 . 8))
+(trycall #'scroll-bar-mode -1)
 (setq-default overlay-arrow-string "")
 
 ;; Interaction
@@ -36,6 +36,7 @@
             kill-buffer-query-functions))
 
 ;; Behaviour
+(winner-mode)
 (xterm-mouse-mode)
 (setq-default tooltip-delay 0.3
               set-mark-command-repeat-pop t
@@ -44,7 +45,7 @@
               eval-expression-print-level nil)
 
 (savehist-mode)
-(trycall save-place-mode)
+(trycall #'save-place-mode)
 
 ;; Backups and temp files
 (setq-default backup-directory-alist `(("." . "~/.emacs-backups"))
@@ -65,14 +66,14 @@
                             (ruler-mode)
                             (eldoc-mode)
                             (which-function-mode)
-                            (trycall flycheck-mode)
-                            (trycall ws-butler-mode)))
+                            (trycall #'flycheck-mode)
+                            (trycall #'ws-butler-mode)))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
                             (ruler-mode)
-                            (trycall flyspell-mode)
-                            (trycall ws-butler-mode)
+                            (trycall #'flyspell-mode)
+                            (trycall #'ws-butler-mode)
                             (visual-line-mode)))
 
 ;;; Disabled functions
