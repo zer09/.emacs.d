@@ -7,7 +7,7 @@
 
 ;;; prettify
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
-(setq-default prettify-symbols-unprettify-at-point 'right-edge)
+;; (setq-default prettify-symbols-unprettify-at-point 'right-edge) ; Disabled for talk
 
 ;; diff
 (setq-default diff-switches '("-u" "-Z"))
@@ -52,25 +52,19 @@
 
 ;;; Which key
 (which-key-mode)
-(diminish 'which-key-mode)
 
 ;; Alert
 (setq-default alert-default-style 'libnotify)
 
 ;;; Page breaks
 (trycall #'global-page-break-lines-mode)
-(optionally (diminish 'page-break-lines-mode))
 
 ;;; Powerline
 
-(setq sml/theme 'dark)
+(setq-default sml/theme 'dark
+              sml/name-width '(10 . 40))
 (trycall #'sml/setup)
 (optionally (set-face-attribute 'sml/modes nil :foreground "gray70"))
-
-;;; Outline
-
-(with-eval-after-load 'outline
-  (diminish 'outline-minor-mode))
 
 ;;; Ediff
 
@@ -78,7 +72,9 @@
 
 ;;; Eldoc
 
-(ignore-errors (diminish 'eldoc-mode "doc"))
+(with-eval-after-load 'eldoc
+  (diminish 'eldoc-mode " 📚 "))
+
 (setq-default eldoc-idle-delay 0)
 
 ;;; DocView
@@ -86,11 +82,6 @@
 (with-eval-after-load 'doc-view
   (setq-default doc-view-continuous t
                 doc-view-resolution 300))
-
-;;; YASnippet
-
-(with-eval-after-load 'yasnippet
-  (diminish 'yas-minor-mode))
 
 ;;; ispell
 

@@ -7,15 +7,19 @@
 (set-default-coding-systems 'utf-8)
 
 ;; GC
-;; FIXME does removing this make company-coq nicer? (setq-default gc-cons-threshold (* 8 1000 1000))
+(setq-default gc-cons-threshold (* 8 1000 1000))
 
 ;; Appearance
-(setq-default initial-major-mode 'fundamental-mode
+(setq-default ;initial-major-mode 'fundamental-mode
               initial-frame-alist '((fullscreen . maximized)) ;; Start in full screen (see also -mm)
+              frame-title-format '((:eval (cond ((buffer-modified-p) "*")
+                                                (buffer-read-only "%%")
+                                                (t ""))) "%b")
               cursor-type 'bar
               x-gtk-use-system-tooltips nil)
 
 (tool-bar-mode -1)
+(blink-cursor-mode)
 (column-number-mode)
 (trycall #'set-fringe-mode '(8 . 8))
 (trycall #'scroll-bar-mode -1)
@@ -44,6 +48,9 @@
               eval-expression-print-length nil
               eval-expression-print-level nil)
 
+
+(add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p)
+
 (savehist-mode)
 (trycall #'save-place-mode)
 
@@ -63,15 +70,15 @@
 
 ;; All program modes
 (add-hook 'prog-mode-hook (lambda ()
-                            (ruler-mode)
                             (eldoc-mode)
-                            (which-function-mode)
+                            ;; (ruler-mode)
+                            ;; (which-function-mode)
                             (trycall #'flycheck-mode)
                             (trycall #'ws-butler-mode)))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
-                            (ruler-mode)
+                            ;; (ruler-mode)
                             (trycall #'flyspell-mode)
                             (trycall #'ws-butler-mode)
                             (visual-line-mode)))

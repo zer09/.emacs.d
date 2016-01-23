@@ -7,7 +7,31 @@
     (when (file-exists-p abs-name)
       abs-name)))
 
+(defun my-flycheck-mode-line-status-text (&optional status)
+  "Get a text describing STATUS for use in the mode line."
+  (format
+   "  [ %s]" (pcase (or status flycheck-last-status-change)
+               (`not-checked "")
+               (`no-checker "⛭ ")
+               (`running "⚙ ")
+               (`errored "✘ ")
+               (`finished
+                (let ((errors-warnings (flycheck-count-errors flycheck-current-errors)))
+                  (let* ((errors (cdr (assq 'error errors-warnings)))
+                         (warnings (cdr (assq 'warning errors-warnings)))
+                         (errors-str (when errors (format " ⚐ %d" errors)))
+                         (warnings-str (when warnings (format " ⚠ %d" warnings))))
+                    (cond
+                     ((and errors warnings) (concat errors-str " " warnings-str))
+                     (warnings (concat warnings-str))
+                     (errors (concat errors-str " " warnings-str))
+                     (t "✓ ")))))
+               (`interrupted "-")
+               (`suspicious "?"))))
+
+
 (with-eval-after-load 'flycheck
   (flycheck-pos-tip-mode)
+  (setq-default flycheck-mode-line '(:eval (my-flycheck-mode-line-status-text)))
   (setq-default flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
   (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))

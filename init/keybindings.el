@@ -35,6 +35,9 @@
 (define-key keybindings-minor-mode-map (kbd "C-M-;") 'comment-dwim)
 (define-key keybindings-minor-mode-map (kbd "M-;") 'comment-or-uncomment-region-or-line)
 
+;; Killing emacs
+(define-key keybindings-minor-mode-map (kbd "C-x C-c") #'kill-frame-or-emacs)
+
 ;; Move quickly between windows
 (define-key keybindings-minor-mode-map (kbd "C-x <right>") 'windmove-right)
 (define-key keybindings-minor-mode-map (kbd "C-x <left>")  'windmove-left)

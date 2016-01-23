@@ -15,7 +15,6 @@
                   boogie-friends-profile-analyzer-executable (expand-file-name "Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe" root))))
 
 (defun setup-dafny ()
-  (diminish-undo 'flycheck-mode)
   (add-to-list 'dafny-prover-background-args "/printTooltips")
   (add-to-list 'dafny-prover-background-args "/autoTriggers:1")
   (setq-local flycheck-display-errors-function #'flycheck-pos-tip-error-messages))

@@ -1,10 +1,12 @@
 ;; Coq and Proof-General
 
-(add-to-list 'load-path "~/.emacs.d/lisp/ProofGeneral/generic/")
 (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/")
-;; (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/")
+(add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/")
+(add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-term-builder/")
+(add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-LaTeX/")
+(require 'proof-site "~/.emacs.d/lisp/ProofGeneral/generic/proof-site")
 
-(require 'proof-site nil t)
+(require 'presenter-mode nil t)
 
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
@@ -21,6 +23,7 @@
   (setq-default company-coq-extra-symbols-cmd "SearchAbout -\"__\""
                 company-coq-disabled-features nil
                 company-coq--prettify-abbrevs t
+                company-coq-completion-documentation-marker "…"
                 company-coq-features/prettify-symbols-in-terminal t)
   (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode)
   (define-key company-coq-map (kbd "<f10>") #'coq-compile-before-require-toggle)
@@ -28,20 +31,19 @@
   (define-key company-coq-map (kbd "C-c C-j") #'company-coq-proof-goto-point))
 
 (defun setup-coq ()
-  (diminish 'holes-mode)
-
   (when (not (display-graphic-p))
     (set-face-attribute 'proof-locked-face nil
                         :background "darkslateblue" :underline nil))
 
-  ;; (setq-default shr-use-fonts nil) ;; For presentation
-  (require 'greek-prettify)
-  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷) ;≔
-                                 ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?😱)
-                                 ("Time" . ?⏱) ("Fail" . ?⛐)
-                                 ,@prettify-symbols-greek-alist)) ;;☢
+  (setq-default shr-use-fonts nil) ;; For presentation
+  ;; (require 'greek-prettify)
+  ;; (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷) ; ≔
+  ;;                                ("Qed." . ?■) ("Defined." . ?□) ("Admitted." . ?😱)
+  ;;                                ("Time" . ?⏱) ("Fail" . ?⛐)
+  ;;                                ,@prettify-symbols-greek-alist)) ;;☢
   (require 'company-coq)
-  (setq company-coq-dynamic-autocompletion t)
+  (setq company-coq-live-on-the-edge t
+        company-coq-dynamic-autocompletion t)
   (company-coq-mode))
 
 (add-hook 'coq-mode-hook #'setup-coq)
@@ -51,20 +53,19 @@
 ;; folder for now.
 
 (defconst coq-compilers-alist
-  '((default . ("coqtop" . ("-emacs")))
-    (coq-8.4pl2 . ("/build/coq-8.4pl2/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4pl2/")))
-    (profiler-8.4pl4 . ("/build/coq-8.4-profiler/bin/coqtop" . ("-emacs" "-coqlib" "/build/coq-8.4-profiler/")))
-    (coq-8.5 . ("/build/coq-8.5/env/bin/coqtop" . ("-emacs")))
-    (letouzey . ("/build/coq-wip-letouzey/env/bin/coqtop" . ("-emacs")))))
+  '((default . "coqtop")
+    (coq-8.5 . "/build/coq-8.5/dist/bin/coqtop")
+    (coq-8.4pl2 . "/build/coq-8.4pl2/dist/bin/coqtop")
+    (coq-8.5-patched . "/build/coq-8.5-patched/dist/bin/coqtop")
+    (profiler-8.4pl4 . "/build/coq-8.4-profiler/dist/bin/coqtop")
+    (letouzey . "/build/coq-wip-letouzey/dist/bin/coqtop")))
 
-(defun coq-change-compiler (compiler-and-args)
+(defun coq-change-compiler (compiler)
   "Change Coq compiler to COMPILER-AND-ARGS."
   (interactive
-   (let ((compiler-and-args (completing-read "Compiler: " coq-compilers-alist)))
-     (list (cdr (assq (intern compiler-and-args) coq-compilers-alist)))))
-  (when (consp compiler-and-args)
+   (let ((compiler (completing-read "Compiler: " coq-compilers-alist)))
+     (list (cdr (assq (intern compiler) coq-compilers-alist)))))
+  (when (stringp compiler)
     (progn
-      (when (functionp #'proof-shell-exit) (proof-shell-exit))
-      (message "Compiler set to %s %s"
-               (setq coq-prog-name (car compiler-and-args))
-               (setq coq-prog-args (cdr compiler-and-args))))))
+      (message "Compiler set to %s." (setq coq-prog-name compiler))
+      (proof-shell-exit))))

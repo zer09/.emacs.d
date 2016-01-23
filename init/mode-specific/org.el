@@ -91,7 +91,7 @@
                 org-completion-use-ido t
                 org-latex-listings t
                 org-special-ctrl-a/e nil
-                org-return-follows-link t
+                org-return-follows-link nil ;; Can't add a newline after timestamp otherwise
                 org-ellipsis " …" ;; ▸ 🞂 ▼ ▶ ⏩
                 org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
                 ;; org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))

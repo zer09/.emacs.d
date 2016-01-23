@@ -18,7 +18,7 @@
                 company-require-match 'never)
   (setq-default company-quickhelp-delay 0
                 company-quickhelp-max-lines 10) ;; Slows everything down
-  (diminish 'company-mode))
+  )
 
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'company-mode-hook #'setup-company)

@@ -1,8 +1,8 @@
-;;;;;;;;;;;;;;;;;;;
-;; Custom defuns ;;
-;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;;; Custom defuns ;;;
+;;;;;;;;;;;;;;;;;;;;;
 
-;; Editing ;;
+;;; Editing ;;
 
 (defun beginning-of-whitespace (skip)
   (goto-char (point-at-bol))
@@ -80,17 +80,17 @@
   (forward-line 0)
   (let* ((title  (match-string-no-properties 1))
          (tlen   (length title))
-         (spacer (make-string (+ tlen 6) ?\;)))
+         (spacer (make-string (+ tlen 8) ?\;)))
     (kill-line)
     (insert spacer)
     (newline)
-    (insert (concat ";; " title " ;;"))
+    (insert (concat ";;; " title " ;;;"))
     (newline)
     (insert spacer)
     (newline 2)))
 
 (defun open-and-indent-next-line ()
-  "SPlit current line and indent both."
+  "Split current line and indent both."
   (interactive)
   (save-excursion
     (insert "\n")
@@ -116,7 +116,7 @@
   (let ((sort-fold-case (or fold-case (bound-and-true-p sort-fold-case))))
     (sort-regexp-fields nil "\\(\"\\(?2:[^\"]+\\)\"\\)\\|\\(?2:\\w+\\)" "\\2" beg end)))
 
-;; Navigation ;;
+;;; Navigation ;;
 
 (defun find-file-here ()
   (interactive)
@@ -131,10 +131,11 @@
 
 (defun prev-slide (sep)
   (interactive (list "(******************************************************************************)"))
-  (when (search-backward sep nil t)
-    (recenter 0)))
+  (unless (search-backward sep nil t)
+    (goto-char (point-min)))
+  (recenter 0))
 
-;; Snippets ;;
+;;; Snippets ;;
 
 (defun sheebang ()
   (interactive)
@@ -152,7 +153,20 @@
   (insert (format-time-string "%Y-%m-%d (%A) %H:%m"))
   (newline 2))
 
-;; Interaction ;;
+(defun quote-region (beg end)
+  "Insert quotes aroung BEG..END."
+  (interactive "r")
+  (let ((quotes (pcase (read-char "Quote type?")
+                  (?\' `("‘" . "’"))
+                  (?\" `("“" . "”")))))
+    (save-excursion
+      (goto-char (region-end))
+      (insert (cdr quotes)))
+    (save-excursion
+      (goto-char (region-beginning))
+      (insert (car quotes)))))
+
+;;; Interaction ;;
 (require 'cl-lib)
 
 (defun shred ()
@@ -161,8 +175,18 @@
   (let ((fname (buffer-file-name)))
     (set-buffer-modified-p nil)
     (kill-buffer (current-buffer))
-    (when buffer-file-name
+    (when (and fname (file-exists-p fname))
       (delete-file fname))))
+
+(defun kill-frame-or-emacs (arg)
+  "Kill current frame.
+If there are no other frames, or with prefix ARG, kill Emacs."
+  (interactive "P")
+  (if (and (cdr (frame-list)) (not (consp arg)))
+      (progn
+        (save-some-buffers arg t)
+        (delete-frame))
+    (save-buffers-kill-emacs)))
 
 (defun undedicate-all ()
   (interactive)
@@ -171,12 +195,17 @@
 
 (defvar original-font-size nil)
 
+(defun set-font-size-in-all-fontsets (size)
+  (dolist (frame (frame-list))
+    ;; Modifying fontsets directly works as well, and it doesn't create new ones
+    ;; (set-face-attribute 'default frame :height new-size)
+    (my-configure-all-fontsets frame size)))
+
 (defun adjust-font-size (delta)
   (let* ((old-size (face-attribute 'default :height))
          (new-size (max (max delta (- delta)) (min 400 (+ delta old-size)))))
     (setq original-font-size (or original-font-size old-size))
-    (set-face-attribute 'default nil :height new-size)
-    (my-reset-all-font-fallbacks) ; Changing the default size creates a new fontset, with incorrect fallbacks
+    (set-font-size-in-all-fontsets new-size)
     (message "Font size set to %d (was %d)" (face-attribute 'default :height) old-size)))
 
 (defun zoom-in ()
@@ -190,7 +219,7 @@
 (defun zoom-reset ()
   (interactive)
   (when original-font-size
-    (set-face-attribute 'default nil :height original-font-size)))
+    (set-font-size-in-all-fontsets original-font-size)))
 
 (defun prepare-for-screenshot (&optional hide-modeline)
   (interactive "P")
@@ -206,7 +235,7 @@
   (let ((same-window-regexps '("shell")))
     (call-interactively #'shell)))
 
-;; Debugging ;;
+;;; Debugging ;;
 
 (defmacro with-profiler (&rest body)
   "Wrap each for in BODY in a timer macro."

@@ -3,6 +3,7 @@
 
 ;;; Custom theme
 (load-theme 'tangomod-dark t)
+(setq-default frame-background-mode 'dark)
 
 ;;; Disable automatic package loading (must be kept here)
 ;; (package-initialize)
