@@ -31,6 +31,8 @@
   (setq-local prettify-symbols-alist python-prettify-symbols-alist)
   (prettify-symbols-mode)
 
+  (setq-local parens-require-spaces nil)
+
   (let* ((buffer-path (buffer-file-name))
          (true-path   (and buffer-path (file-truename buffer-path))))
     (if (and true-path (string-match-p (regexp-opt '("afs")) true-path))

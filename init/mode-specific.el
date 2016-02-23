@@ -7,10 +7,20 @@
 
 ;;; prettify
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
-;; (setq-default prettify-symbols-unprettify-at-point 'right-edge) ; Disabled for talk
+(setq-default prettify-symbols-unprettify-at-point 'right-edge)
 
-;; diff
+;;; diff
 (setq-default diff-switches '("-u" "-Z"))
+(add-hook 'diff-mode-hook #'hide-trailing-whitespace)
+
+;;; comint
+
+(add-hook 'comint-mode-hook #'hide-trailing-whitespace)
+
+;;; eww
+
+(setq-default network-security-level 'high)
+(add-hook 'eww-mode-hook #'hide-trailing-whitespace)
 
 ;;; TRAMP
 
@@ -40,7 +50,7 @@
 (defun tuareg-breaks-which-function-mode ()
   (which-function-mode -1))
 
-(add-hook 'tuareg-mode-hook (tuareg-breaks-which-function-mode))
+(add-hook 'tuareg-mode-hook #'tuareg-breaks-which-function-mode)
 
 ;;; Recentf
 (add-hook 'after-init-hook 'recentf-mode)
@@ -59,16 +69,20 @@
 ;;; Page breaks
 (trycall #'global-page-break-lines-mode)
 
-;;; Powerline
+;;; smart-mode-line
 
 (setq-default sml/theme 'dark
-              sml/name-width '(10 . 40))
-(trycall #'sml/setup)
+              sml/name-width '(10 . 40)
+              sml/replacer-regexp-list (or (bound-and-true-p sml/replacer-regexp-list) nil))
+(add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/lisp/" ":LISP:"))
+(add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/init/" ":INIT:"))
 (optionally (set-face-attribute 'sml/modes nil :foreground "gray70"))
+(trycall #'sml/setup)
 
 ;;; Ediff
 
-(setq-default ediff-split-window-function 'split-window-horizontally)
+(setq-default ediff-split-window-function 'split-window-horizontally
+              ediff-window-setup-function 'ediff-setup-windows-plain)
 
 ;;; Eldoc
 

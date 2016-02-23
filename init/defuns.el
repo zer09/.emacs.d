@@ -155,16 +155,29 @@
 
 (defun quote-region (beg end)
   "Insert quotes aroung BEG..END."
-  (interactive "r")
+  (interactive (if (region-active-p)
+                   (list (region-beginning) (region-end))
+                 (list (point) nil)))
   (let ((quotes (pcase (read-char "Quote type?")
-                  (?\' `("‘" . "’"))
-                  (?\" `("“" . "”")))))
+                  (?\` `(?` . ?'))
+                  (?\' `(?‘ . ?’))
+                  (?\" `(?“ . ?”))
+                  (?\[ `(?[ . ?]))
+                  (?\{ `(?{ . ?}))
+                  (c   `(,c . ,c)))))
     (save-excursion
-      (goto-char (region-end))
+      (goto-char (or end beg))
       (insert (cdr quotes)))
     (save-excursion
-      (goto-char (region-beginning))
-      (insert (car quotes)))))
+      (goto-char beg)
+      (insert (car quotes)))
+    (if end
+        (goto-char (+ 2 end))
+      (goto-char (+ 1 beg)))))
+
+(defun hide-trailing-whitespace ()
+  (interactive)
+  (setq-local show-trailing-whitespace nil))
 
 ;;; Interaction ;;
 (require 'cl-lib)

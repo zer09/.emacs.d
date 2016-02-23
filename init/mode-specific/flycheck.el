@@ -23,8 +23,8 @@
                          (warnings-str (when warnings (format " ⚠ %d" warnings))))
                     (cond
                      ((and errors warnings) (concat errors-str " " warnings-str))
-                     (warnings (concat warnings-str))
-                     (errors (concat errors-str " " warnings-str))
+                     (warnings warnings-str)
+                     (errors errors-str)
                      (t "✓ ")))))
                (`interrupted "-")
                (`suspicious "?"))))

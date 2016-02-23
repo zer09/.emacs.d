@@ -6,7 +6,7 @@
 
 ;; Global keybindings ;;
 
-(when window-system
+(when (display-graphic-p)
   (global-unset-key "\C-z"))
 
 ;; Help keys ;;
@@ -83,6 +83,12 @@
 
 ;; rgrep
 (define-key keybindings-minor-mode-map (kbd "C-c s") 'ag)
+
+;; Quoting
+(define-key keybindings-minor-mode-map (kbd "M-\"") 'quote-region)
+
+;; find
+(define-key keybindings-minor-mode-map (kbd "C-c f") 'find-dired)
 
 ;; visual-regexp
 ;; Broken handling of newlines: (require 'visual-regexp-steroids)

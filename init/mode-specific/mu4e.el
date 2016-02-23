@@ -23,9 +23,6 @@
     (mu4e~headers-line-apply-flag-face msg val))
   val)
 
-(defun cpc/mu4e-view-mode-hook ()
-  (setq show-trailing-whitespace nil))
-
 (with-eval-after-load 'mu4e
   (set-face-attribute 'mu4e-unread-face nil :inherit 'default :weight 'bold :underline nil)
   (setq-default mu4e-headers-visible-lines 15
@@ -38,6 +35,6 @@
                                       (:subject)))
   (setq mu4e~headers-line-handler-functions nil)
   (add-to-list 'mu4e~headers-field-handler-functions #'mu4e~headers-field-set-subject-face t)
-  (add-hook 'mu4e-view-mode-hook #'cpc/mu4e-view-mode-hook)
+  (add-hook 'mu4e-view-mode-hook #'hide-trailing-whitespace)
   (cl-loop for (var . (letter . symbol)) in mu4e-symbols-override
            do (set var (cons letter (propertize symbol 'face '(:weight normal)))))) ;;

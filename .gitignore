@@ -16,3 +16,10 @@
 /init/local.el
 *.elc
 /snippets/*/.yas-compiled-snippets.el
+/history
+/eshell/
+/var/
+/tramp
+/tldr/
+/places
+/network-security.data

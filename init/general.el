@@ -7,7 +7,7 @@
 (set-default-coding-systems 'utf-8)
 
 ;; GC
-(setq-default gc-cons-threshold (* 8 1000 1000))
+(setq-default gc-cons-threshold (* 16 1000 1000))
 
 ;; Appearance
 (setq-default ;initial-major-mode 'fundamental-mode
@@ -19,6 +19,7 @@
               x-gtk-use-system-tooltips nil)
 
 (tool-bar-mode -1)
+(menu-bar-mode -1)
 (blink-cursor-mode)
 (column-number-mode)
 (trycall #'set-fringe-mode '(8 . 8))
@@ -42,12 +43,14 @@
 ;; Behaviour
 (winner-mode)
 (xterm-mouse-mode)
-(setq-default tooltip-delay 0.3
+(setq-default tooltip-delay 0.15
               set-mark-command-repeat-pop t
               fast-but-imprecise-scrolling t
+              eval-expression-print-level nil
               eval-expression-print-length nil
-              eval-expression-print-level nil)
-
+              save-interprogram-paste-before-kill t
+              apropos-do-all t
+              load-prefer-newer t)
 
 (add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p)
 
