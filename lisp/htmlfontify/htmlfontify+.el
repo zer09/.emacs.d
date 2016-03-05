@@ -19,7 +19,7 @@
     (pcase comp-info
       ((seq `(,_ . ,char)) char)
       ((seq  _ _ `[,char]) char)
-      (_                   (error "Invalid composition {%s}" comp-info)))))
+      (_                   (error "Unsupported composition %S" comp-info)))))
 
 (defun hfy+-substitute-composition (beg)
   (-when-let* ((end   (hfy+-composition-end beg))
@@ -32,7 +32,7 @@
 
 (defun hfy+-custom-page-header (file style)
   (hfy-default-header file (concat "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
-                                   "<style type=\"text/css\">*{font-family: Consolas,Cambria !important;}</style>"
+                                   "<style type=\"text/css\">*{font-family: \"Ubuntu Mono\",\"XITS Math\" !important;}</style>"
                                    style)))
 
 ;;;###autoload
@@ -45,7 +45,7 @@
          (temp-file         (make-temp-file "hfy" nil ".html")))
     (when (bound-and-true-p font-lock-mode)
       (funcall (if (fboundp 'font-lock-ensure) #'font-lock-ensure #'font-lock-fontify-buffer)))
-    (with-current-buffer (get-buffer-create " *HTML*")
+    (with-current-buffer (get-buffer-create (format " *%s-HTML*" (buffer-name source)))
       (let ((inhibit-read-only t))
         (erase-buffer)
         (insert-buffer-substring source)
