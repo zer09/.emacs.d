@@ -7,7 +7,7 @@
 
 ;;; prettify
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
-(setq-default prettify-symbols-unprettify-at-point 'right-edge)
+;; Made useless by show-key: (setq-default prettify-symbols-unprettify-at-point 'right-edge)
 
 ;;; diff
 (setq-default diff-switches '("-u" "-Z"))
@@ -61,23 +61,32 @@
               (lambda () (regexp-quote (symbol-name (symbol-at-point)))))
 
 ;;; Which key
-(which-key-mode)
+(trycall #'which-key-mode)
 
 ;; Alert
 (setq-default alert-default-style 'libnotify)
 
+;;; Keyfreq
+
+(setq-default keyfreq-file "~/.emacs.d/keyfreq"
+              keyfreq-file-lock "~/.emacs.d/keyfreq.lock")
+(trycall #'keyfreq-mode 1)
+(trycall #'keyfreq-autosave-mode 1)
+
 ;;; Page breaks
-(trycall #'global-page-break-lines-mode)
+(global-page-break-lines-mode)
 
 ;;; smart-mode-line
 
 (setq-default sml/theme 'dark
               sml/name-width '(10 . 40)
               sml/replacer-regexp-list (or (bound-and-true-p sml/replacer-regexp-list) nil))
-(add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/lisp/" ":LISP:"))
-(add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/init/" ":INIT:"))
-(optionally (set-face-attribute 'sml/modes nil :foreground "gray70"))
-(trycall #'sml/setup)
+
+(with-eval-after-load 'smart-mode-line
+  (add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/lisp/" ":LISP:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/init/" ":INIT:"))
+  (set-face-attribute 'sml/modes nil :foreground "gray70"))
+(sml/setup)
 
 ;;; Ediff
 
@@ -102,11 +111,15 @@
 (with-eval-after-load 'ispell
   (setq-default ispell-parser 'use-mode-name))
 
+;;; Dired
+(setq-default dired-listing-switches "-alh")
+(require 'dired-x)
+
 ;;; Frame files
 
 (add-to-list 'auto-mode-alist '("\\.frame\\'" . csharp-mode))
 
 ;;; All the rest
 
-(defconst init-mode-specific-dir (expand-file-name "mode-specific/" init-dir))
-(mapc #'init-load-file (directory-files init-mode-specific-dir t ".*\\.el\\'"))
+(defconst ~/init-mode-specific-dir (expand-file-name "mode-specific/" ~/init-dir))
+(mapc #'~/load-file (directory-files ~/init-mode-specific-dir t ".*\\.el\\'"))

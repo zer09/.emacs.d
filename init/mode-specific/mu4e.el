@@ -28,6 +28,8 @@
   (setq-default mu4e-headers-visible-lines 15
                 mu4e-maildir "/home/clement/Feeds"
                 mu4e-use-fancy-chars t
+                 ;; http://pragmaticemacs.com/emacs/fixing-duplicate-uid-errors-when-using-mbsync-and-mu4e/
+                mu4e-change-filenames-when-moving t
                 mu4e-headers-fields '((:human-date . 10)
                                       (:flags . 6)
                                       (:mailing-list . 25)

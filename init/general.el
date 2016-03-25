@@ -58,7 +58,8 @@
 (trycall #'save-place-mode)
 
 ;; Backups and temp files
-(setq-default backup-directory-alist `(("." . "~/.emacs-backups"))
+(setq-default backup-directory-alist '(("." . "~/.emacs-backups"))
+              auto-save-file-name-transforms '((".*" "~/.emacs-backups/" t))
               backup-by-copying t
               create-lockfiles nil)
 
@@ -76,15 +77,13 @@
                             (eldoc-mode)
                             ;; (ruler-mode)
                             ;; (which-function-mode)
-                            (trycall #'flycheck-mode)
-                            (trycall #'ws-butler-mode)))
+                            (flycheck-mode)
+                            (ws-butler-mode)))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
                             ;; (ruler-mode)
-                            (trycall #'flyspell-mode)
-                            (trycall #'ws-butler-mode)
-                            (visual-line-mode)))
-
-;;; Disabled functions
-(put 'dired-find-alternate-file 'disabled nil)
+                            (flyspell-mode)
+                            (ws-butler-mode)
+                            (visual-line-mode)
+                            (adaptive-wrap-prefix-mode)))

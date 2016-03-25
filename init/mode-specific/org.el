@@ -15,19 +15,20 @@
         (write-file org-fname)
         (kill-buffer)))))
 
-(defvar init-org-todo-suspend-cookie-updates nil)
+(defvar ~/org/todo-suspend-cookie-updates nil)
 
-(defun init-org-todo-update-summary (n-done n-not-done)
-  "Track progress of parent task."
-  (let (org-log-done org-log-states)
-    (org-todo
-     (cond
-      ((= n-not-done 0) "✓")
-      ((= n-done 0) "🌕")
-      (t "🌖")))))
+(defun ~/org/todo-update-summary (n-done n-not-done)
+  "Track progress of children tasks (N-DONE, N-NOT-DONE)."
+  (let ((old-state (org-get-todo-state))
+        (new-state (cond
+                    ((= n-not-done 0) "DONE")
+                    ((= n-done 0) "TODO")
+                    (t "STARTED"))))
+    (unless (equal old-state new-state)
+      (org-todo new-state))))
 
-(defun init-org-todo-add-cookie ()
-  "Add statistics cookie on current line."
+(defun ~/org/todo-add-cookie (&optional empty)
+  "Add a possibly EMPTY statistics cookie on current line."
   (when (save-excursion (org-goto-first-child))
     (save-match-data
       (unless (save-excursion
@@ -39,35 +40,28 @@
           (insert "[/]")
           (save-excursion
             (org-goto-first-child)
-            (org-update-parent-todo-statistics)))))))
+            (unless empty
+              (org-update-parent-todo-statistics))))))))
 
-(defun init-org-todo-state-change ()
+(defun ~/org/todo-state-change ()
   "Add statistics cookie to node and parent nodes."
-  (unless init-org-todo-suspend-cookie-updates
-    (let ((init-org-todo-suspend-cookie-updates t))
+  (unless ~/org/todo-suspend-cookie-updates
+    (let ((~/org/todo-suspend-cookie-updates t))
       (save-excursion
-        (init-org-todo-add-cookie)
+        (~/org/todo-add-cookie)
         (while (org-up-heading-safe)
-          (init-org-todo-add-cookie))))))
+          (~/org/todo-add-cookie))))))
 
-(defun init-add-org-line-spacing ()
-  "Add extra font-lock specs to increase the spacing before org titles."
-  (add-to-list (make-local-variable 'font-lock-extra-managed-props) 'display)
-  (font-lock-add-keywords nil '(("^\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.5))) append)))
-  (font-lock-add-keywords nil '(("^\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.2))) append)))
-  ;; (font-lock-add-keywords nil '(("^\\*\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.0))) append)))
-  )
-
-(defun init-truncate-time (time)
+(defun ~/truncate-time (time)
   "Remove the time component of TIME."
   (pcase-let ((`(_ _ _ ,day ,month ,year) (decode-time time)))
     (encode-time 0 0 0 day month year)))
 
-(defun init-org-check-before-or-on-date (&optional date)
+(defun ~/org/check-before-or-on-date (&optional date)
   "Check if there are deadlines or scheduled entries before or on DATE."
   (interactive "P")
   (cond
-   ((null date) (setq date (init-truncate-time (org-current-time))))
+   ((null date) (setq date (~/truncate-time (org-current-time))))
    ((consp date) (setq date (org-read-date nil t))))
   (message "DATE: %S" date)
   (let ((case-fold-search nil)
@@ -93,8 +87,8 @@
                 org-special-ctrl-a/e nil
                 org-return-follows-link nil ;; Can't add a newline after timestamp otherwise
                 org-ellipsis " …" ;; ▸ 🞂 ▼ ▶ ⏩
-                org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
-                ;; org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))
+                org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))
+                ;; org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
                 ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)"))
                 ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✔(d)" "✘(c)"))
                 ;; org-todo-keywords '((sequence "☐(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "☑(d)" "☒(c)"))
@@ -103,7 +97,7 @@
   (set-face-attribute 'org-todo nil :bold nil)
   (set-face-attribute 'org-done nil :bold nil)
 
-  (define-key org-mode-map (kbd "C-c t") #'init-org-check-before-or-on-date)
+  (define-key org-mode-map (kbd "C-c t") #'~/org/check-before-or-on-date)
 
   ;; Move usual S-* commands to keypad
   (define-key org-mode-map (kbd "<S-kp-right>") #'org-shiftright)
@@ -137,11 +131,74 @@
   (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
   (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
 
-  (define-key org-mode-map (kbd "<C-M-up>") #'org-move-subtree-up)
-  (define-key org-mode-map (kbd "<C-M-down>") #'org-move-subtree-down))
+  (define-key org-mode-map (kbd "<C-M-up>") #'org-shiftmetaup)
+  (define-key org-mode-map (kbd "<C-M-down>") #'org-shiftmetadown)
+  (define-key org-mode-map (kbd "<C-M-left>") #'org-shiftmetaleft)
+  (define-key org-mode-map (kbd "<C-M-right>") #'org-shiftmetaright))
 
+(add-hook 'org-after-todo-statistics-hook #'~/org/todo-update-summary)
+(add-hook 'org-after-todo-state-change-hook #'~/org/todo-state-change)
 
-(add-hook 'org-after-todo-statistics-hook #'init-org-todo-update-summary)
-(add-hook 'org-after-todo-state-change-hook #'init-org-todo-state-change)
-(add-hook 'org-mode-hook #'flyspell-mode)
-(add-hook 'org-mode-hook #'init-add-org-line-spacing)
+(defun ~/org/add-line-spacing ()
+  (add-to-list (make-local-variable 'font-lock-extra-managed-props) 'display)
+  ;; (font-lock-add-keywords nil '(("^\\*\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.0))) append)))
+  (font-lock-add-keywords nil '(("^\\*\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.2))) append)))
+  (font-lock-add-keywords nil '(("^\\*\\( \\)" 1 '(face nil display (space . (:relative-height 1.5))) append))))
+
+(require 'dash)
+
+(defconst ~/org/prettification-alist
+  (-zip-pair '("TODO" "STARTED" "PENDING" "LATER" "DONE" "CANCELLED")
+             '("🌕" "🌖" "⏳" "📅" "✓" "✗")))
+
+(defun ~/org/make-todo-regexp (header)
+  "Construct a TODO regexp from HEADER."
+  (format "^\\*+\\(?: \\)\\(%s\\)" (regexp-quote header)))
+
+(defun ~/org/undo-hardcoded-prettification ()
+  "Perform replacements suggested by inverting `~/org/prettification-alist'.
+That is, change hard-coded prettifications to regular keywords."
+  (interactive)
+  (dolist (new-header (apply #'append org-todo-sets))
+    (-when-let* ((old-header (cdr (assoc new-header ~/org/prettification-alist)))
+                 (old-header-re (~/org/make-todo-regexp old-header)))
+      (goto-char (point-min))
+      (while (re-search-forward old-header-re nil t)
+        (replace-match new-header t t nil 1)))))
+
+;; (defun ~/org/compute-composition (from to)
+;;   "Compute a composition property to show FROM as TO."
+;;   (compose-string from 0 (length from)
+;;                   (cdr
+;;                    (apply #'append
+;;                           (mapcar (lambda (c)
+;;                                     `((Br . Bl) ,c))
+;;                                   (string-to-list to))))))
+
+(defun ~/org/prettify-one (header)
+  "Prettify HEADER according to `~/org/prettification-alist'."
+  (-when-let* ((re (~/org/make-todo-regexp header))
+               (rep (cdr (assoc header ~/org/prettification-alist)))
+               ;; (composition
+               ;; (compose-spec `(face nil composition ,composition))
+               (display-spec `(face nil display ,rep)))
+    `(,re 1 ',display-spec)))
+
+(defun ~/org/prettify-keywords ()
+  "Prettify Org TODO heads according to `~/org/prettification-alist'."
+  ;; (setq-local adaptive-wrap-extra-indent 0) ;; Indent TODO entries properly
+  (font-lock-add-keywords nil (-keep #'~/org/prettify-one (apply #'append org-todo-sets))))
+
+(defun ~/org/update-cookies ()
+  (interactive)
+  (when (derived-mode-p 'org-mode)
+    (org-update-statistics-cookies 'all)))
+
+(defun ~/org/setup ()
+  "."
+  (flyspell-mode)
+  (~/org/add-line-spacing)
+  (~/org/prettify-keywords)
+  (add-hook 'before-save-hook #'~/org/update-cookies nil t))
+
+(add-hook 'org-mode-hook #'~/org/setup)

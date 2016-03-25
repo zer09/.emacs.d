@@ -185,11 +185,13 @@
 (defun shred ()
   "Delete current file and kill buffer."
   (interactive)
-  (let ((fname (buffer-file-name)))
+  (let ((fname (buffer-file-name))
+        (autosave-fname buffer-auto-save-file-name))
     (set-buffer-modified-p nil)
     (kill-buffer (current-buffer))
-    (when (and fname (file-exists-p fname))
-      (delete-file fname))))
+    (when fname
+      (ignore-errors (delete-file fname))
+      (ignore-errors (delete-file autosave-fname)))))
 
 (defun kill-frame-or-emacs (arg)
   "Kill current frame.
@@ -247,6 +249,22 @@ If there are no other frames, or with prefix ARG, kill Emacs."
   (interactive "P")
   (let ((same-window-regexps '("shell")))
     (call-interactively #'shell)))
+
+(defun dired-kill-buffers ()
+  (interactive)
+  (mapc (lambda (buffer)
+          (when (eq 'dired-mode (buffer-local-value 'major-mode buffer))
+            (kill-buffer buffer)))
+        (buffer-list)))
+
+;;; Small macros
+
+(defmacro ~/check (&rest pairs)
+  "Compute the sum of the evaled cadrs in PAIRS.
+Example: (~/check (a 1) (b (+ 0.5 2)) (c 3)) ⇒ 6.5."
+  (cl-assert (cl-every (apply-partially #'eq 2)
+                       (mapcar #'length pairs)))
+  `(+ ,@(mapcar #'cadr pairs)))
 
 ;;; Debugging ;;
 

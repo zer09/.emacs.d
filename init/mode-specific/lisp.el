@@ -3,12 +3,12 @@
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (when (require 'easy-escape nil t)
     (easy-escape-minor-mode))
-  (trycall #'aggressive-indent-mode)
+  (aggressive-indent-mode)
   (setq-local tab-width 8))
 
 (defun setup-emacs-lisp ()
   (setup-lisp)
-  (trycall #'nameless-mode))
+  (trycall #'nameless-mode-from-hook))
 
 (add-hook 'lisp-mode-hook 'setup-lisp)
 (add-hook 'emacs-lisp-mode-hook 'setup-emacs-lisp)

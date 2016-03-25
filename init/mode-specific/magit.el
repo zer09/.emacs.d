@@ -9,4 +9,5 @@
                                         magit-diff-context-highlight)))
     (dolist (face magit-faces)
       (set-face-attribute face nil :foreground "#eeeeec")))
-  (add-hook 'magit-mode-hook 'visual-line-mode))
+  (add-hook 'magit-mode-hook #'visual-line-mode)
+  (add-hook 'magit-mode-hook #'magit-gh-pulls-mode))

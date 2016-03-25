@@ -5,7 +5,15 @@
                 TeX-engine 'xetex
                 reftex-plug-into-AUCTeX t
                 LaTeX-verbatim-environments-local '("lstlisting")
-                TeX-command-extra-options "-shell-escape"))
+                TeX-command-extra-options "-shell-escape"
+                bibtex-align-at-equal-sign t
+                bibtex-entry-format t))
+
+(with-eval-after-load 'bibtex
+  (add-to-list 'load-path "~/.emacs.d/lisp/biblio.el/")
+  (require 'biblio)
+  (add-to-list 'load-path "~/.emacs.d/lisp/bibtex-extensions/")
+  (require 'bibtex-repository))
 
 (defun LaTeX-wrap-in-math (start end)
   (interactive "r")

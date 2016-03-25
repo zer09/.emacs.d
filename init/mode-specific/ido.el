@@ -5,7 +5,7 @@
               ido-create-new-buffer 'always)
 
 (ido-mode)
-(add-hook 'after-init-hook '(lambda () (trycall #'ido-ubiquitous-mode)))
+(add-hook 'after-init-hook #'ido-ubiquitous-mode)
 
 (flx-ido-mode 1)
 ;; disable ido faces to see flx highlights.

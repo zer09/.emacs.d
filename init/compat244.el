@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 (provide 'compat244)
 
 (defun macrop (object)

@@ -110,7 +110,7 @@ FACE may be a list of face, such as in the `face' property."
      (cons "font-weight" (format "%d" (cdr (assoc val htmle--bold-levels)))))))
 
 (defun htmle--css-pairs-from-face-2 (value css-prop fallback fallback-prop inverse-video)
-  (unless (and (htmle--face-value-nilp value) (not inverse-video))
+  (unless (and (htmle--face-value-nil-p value) (not inverse-video))
     (when inverse-video
       (setq value (face-attribute-merged-with fallback-prop fallback '(default))))
     `((,css-prop . ,value))))
@@ -167,7 +167,8 @@ FACE may be a list of face, such as in the `face' property."
     (`nil html-tree)
     ((or `((,_ . ,char)) `(,_ ,_ [,char]))
      (htmle--composition-renderer-1 char html-tree))
-    (other (error "Unsupported composition %S on %S" other html-tree))))
+    (other (warn "Unsupported composition %S on %S" other html-tree)
+           html-tree)))
 
 (defun htmle--display-renderer (props-alist html-tree)
   (pcase (alist-get 'display props-alist)
@@ -176,7 +177,8 @@ FACE may be a list of face, such as in the `face' property."
      `(span (,(htmle--style-from-css-pairs `(("position" . "relative")
                                              ("bottom" . ,(format "%fem" amount)))))
             ,html-tree))
-    (other (error "Unsupported display property %S on %S" other html-tree))))
+    (other (warn "Unsupported display property %S on %S" other html-tree)
+           html-tree)))
 
 (defvar htmle--renderers '(htmle--display-renderer htmle--composition-renderer htmle--face-renderer)
   "Functions used to render a span of text.

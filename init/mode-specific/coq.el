@@ -13,8 +13,7 @@
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
               proof-three-window-mode-policy 'hybrid
-              coq-compile-parallel-in-background t
-              coq-pre-v85 t)
+              coq-compile-parallel-in-background t)
 
 (when-os 'windows-nt
   (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
@@ -25,7 +24,7 @@
   (setq-default company-coq-live-on-the-edge t
                 company-coq-dynamic-autocompletion t
                 company-coq-initial-fold-state 'bullets
-                company-coq-extra-symbols-cmd "SearchAbout -\"__\""
+                company-coq-extra-symbols-cmd "SearchAbout -\"____\""
                 company-coq-features/prettify-symbols-in-terminal t)
   (define-key company-coq-map (kbd "<f9>") #'prettify-symbols-mode)
   (define-key company-coq-map (kbd "<f10>") #'coq-compile-before-require-toggle)
@@ -39,8 +38,8 @@
 
   ;; (setq-default shr-use-fonts nil) ;; For presentation
   (require 'greek-prettify)
-  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof." . ?∵) ("::" . ?∷) ; ≔
-                                 ("Qed." . ?■) ("Defined." . ?□) ;; ("Admitted." . ?😱) ("Fail" . ?⛐)
+  (setq prettify-symbols-alist `((":=" . ?≜) ("Proof" . ?∵) ("::" . ?∷) ; ≔
+                                 ("Qed" . ?■) ("Defined" . ?□) ;; ("Admitted" . ?😱) ("Fail" . ?⛐)
                                  ("Time" . ?⏱)
                                  ,@prettify-symbols-greek-alist)) ;;☢
   (require 'company-coq)

@@ -8,11 +8,16 @@
                   ;; inferior-dafny--write-transcript t
                   boogie-prover-alternate-args '("/pretty:0")
                   dafny-prover-alternate-args '("/pretty:0")
-                  flycheck-z3-smt2-executable (expand-file-name z3-exe (expand-file-name "z3/bin" root))
-                  flycheck-dafny-executable (expand-file-name "dafny/Binaries/Dafny.exe" root)
-                  flycheck-boogie-executable (expand-file-name "boogie/Binaries/Boogie.exe" root)
-                  flycheck-inferior-dafny-executable (expand-file-name "dafny/Binaries/DafnyServer.exe" root)
-                  boogie-friends-profile-analyzer-executable (expand-file-name "Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe" root))))
+                  flycheck-z3-smt2-executable "z3"
+                  ;; (expand-file-name z3-exe (expand-file-name "dafny/Binaries/z3/bin" root))
+                  flycheck-dafny-executable
+                  (expand-file-name "dafny/Binaries/Dafny.exe" root)
+                  flycheck-boogie-executable
+                  (expand-file-name "boogie/Binaries/Boogie.exe" root)
+                  flycheck-inferior-dafny-executable
+                  (expand-file-name "dafny/Binaries/DafnyServer.exe" root)
+                  boogie-friends-profile-analyzer-executable
+                  (expand-file-name "Z3Visualizer/Z3Visualizer/bin/Debug/Z3AxiomProfiler.exe" root))))
 
 (defun setup-dafny ()
   (add-to-list 'dafny-prover-background-args "/printTooltips")
