@@ -2,7 +2,7 @@
 ;;; Custom defuns ;;;
 ;;;;;;;;;;;;;;;;;;;;;
 
-;;; Editing ;;
+;;; Editing
 
 (defun beginning-of-whitespace (skip)
   (goto-char (point-at-bol))
@@ -116,7 +116,7 @@
   (let ((sort-fold-case (or fold-case (bound-and-true-p sort-fold-case))))
     (sort-regexp-fields nil "\\(\"\\(?2:[^\"]+\\)\"\\)\\|\\(?2:\\w+\\)" "\\2" beg end)))
 
-;;; Navigation ;;
+;;; Navigation
 
 (defun find-file-here ()
   (interactive)
@@ -135,7 +135,7 @@
     (goto-char (point-min)))
   (recenter 0))
 
-;;; Snippets ;;
+;;; Snippets
 
 (defun sheebang ()
   (interactive)
@@ -179,7 +179,7 @@
   (interactive)
   (setq-local show-trailing-whitespace nil))
 
-;;; Interaction ;;
+;;; Interaction
 (require 'cl-lib)
 
 (defun shred ()
@@ -257,6 +257,17 @@ If there are no other frames, or with prefix ARG, kill Emacs."
             (kill-buffer buffer)))
         (buffer-list)))
 
+;; (defun htop ()
+;;   "Run htop in `ansi-term'."
+;;   (interactive)
+;;   (let* ((bufname "*htop*")
+;;          (buf (or (get-buffer bufname)
+;;                   (with-current-buffer (ansi-term "/bin/bash" "htop")
+;;                     (goto-char (point-max))
+;;                     (insert "htop")
+;;                     (newline nil t)))))
+;;     (pop-to-buffer buf)))
+
 ;;; Small macros
 
 (defmacro ~/check (&rest pairs)
@@ -266,7 +277,7 @@ Example: (~/check (a 1) (b (+ 0.5 2)) (c 3)) ⇒ 6.5."
                        (mapcar #'length pairs)))
   `(+ ,@(mapcar #'cadr pairs)))
 
-;;; Debugging ;;
+;;; Debugging
 
 (defmacro with-profiler (&rest body)
   "Wrap each for in BODY in a timer macro."

@@ -56,6 +56,7 @@
   '((default . "coqtop")
     (coq-8.5 . "/build/coq-8.5/dist/bin/coqtop")
     (coq-8.4pl2 . "/build/coq-8.4pl2/dist/bin/coqtop")
+    (coq-8.4pl6-profiler . "/build/coq-8.4pl6/dist/bin/coqtop")
     (coq-8.5-patched . "/build/coq-8.5-patched/dist/bin/coqtop")
     (profiler-8.4pl4 . "/build/coq-8.4-profiler/dist/bin/coqtop")
     (letouzey . "/build/coq-wip-letouzey/dist/bin/coqtop")))
