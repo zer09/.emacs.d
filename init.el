@@ -33,17 +33,17 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (defconst ~/init-files '("custom.el"
-                       "compatibility.el"
-                       "package.el"
-                       "general.el"
-                       "fonts.el"
-                       "defuns.el"
-                       "mode-specific.el"
-                       "os-specific.el"
-                       "keybindings.el"
-                       "autoloads.el"
-                       "properties.el"
-                       "local.el"))
+                         "compatibility.el"
+                         "package.el"
+                         "general.el"
+                         "fonts.el"
+                         "defuns.el"
+                         "mode-specific.el"
+                         "os-specific.el"
+                         "keybindings.el"
+                         "autoloads.el"
+                         "properties.el"
+                         "local.el"))
 
 (mapc #'~/load-file ~/init-files)
 

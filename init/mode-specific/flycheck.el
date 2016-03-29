@@ -31,7 +31,7 @@
 
 
 (with-eval-after-load 'flycheck
-  (flycheck-pos-tip-mode)
+  (trycall #'flycheck-pos-tip-mode)
   (setq-default flycheck-mode-line '(:eval (my-flycheck-mode-line-status-text)))
   (setq-default flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
   (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))

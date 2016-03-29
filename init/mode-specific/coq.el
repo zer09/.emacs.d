@@ -5,8 +5,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-term-builder/")
 (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-LaTeX/")
 
-(load-file "/home/clement/documents/mit/frap/frap.el")
-(require 'proof-site "~/.emacs.d/lisp/ProofGeneral/generic/proof-site")
+(ignore-errors (load-file "/home/clement/documents/mit/frap/frap.el"))
+(require 'proof-site "~/.emacs.d/lisp/ProofGeneral/generic/proof-site" t)
 
 (require 'presenter-mode nil t)
 
