@@ -6,6 +6,7 @@
 (depends-on "aggressive-indent")
 (depends-on "buttercup")
 (depends-on "cask")
+(depends-on "cider")
 (depends-on "color-theme-solarized")
 (depends-on "company")
 (depends-on "company-auctex")

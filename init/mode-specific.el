@@ -85,6 +85,7 @@
 (with-eval-after-load 'smart-mode-line
   (add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/lisp/" ":LISP:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/init/" ":INIT:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/\\.emacs\\.d/.cask/" ":CASK:"))
   (set-face-attribute 'sml/modes nil :foreground "gray70"))
 (sml/setup)
 
