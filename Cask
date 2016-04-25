@@ -15,7 +15,6 @@
 (depends-on "elpy")
 (depends-on "expand-region")
 (depends-on "fill-column-indicator")
-(depends-on "flx-ido")
 (depends-on "flycheck")
 (depends-on "flycheck-package")
 (depends-on "haskell-mode")

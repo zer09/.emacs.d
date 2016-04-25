@@ -1,6 +1,6 @@
 (with-eval-after-load 'markdown-mode
-  (define-key markdown-mode-map (kbd "C-c t") 'today)
-  (define-key markdown-mode-map (kbd "C-c n") 'now)
+  ;; (define-key markdown-mode-map (kbd "C-c t") 'today)
+  ;; (define-key markdown-mode-map (kbd "C-c n") 'now)
   (setq-default markdown-command "pandoc --mathjax --standalone"))
 
 (defun setup-markdown ()

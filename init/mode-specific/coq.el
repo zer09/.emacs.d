@@ -52,21 +52,24 @@
 ;; files, and it will hardocde the paths in the binary. Use './dist' in the source
 ;; folder for now.
 
-(defconst coq-compilers-alist
-  '((default . "coqtop")
-    (coq-8.5 . "/build/coq-8.5/dist/bin/coqtop")
-    (coq-8.4pl2 . "/build/coq-8.4pl2/dist/bin/coqtop")
-    (coq-8.4pl6-profiler . "/build/coq-8.4pl6/dist/bin/coqtop")
-    (coq-8.5-patched . "/build/coq-8.5-patched/dist/bin/coqtop")
-    (profiler-8.4pl4 . "/build/coq-8.4-profiler/dist/bin/coqtop")
-    (letouzey . "/build/coq-wip-letouzey/dist/bin/coqtop")))
+(defconst coq-bin-dirs-alist
+  '(("default" . "")
+    ("coq-8.5" . "/build/coq-8.5/dist/bin/")
+    ("coq-8.4pl2" . "/build/coq-8.4pl2/dist/bin/")
+    ("coq-8.4pl6-patched" . "/build/coq-8.4pl6/dist/bin/")
+    ("coq-8.4pl6-profiler" . "/build/coq-8.4pl6-profiler/dist/bin/")
+    ("coq-8.5-patched" . "/build/coq-8.5-patched/dist/bin/")
+    ("profiler-8.4pl4" . "/build/coq-8.4-profiler/dist/bin/")
+    ("letouzey" . "/build/coq-wip-letouzey/dist/bin/")))
 
-(defun coq-change-compiler (compiler)
-  "Change Coq compiler to COMPILER-AND-ARGS."
+(defun coq-change-compiler (coq-bin-dir)
+  "Change Coq executables to use those in COQ-BIN-DIR."
   (interactive
-   (let ((compiler (completing-read "Compiler: " coq-compilers-alist)))
-     (list (cdr (assq (intern compiler) coq-compilers-alist)))))
-  (when (stringp compiler)
-    (progn
-      (message "Compiler set to %s." (setq coq-prog-name compiler))
-      (proof-shell-exit))))
+   (list (cdr (assq (completing-read "Compiler: " coq-bin-dirs-alist)
+                    coq-bin-dirs-alist))))
+  (when (stringp coq-bin-dir)
+    (setq coq-compiler (concat coq-bin-dir "coqc"))
+    (setq coq-prog-name (concat coq-bin-dir "coqtop"))
+    (setq coq-dependency-analyzer (concat coq-bin-dir "coqdep"))
+    (message "Using Coq binaries from %s." coq-bin-dir)
+    (proof-shell-exit)))

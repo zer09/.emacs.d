@@ -150,7 +150,7 @@
 (defun now (&optional arg)
   (interactive "P")
   (if (consp arg) () (insert "## "))
-  (insert (format-time-string "%Y-%m-%d (%A) %H:%m"))
+  (insert (format-time-string "%Y-%m-%d (%A) %H:%M"))
   (newline 2))
 
 (defun quote-region (beg end)
