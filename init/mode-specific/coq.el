@@ -6,14 +6,15 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-LaTeX/")
 
 (ignore-errors (load-file "/home/clement/documents/mit/frap/frap.el"))
-(require 'proof-site "~/.emacs.d/lisp/ProofGeneral/generic/proof-site" t)
+(require 'proof-site "~/.emacs.d/lisp/PG/generic/proof-site" t)
 
 (require 'presenter-mode nil t)
 
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
               proof-three-window-mode-policy 'hybrid
-              coq-compile-parallel-in-background t)
+              coq-compile-parallel-in-background t
+              sertop-coq-directory "/build/coq/")
 
 (when-os 'windows-nt
   (setq coq-prog-name "C:\\Coq\\bin\\coqtop.exe"))
@@ -53,14 +54,11 @@
 ;; folder for now.
 
 (defconst coq-bin-dirs-alist
+  ;; FIXME don't use dist/bin and make install; instead compile with -local -with-doc no
   '(("default" . "")
-    ("coq-8.5" . "/build/coq-8.5/dist/bin/")
-    ("coq-8.4pl2" . "/build/coq-8.4pl2/dist/bin/")
-    ("coq-8.4pl6-patched" . "/build/coq-8.4pl6/dist/bin/")
-    ("coq-8.4pl6-profiler" . "/build/coq-8.4pl6-profiler/dist/bin/")
-    ("coq-8.5-patched" . "/build/coq-8.5-patched/dist/bin/")
-    ("profiler-8.4pl4" . "/build/coq-8.4-profiler/dist/bin/")
-    ("letouzey" . "/build/coq-wip-letouzey/dist/bin/")))
+    ("trunk" . "/build/coq/bin/")
+    ("coq-8.5" . "/build/coq/8.5/bin/")
+    ("coq-8.4pl6" . "/build/coq/8.4pl6/bin/")))
 
 (defun coq-change-compiler (coq-bin-dir)
   "Change Coq executables to use those in COQ-BIN-DIR."
@@ -73,3 +71,7 @@
     (setq coq-dependency-analyzer (concat coq-bin-dir "coqdep"))
     (message "Using Coq binaries from %s." coq-bin-dir)
     (proof-shell-exit)))
+
+(with-eval-after-load 'coq
+  (load-file "~/.emacs.d/lisp/company-coq/experiments/pg-vst/pg-vst.el")
+  (add-hook #'coq-mode-hook #'pg-vst-mode))

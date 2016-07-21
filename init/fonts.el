@@ -16,7 +16,17 @@
     (set-fontset-font fontset 'unicode symbol-spec frame 'append)
     (set-fontset-font fontset (cons ?😱 ?😱) "Symbola" nil 'prepend)
     (set-fontset-font fontset (cons #x2009 #x2009) "Symbola" nil 'prepend) ;; Thin space
-    (dolist (cjk-block '((#x2F800 . #x2FA1F) (#xF900 . #xFAFF) (#x20000 . #x2A6DF) (#x3400 . #x4DFF) (#x4E00 . #x9FFF)))
+    (dolist (cjk-block '((#x3000 . #x303F)
+                         (#x3040 . #x309F)
+                         (#x30A0 . #x30FF)
+                         (#x3400 . #x4DFF)
+                         (#x4E00 . #x9FFF)
+                         (#xF900 . #xFAFF)
+                         (#x20000 . #x2A6DF)
+                         (#x2A700 . #x2B73F)
+                         (#x2B740 . #x2B81F)
+                         (#x2B820 . #x2CEAF)
+                         (#x2F800 . #x2FA1F)))
       (set-fontset-font fontset cjk-block cjk-spec frame 'append))))
 
 (defun my-configure-all-fontsets (&optional frame size)
@@ -31,6 +41,8 @@ instead, we just set the size of the font in the existing ones."
   (my-configure-all-fontsets frame))
 (add-to-list 'after-make-frame-functions #'my-configure-all-fontsets)
 
+(with-eval-after-load 'ruler-mode
+  (set-face-attribute 'ruler-mode-default nil :box nil))
 (set-face-attribute 'variable-pitch nil :family "Fira Sans")
 
 ;; (with-eval-after-load 'which-func

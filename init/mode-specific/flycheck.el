@@ -29,9 +29,11 @@
                (`interrupted "-")
                (`suspicious "?"))))
 
+(setq-default flycheck-clang-language-standard nil) ;;"c++11")
 
 (with-eval-after-load 'flycheck
   (trycall #'flycheck-pos-tip-mode)
+  (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
   (setq-default flycheck-mode-line '(:eval (my-flycheck-mode-line-status-text)))
   (setq-default flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
   (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))

@@ -5,6 +5,9 @@
 (require 'easy-escape "~/.emacs.d/lisp/easy-escape/easy-escape.el" t)
 (require 'always-make-directory "~/.emacs.d/lisp/always-make-directory/always-make-directory.el" t)
 
+(add-to-list 'load-path "~/.emacs.d/lisp/biblio.el/")
+(require 'biblio)
+
 ;;; prettify
 (add-to-list 'load-path "~/.emacs.d/lisp/prettify-alists/")
 ;; Made useless by show-key: (setq-default prettify-symbols-unprettify-at-point 'right-edge)
@@ -45,12 +48,8 @@
 
 ;;; Compilation
 (setq-default compilation-scroll-output 'first-error)
-
-;;; OCAML
-(defun tuareg-breaks-which-function-mode ()
-  (which-function-mode -1))
-
-(add-hook 'tuareg-mode-hook #'tuareg-breaks-which-function-mode)
+(with-eval-after-load 'compile
+  (define-key compilation-shell-minor-mode-map (kbd "<f5>") #'recompile))
 
 ;;; Recentf
 (add-hook 'after-init-hook 'recentf-mode)
@@ -63,8 +62,12 @@
 ;;; Which key
 (trycall #'which-key-mode)
 
-;; Alert
+;;; Alert
 (setq-default alert-default-style 'libnotify)
+
+;;; Nameless
+(setq ;; nameless-global-aliases '(("fl:" . "font-lock"))
+ nameless-private-prefix t)
 
 ;;; Keyfreq
 
@@ -113,12 +116,17 @@
   (setq-default ispell-parser 'use-mode-name))
 
 ;;; Dired
-(setq-default dired-listing-switches "-alh")
-(require 'dired-x)
+(setq-default dired-listing-switches "-alh"
+              dired-dwim-target t)
+(require 'dired-x) ;; C-x C-j
 
-;;; Frame files
+;; Wgrep
+(setq-default wgrep-auto-save-buffer t)
 
-(add-to-list 'auto-mode-alist '("\\.frame\\'" . csharp-mode))
+;; reStructuredText
+(with-eval-after-load 'rst
+  (define-key rst-mode-map (kbd "<f12>") #'~/rst-coq-action)
+  (add-hook 'rst-mode-hook #'flycheck-mode))
 
 ;;; All the rest
 

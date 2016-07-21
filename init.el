@@ -14,7 +14,7 @@
 (defconst ~/init-dir "~/.emacs.d/init/")
 
 (defmacro with-timer (message &rest body)
-  "Show MESSAGE after running BODY."
+  "Show MESSAGE and elapsed time after running BODY."
   (declare (indent defun))
   `(let* ((start-time (current-time)))
      (prog1
@@ -32,7 +32,8 @@
 ;;; Basic initialization
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-(defconst ~/init-files '("custom.el"
+(defconst ~/init-files '(
+                         "custom.el"
                          "compatibility.el"
                          "package.el"
                          "general.el"
@@ -43,10 +44,12 @@
                          "keybindings.el"
                          "autoloads.el"
                          "properties.el"
-                         "local.el"))
+                         "local.el"
+                         ))
 
 (mapc #'~/load-file ~/init-files)
 
 ;; (require 'mu4e)
 ;; (require 'mu4e-contrib)
 ;; (setq mu4e-html2text-command 'mu4e-shr2text)
+(put 'erase-buffer 'disabled nil)

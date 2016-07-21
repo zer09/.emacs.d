@@ -11,12 +11,12 @@
 
 ;; Appearance
 (setq-default ;initial-major-mode 'fundamental-mode
-              initial-frame-alist '((fullscreen . maximized)) ;; Start in full screen (see also -mm)
-              frame-title-format '((:eval (cond ((buffer-modified-p) "*")
-                                                (buffer-read-only "%%")
-                                                (t ""))) "%b")
-              cursor-type 'bar
-              x-gtk-use-system-tooltips nil)
+ initial-frame-alist '((fullscreen . maximized)) ;; Start in full screen (see also -mm)
+ frame-title-format '((:eval (cond ((buffer-modified-p) "*")
+                                   (buffer-read-only "%%")
+                                   (t ""))) "%b")
+ cursor-type 'bar
+ x-gtk-use-system-tooltips nil)
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -48,6 +48,8 @@
               fast-but-imprecise-scrolling t
               eval-expression-print-level nil
               eval-expression-print-length nil
+              print-quoted t
+              print-gensym t
               save-interprogram-paste-before-kill t
               apropos-do-all t
               load-prefer-newer t)
@@ -72,18 +74,29 @@
 (show-paren-mode)
 (delete-selection-mode) ;; Replace selected text upon typing
 
+(require 'compact-docstrings "~/.emacs.d/lisp/compact-docstrings/compact-docstrings.el" t)
+
 ;; All program modes
 (add-hook 'prog-mode-hook (lambda ()
                             (eldoc-mode)
-                            ;; (ruler-mode)
+                            (ruler-mode)
                             ;; (which-function-mode)
                             (flycheck-mode)
-                            (ws-butler-mode)))
+                            (flyspell-prog-mode)
+                            (ws-butler-mode)
+                            (compact-docstrings-mode)
+                            ))
 
 ;; All text modes
 (add-hook 'text-mode-hook (lambda ()
-                            ;; (ruler-mode)
+                            (ruler-mode)
                             (flyspell-mode)
                             (ws-butler-mode)
                             (visual-line-mode)
                             (adaptive-wrap-prefix-mode)))
+
+(with-eval-after-load 'company ;; See https://github.com/company-mode/company-mode/issues/548#issuecomment-228488327
+  (defun company-echo-show-when-idle (&optional getter)
+    (company-echo-cancel)
+    (setq company-echo-timer
+          (run-with-timer company-echo-delay nil 'company-echo-show getter))))

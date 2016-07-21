@@ -17,7 +17,7 @@
 
 ;; Overridable keys
 
-(global-set-key (kbd "C-c t") (lambda () (interactive) (find-file "~/desktop/TODO.org")))
+(global-set-key (kbd "C-c t") (lambda () (interactive) (find-file "~/todos.d/TODO.org")))
 
 ;; Local keybindings ;;
 
@@ -27,7 +27,7 @@
 (define-key keybindings-minor-mode-map (kbd "<M-up>") #'move-line-up)
 (define-key keybindings-minor-mode-map (kbd "<M-down>") #'move-line-down)
 
-(define-key keybindings-minor-mode-map (kbd "<C-return>") 'company-manual-begin)
+(define-key keybindings-minor-mode-map (kbd "<C-return>") '~/company-manual-begin)
 
 (define-key keybindings-minor-mode-map (kbd "C-c m") 'magit-status)
 (define-key keybindings-minor-mode-map (kbd "C-c o") 'find-file-here)
@@ -43,6 +43,9 @@
 (define-key keybindings-minor-mode-map (kbd "C-x <left>")  'windmove-left)
 (define-key keybindings-minor-mode-map (kbd "C-x <up>")    'windmove-up)
 (define-key keybindings-minor-mode-map (kbd "C-x <down>")  'windmove-down)
+
+;; IBuffer
+(define-key keybindings-minor-mode-map (kbd "C-x C-b") 'ibuffer)
 
 ;; Windresize
 (define-key keybindings-minor-mode-map (kbd "C-x /") 'windresize)
@@ -83,6 +86,7 @@
 
 ;; rgrep
 (define-key keybindings-minor-mode-map (kbd "C-c s") 'ag)
+(define-key keybindings-minor-mode-map (kbd "C-c M-s") 'ag-regexp)
 
 ;; Quoting
 (define-key keybindings-minor-mode-map (kbd "M-\"") 'quote-region)
@@ -107,7 +111,7 @@
 (define-key keybindings-minor-mode-map [\C-right] 'forward-word)
 
 ;; Compilation
-(define-key keybindings-minor-mode-map (kbd "C-c c") 'compile)
+(define-key keybindings-minor-mode-map (kbd "C-c c") '~/compile)
 
 ;; Slides
 (define-key keybindings-minor-mode-map (kbd "C-M->") 'next-slide)
@@ -141,3 +145,7 @@
       (assq-delete-all 'keybindings-minor-mode minor-mode-map-alist)
       (add-to-list 'minor-mode-map-alist my-bindings))))
 (ad-activate 'load)
+
+;;; Unify keybindings for various occuredit-like modes
+(define-key occur-mode-map (kbd "C-c C-p") #'occur-edit-mode)
+(define-key dired-mode-map (kbd "C-c C-p") #'dired-toggle-read-only)

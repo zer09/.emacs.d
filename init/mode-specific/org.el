@@ -194,11 +194,20 @@ That is, change hard-coded prettifications to regular keywords."
   (when (derived-mode-p 'org-mode)
     (org-update-statistics-cookies 'all)))
 
+(defun ~/org/add-creation-date ()
+  "Add creation date to current entry, if needed."
+  (require 'org-expiry)
+  (save-excursion
+    (org-back-to-heading)
+    (org-expiry-insert-created)))
+
 (defun ~/org/setup ()
   "."
   (flyspell-mode)
   (~/org/add-line-spacing)
   (~/org/prettify-keywords)
+  ;; Disable: property drawers are ugly
+  ;; (add-hook 'org-after-todo-state-change-hook #'~/org/add-creation-date nil t)
   (add-hook 'before-save-hook #'~/org/update-cookies nil t))
 
 (add-hook 'org-mode-hook #'~/org/setup)

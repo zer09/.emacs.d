@@ -19,7 +19,7 @@
   (substitute-key-definition 'company-complete-common 'company-yasnippet-or-completion company-active-map))
 
 (with-eval-after-load 'company
-  (setq-default company-idle-delay 0
+  (setq-default company-idle-delay 0.01
                 company-tooltip-align-annotations t
                 company-dabbrev-code-everywhere t
                 company-dabbrev-downcase nil

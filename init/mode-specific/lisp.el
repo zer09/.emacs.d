@@ -8,7 +8,7 @@
 
 (defun setup-emacs-lisp ()
   (setup-lisp)
-  (trycall #'nameless-mode-from-hook))
+  (nameless-mode))
 
 (add-hook 'lisp-mode-hook 'setup-lisp)
 (add-hook 'emacs-lisp-mode-hook 'setup-emacs-lisp)
