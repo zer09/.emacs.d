@@ -69,6 +69,11 @@
 (setq ;; nameless-global-aliases '(("fl:" . "font-lock"))
  nameless-private-prefix t)
 
+;;; Modeline info
+(setq-default display-time-load-average-threshold 1)
+(display-time-mode)
+(display-battery-mode)
+
 ;;; Keyfreq
 
 (setq-default keyfreq-file "~/.emacs.d/keyfreq"

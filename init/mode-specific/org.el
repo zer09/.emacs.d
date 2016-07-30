@@ -131,10 +131,13 @@
   (define-key org-mode-map (kbd "<M-S-up>") #'org-shiftup)
   (define-key org-mode-map (kbd "<M-S-down>") #'org-shiftdown)
 
-  (define-key org-mode-map (kbd "<C-M-up>") #'org-shiftmetaup)
-  (define-key org-mode-map (kbd "<C-M-down>") #'org-shiftmetadown)
+  (define-key org-mode-map (kbd "<C-M-up>") #'org-metaup)
+  (define-key org-mode-map (kbd "<C-M-down>") #'org-metadown)
   (define-key org-mode-map (kbd "<C-M-left>") #'org-shiftmetaleft)
-  (define-key org-mode-map (kbd "<C-M-right>") #'org-shiftmetaright))
+  (define-key org-mode-map (kbd "<C-M-right>") #'org-shiftmetaright)
+
+  (define-key org-mode-map (kbd "C-j") #'org-return)
+  (define-key org-mode-map (kbd "RET") #'org-return-indent))
 
 (add-hook 'org-after-todo-statistics-hook #'~/org/todo-update-summary)
 (add-hook 'org-after-todo-state-change-hook #'~/org/todo-state-change)
@@ -153,7 +156,7 @@
 
 (defun ~/org/make-todo-regexp (header)
   "Construct a TODO regexp from HEADER."
-  (format "^\\*+\\(?: \\)\\(%s\\)" (regexp-quote header)))
+  (format "^\\*+\\(?: \\)\\(%s\\) " (regexp-quote header)))
 
 (defun ~/org/undo-hardcoded-prettification ()
   "Perform replacements suggested by inverting `~/org/prettification-alist'.
@@ -189,10 +192,26 @@ That is, change hard-coded prettifications to regular keywords."
   ;; (setq-local adaptive-wrap-extra-indent 0) ;; Indent TODO entries properly
   (font-lock-add-keywords nil (-keep #'~/org/prettify-one (apply #'append org-todo-sets))))
 
+(defun ~/org/ensure-monospace-indentation ()
+  (dolist (face '(org-meta-line
+                  org-code
+                  org-table
+                  org-verbatim
+                  org-document-info-keyword
+                  org-block
+                  org-block-begin-line
+                  org-block-end-line))
+    (~/fonts/add-inheritance face 'fixed-pitch))
+  (dolist (re (list "^[[:space:]]+\\(\\([0-9]+\\.\\|[*+-]\\)? +\\)?"
+                    (format "^\\*+ +\\(%s +\\)?" org-todo-regexp)))
+    (font-lock-add-keywords nil `((,re 0 '(face fixed-pitch) append)) 'append)))
+
 (defun ~/org/update-cookies ()
   (interactive)
   (when (derived-mode-p 'org-mode)
-    (org-update-statistics-cookies 'all)))
+    ;; The ‘let’ binding prevents Org from getting confused about non-existent files
+    (let ((buffer-file-name nil))
+      (org-update-statistics-cookies 'all))))
 
 (defun ~/org/add-creation-date ()
   "Add creation date to current entry, if needed."
@@ -201,11 +220,23 @@ That is, change hard-coded prettifications to regular keywords."
     (org-back-to-heading)
     (org-expiry-insert-created)))
 
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("thesis"
+                 "\\documentclass{mitthesis}"
+                 ("\\chapter{%s}" . "\\chapter*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
 (defun ~/org/setup ()
   "."
   (flyspell-mode)
   (~/org/add-line-spacing)
   (~/org/prettify-keywords)
+  (~/org/ensure-monospace-indentation)
   ;; Disable: property drawers are ugly
   ;; (add-hook 'org-after-todo-state-change-hook #'~/org/add-creation-date nil t)
   (add-hook 'before-save-hook #'~/org/update-cookies nil t))

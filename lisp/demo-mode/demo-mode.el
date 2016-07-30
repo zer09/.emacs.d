@@ -12,7 +12,7 @@
 (require 'dash)
 (require 'files)
 
-(defvar demo-mode--large-font-size 200)
+(defvar demo-mode--large-font-size 220)
 (defvar demo-mode--original-font-size nil)
 
 ;; (defvar-local demo-mode--overlay nil)

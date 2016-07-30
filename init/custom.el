@@ -6,9 +6,11 @@
  '(custom-safe-themes
    '("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "4e803b7d84cfcb0a124f74b77a198982d7b11705220da1a757dc013d9ceaff06" "926d2c3fd1aff97ce6b43e69072cb3de426393a76790c771995ec162b194c2c6" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(package-selected-packages
-   '(projectile php-mode nginx-mode font-lock-studio debbugs flatui-theme hide-lines stream visual-fill-column nyan-mode typescript-mode cider graphviz-dot-mode 0blayout rainbow-delimiters csharp-mode darkroom web-mode adaptive-wrap buttercup cask package-build epl git commander f dash s fill-column-indicator undercover bibretrieve gscholar-bibtex keyfreq org xelb flx-ido magit-gh-pulls paren-face company-quickhelp company magit git-commit with-editor tldr noflet color-theme-solarized pos-tip pyvenv which-key page-break-lines flycheck yaml-mode nameless shut-up js2-mode smart-mode-line json-mode jinja2-mode aggressive-indent highlight-symbol haskell-mode ag markdown-mode company-math expand-region ido-ubiquitous julia-mode multiple-cursors yasnippet flycheck-package wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode popup elpy company-auctex))
+   '(tangotango-theme writeroom-mode projectile php-mode nginx-mode font-lock-studio debbugs flatui-theme hide-lines stream visual-fill-column nyan-mode typescript-mode cider graphviz-dot-mode 0blayout rainbow-delimiters csharp-mode darkroom web-mode adaptive-wrap buttercup cask package-build epl git commander f dash s fill-column-indicator undercover bibretrieve gscholar-bibtex keyfreq org xelb flx-ido magit-gh-pulls paren-face company-quickhelp company magit git-commit with-editor tldr noflet color-theme-solarized pos-tip pyvenv which-key page-break-lines flycheck yaml-mode nameless shut-up js2-mode smart-mode-line json-mode jinja2-mode aggressive-indent highlight-symbol haskell-mode ag markdown-mode company-math expand-region ido-ubiquitous julia-mode multiple-cursors yasnippet flycheck-package wgrep-ag windresize wgrep diminish latex-extra ws-butler visual-regexp tuareg smex racket-mode popup elpy company-auctex))
  '(safe-local-variable-values
-   '((eval progn
+   '((org-hierarchical-todo-statistics)
+     (org-log-done)
+     (eval progn
            (let
                ((coq-root-directory
                  (when buffer-file-name

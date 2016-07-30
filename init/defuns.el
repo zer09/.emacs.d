@@ -51,16 +51,20 @@
              while (and (= 0 (forward-line 1)) (<= (point) end)))))
 
 (defun move-line (n)
-  "Move the current line up or down by N lines."
+  "Move the current line up by N lines."
   (interactive "p")
-  (let* ((col (current-column))
-         (start (point-at-bol))
-         (end (min (point-max) (1+ (point-at-eol))))
-         (line-text (delete-and-extract-region start end)))
-    (forward-line n)
-    (insert line-text)
-    (forward-line -1)
-    (forward-char col)))
+  (if (derived-mode-p 'org-mode)
+      (if (> 0 n)
+          (org-shiftmetaup n)
+        (org-shiftmetadown (- n)))
+    (let* ((col (current-column))
+           (start (point-at-bol))
+           (end (min (point-max) (1+ (point-at-eol))))
+           (line-text (delete-and-extract-region start end)))
+      (forward-line n)
+      (insert line-text)
+      (forward-line -1)
+      (forward-char col))))
 
 (defun move-line-up (n)
   "Move the current line up by N lines."

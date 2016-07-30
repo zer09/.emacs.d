@@ -50,6 +50,7 @@
 (depends-on "wgrep-ag")
 (depends-on "which-key")
 (depends-on "windresize")
+(depends-on "writeroom-mode")
 (depends-on "ws-butler")
 (depends-on "yasnippet")
 (depends-on "org-plus-contrib")
