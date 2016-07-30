@@ -13,3 +13,9 @@
 [submodule "lisp/company-coq"]
 	path = lisp/company-coq
 	url = https://github.com/cpitclaudel/company-coq.git
+[submodule "lisp/PG"]
+	path = lisp/PG
+	url = git@github.com:ProofGeneral/PG.git
+[submodule "lisp/biblio.el"]
+	path = lisp/biblio.el
+	url = git@github.com:cpitclaudel/biblio.el.git
