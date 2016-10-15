@@ -24,6 +24,9 @@
 ;; Unoverridable shortcuts from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
 (defvar keybindings-minor-mode-map (make-keymap))
 
+(define-key keybindings-minor-mode-map (kbd "C-x k") #'kill-this-buffer)
+(define-key keybindings-minor-mode-map (kbd "C-x K") #'kill-buffer)
+
 (define-key keybindings-minor-mode-map (kbd "<M-up>") #'move-line-up)
 (define-key keybindings-minor-mode-map (kbd "<M-down>") #'move-line-down)
 
@@ -43,6 +46,10 @@
 (define-key keybindings-minor-mode-map (kbd "C-x <left>")  'windmove-left)
 (define-key keybindings-minor-mode-map (kbd "C-x <up>")    'windmove-up)
 (define-key keybindings-minor-mode-map (kbd "C-x <down>")  'windmove-down)
+(define-key keybindings-minor-mode-map (kbd "C-x C-<right>") 'windmove-right)
+(define-key keybindings-minor-mode-map (kbd "C-x C-<left>")  'windmove-left)
+(define-key keybindings-minor-mode-map (kbd "C-x C-<up>")    'windmove-up)
+(define-key keybindings-minor-mode-map (kbd "C-x C-<down>")  'windmove-down)
 
 ;; IBuffer
 (define-key keybindings-minor-mode-map (kbd "C-x C-b") 'ibuffer)

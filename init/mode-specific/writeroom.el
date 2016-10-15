@@ -9,16 +9,15 @@
 (defvar ~/writeroom/saved-size nil)
 
 (defun ~/writeroom/adjust-font-size ()
-  (unless ~/writeroom/saved-size
-    (setq ~/writeroom/saved-size (face-attribute 'default :height))
-    (set-font-size-in-all-fontsets 188)))
+  (setq-local text-scale-mode-amount 2)
+  (text-scale-mode))
 
 (defun ~/writeroom/reset-font-size ()
-  (when ~/writeroom/saved-size
-    (set-font-size-in-all-fontsets ~/writeroom/saved-size)
-    (setq ~/writeroom/saved-size nil)))
+  (kill-local-variable 'text-scale-mode-amount)
+  (text-scale-mode -1))
 
 (with-eval-after-load 'writeroom-mode
+  (require 'face-remap)
   (setq writeroom-global-effects
         (delq 'writeroom-set-fullscreen writeroom-global-effects))
   (advice-add 'writeroom--enable :before #'~/writeroom/adjust-font-size)

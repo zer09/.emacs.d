@@ -218,6 +218,14 @@ With prefix REPEAT, repeat process twice."
         (count (if repeat 2 1)))
     (~/quote-region-1 (car quotes) (cdr quotes) beg end count)))
 
+(defun ~/copy-region-as-lisp-string (beg end)
+  "Copy contents of BEG .. END, escaped as a Lisp string."
+  (interactive "r")
+  (let ((quoted (prin1-to-string (buffer-substring-no-properties beg end))))
+    (kill-new
+     (if current-prefix-arg quoted
+       (substring quoted 1 (- (length quoted) 1))))))
+
 (defun ~/coqtop (beg end)
   (interactive (list (region-beginning) (region-end)))
   (replace-regexp "^Coq < " "      " nil beg end)
@@ -272,17 +280,18 @@ If there are no other frames, or with prefix ARG, kill Emacs."
 (defvar original-font-size nil)
 
 (defun set-font-size-in-all-fontsets (size)
+  ;; Setting sizes in the fontsets directly works as well, and it doesn't
+  ;; create new ones, but it breaks `text-scale-adjust'
+  (my-configure-all-fontsets)
   (dolist (frame (frame-list))
-    ;; Modifying fontsets directly works as well, and it doesn't create new ones
-    ;; (set-face-attribute 'default frame :height new-size)
-    (my-configure-all-fontsets frame size)))
+    (set-face-attribute 'default frame :height size)))
 
 (defun adjust-font-size (delta)
   (let* ((old-size (face-attribute 'default :height))
          (new-size (max (max delta (- delta)) (min 400 (+ delta old-size)))))
     (setq original-font-size (or original-font-size old-size))
     (set-font-size-in-all-fontsets new-size)
-    (message "Font size set to %d (was %d)" (face-attribute 'default :height) old-size)))
+    (message "Font size set to %d (%d → %d)" (face-attribute 'default :height) old-size new-size)))
 
 (defun zoom-in ()
   (interactive)
@@ -367,6 +376,11 @@ Example: (~/check (a 1) (b (+ 0.5 2)) (c 3)) ⇒ 6.5."
   (cl-assert (cl-every (apply-partially #'eq 2)
                        (mapcar #'length pairs)))
   `(+ ,@(mapcar #'cadr pairs)))
+
+(defmacro ~/check.5 (&rest pairs)
+  "Compute half of the sum of the evaled cadrs in PAIRS.
+Example: (~/check.5 (a 1) (b (+ 0.5 2)) (c 3)) ⇒ 3.25."
+  `(* .5 (~/check ,@pairs)))
 
 ;;; Debugging
 

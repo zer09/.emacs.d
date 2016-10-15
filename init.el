@@ -31,6 +31,9 @@
 
 ;;; Basic initialization
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "/build/org-mode/lisp/")
+(add-to-list 'load-path "/build/org-mode/contrib/lisp/")
+(require 'org-loaddefs nil t)
 
 (defconst ~/init-files '(
                          "custom.el"

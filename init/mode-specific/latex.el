@@ -4,8 +4,9 @@
   (setq-default TeX-master t ;; Use current file as master; overwrite using .dir-locals.el if needed
                 TeX-engine 'xetex
                 reftex-plug-into-AUCTeX t
-                LaTeX-verbatim-environments-local '("lstlisting")
-                TeX-command-extra-options "-shell-escape"
+                LaTeX-verbatim-environments-local '("lstlisting" "ESHBlock")
+                reftex-default-bibliography '("~/documents/academia/bibliography/readings.bib")
+                ;; TeX-command-extra-options "-shell-escape"
                 bibtex-align-at-equal-sign t
                 bibtex-entry-format t))
 

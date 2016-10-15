@@ -4,16 +4,16 @@
 
 (defvar ~/main-font "Ubuntu Mono")
 
-(defun my-configure-one-fontset (frame size fontset)
-  "Add fallbacks to FONTSET on FRAME with SIZE."
+(defun my-configure-one-fontset (fontset &optional size)
+  "Add fallbacks to FONTSET with SIZE."
   (let* ((size (when size `(:size ,(/ size 10.0))))
          (base-spec (apply #'font-spec :name ~/main-font size))
          (emoji-spec (apply #'font-spec :name (format "Segoe UI Emoji monospacified for %s" ~/main-font) size))
          (symbol-spec (apply #'font-spec :name (format "XITS Math monospacified for %s" ~/main-font) size))
          (cjk-spec (apply #'font-spec :name "WenQuanYi Micro Hei Mono" size)))
-    (set-fontset-font fontset 'unicode base-spec frame)
-    (set-fontset-font fontset 'unicode emoji-spec frame 'append)
-    (set-fontset-font fontset 'unicode symbol-spec frame 'append)
+    (set-fontset-font fontset 'unicode base-spec nil)
+    (set-fontset-font fontset 'unicode emoji-spec nil 'append)
+    (set-fontset-font fontset 'unicode symbol-spec nil 'append)
     (set-fontset-font fontset (cons ?😱 ?😱) "Symbola" nil 'prepend)
     (set-fontset-font fontset (cons #x2009 #x2009) "Symbola" nil 'prepend) ;; Thin space
     (dolist (cjk-block '((#x3000 . #x303F)
@@ -27,18 +27,17 @@
                          (#x2B740 . #x2B81F)
                          (#x2B820 . #x2CEAF)
                          (#x2F800 . #x2FA1F)))
-      (set-fontset-font fontset cjk-block cjk-spec frame 'append))))
+      (set-fontset-font fontset cjk-block cjk-spec nil 'append))))
 
-(defun my-configure-all-fontsets (&optional frame size)
-  "Set fallbacks for all fontsets on FRAME, with SIZE.
-Chenging the size of the default font creates new fontsets;
-instead, we just set the size of the font in the existing ones."
+(defun my-configure-all-fontsets (&optional _frame)
+  "Set fallbacks for all fontsets.
+Former SIZE argument removed because it broke
+`text-scale-adjust'."
   (interactive)
   (when (fboundp 'fontset-list)
-    (mapc (apply-partially #'my-configure-one-fontset frame size) (fontset-list))))
+    (mapc #'my-configure-one-fontset (fontset-list))))
 
-(dolist (frame (frame-list))
-  (my-configure-all-fontsets frame))
+(my-configure-all-fontsets)
 (add-to-list 'after-make-frame-functions #'my-configure-all-fontsets)
 
 (defun ~/fonts/add-inheritance (face new-parent)
@@ -55,8 +54,11 @@ instead, we just set the size of the font in the existing ones."
   (set-face-attribute 'ruler-mode-default nil :box nil)
   (~/fonts/add-inheritance 'ruler-mode-default 'fixed-pitch))
 
+(setq-default use-default-font-for-symbols nil)
+
 (set-face-attribute 'fixed-pitch nil :family ~/main-font)
 (set-face-attribute 'variable-pitch nil :family "Corbel")
+(set-face-attribute 'vertical-border nil :foreground "darkgrey")
 
 ;; (with-eval-after-load 'which-func
 ;;   (set-face-attribute 'which-func nil :foreground 'unspecified)

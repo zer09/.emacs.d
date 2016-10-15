@@ -1,6 +1,7 @@
 (defvar python-prettify-symbols-alist
   '(("lambda" . ?λ)
     ("self" . ?自)
+    ("->" . ?→)
     ("yield" . ?⇢)
     ("return" . ?↪)
     ("try" . ?😱) ;; ⚠

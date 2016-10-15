@@ -65,6 +65,8 @@ Semantic, and Ansi-Color faces are included.")
    `(isearch ((,class (:foreground ,alum-1 :background ,orange-3))))
    `(lazy-highlight ((,class (:background ,choc-3))))
    `(trailing-whitespace ((,class (:background ,red-3))))
+   ;; Paren face
+   `(show-paren-match ((,class (:background ,blue-3))))
    ;; Mode line faces
    `(mode-line ((,class
                  ;; (:box (:line-width -1 :style released-button)

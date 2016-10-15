@@ -34,6 +34,9 @@
 (with-eval-after-load 'flycheck
   (trycall #'flycheck-pos-tip-mode)
   (add-hook 'flycheck-mode-hook #'flycheck-cask-setup)
-  (setq-default flycheck-mode-line '(:eval (my-flycheck-mode-line-status-text)))
-  (setq-default flycheck-checkers (cons 'python-pylint (remove 'python-pylint flycheck-checkers)))
+  (setq-default flycheck-emacs-lisp-load-path 'inherit
+                flycheck-mode-line '(:eval (my-flycheck-mode-line-status-text))
+                flycheck-checkers `(python-mypy python-pylint
+                                                ,@(remove 'python-pylint
+                                                          (remove 'python-mypy flycheck-checkers))))
   (add-to-list 'flycheck-locate-config-file-functions #'my-flycheck-locate-config-file))

@@ -1,3 +1,6 @@
+[MASTER]
+load-plugins=pylint.extensions.check_elif,pylint.extensions.docparams,pylint.extensions.docstyle,pylint.extensions.docparams,pylint.extensions.mccabe
+
 [SPELLING]
 # spelling-dict=en_US # Spell-checking is too strict
 
@@ -14,4 +17,4 @@
 # blank line at end of file [W391]
 # blank line contains whitespace [W293]
 # R0913:Too many arguments (6/5)
-disable=F0401,C0326,C0103,C0111,W0141,C0325,W0142,E501,C0301,W0622,W391,W293,R0913
+disable=F0401,C0326,C0103,C0111,W0141,C0325,W0142,E501,C0301,W0622,W391,W293,R0913,missing-returns-doc

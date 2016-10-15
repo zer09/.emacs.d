@@ -4,7 +4,6 @@
   (require 'org)
   (let* ((fname (or buffer-file-name ""))
          (org-fname (replace-regexp-in-string "\.org\\'" ".tex" fname))
-         ;; (user-full-name "Clément Pit-\\kern0pt-Claudel") ;; Doesn't seem to work
          (org-export-show-temporary-export-buffer nil))
     (if (string= fname org-fname)
         (error "Not sure where to save the LaTeX file")
@@ -58,7 +57,7 @@
     (encode-time 0 0 0 day month year)))
 
 (defun ~/org/check-before-or-on-date (&optional date)
-  "Check if there are deadlines or scheduled entries before or on DATE."
+  "Filter to include only deadlines or scheduled entries before or on DATE."
   (interactive "P")
   (cond
    ((null date) (setq date (~/truncate-time (org-current-time))))
@@ -76,18 +75,30 @@
     (message "%d entries before %s"
              (org-occur regexp nil callback) date)))
 
+(defun ~/org/reftex ()
+  (interactive)
+  (pcase (read-key "Key? [<ret>pt]")
+    ((or ?t ?\C-m) (reftex-citet))
+    (?p (reftex-citep))))
+
 (with-eval-after-load 'org
+  (require 'org-eldoc)
+  (require 'reftex)
   (setq-default org-log-done 'time
                 org-support-shift-select t
                 org-use-fast-todo-selection t
-                org-odd-levels-only t
                 org-hide-leading-stars t
                 org-completion-use-ido t
-                org-latex-listings t
                 org-special-ctrl-a/e nil
                 org-return-follows-link nil ;; Can't add a newline after timestamp otherwise
                 org-ellipsis " …" ;; ▸ 🞂 ▼ ▶ ⏩
-                org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)" "|" "DONE(d)" "CANCELLED(c)"))
+                org-pretty-entities t
+                ;; Settings below affect export
+                org-odd-levels-only t
+                org-latex-listings nil
+                org-latex-prefer-user-labels t
+                org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "PENDING(w)" "LATER(l)"
+                                              "|" "DONE(d)" "CANCELLED(c)"))
                 ;; org-todo-keywords '((sequence "🌕(t)" "🌖(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)")) ;; 🌗
                 ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✓(d)" "✗(c)"))
                 ;; org-todo-keywords '((sequence "👉(t)" "✅(s)" "⏳(w)" "📅(l)" "|" "✔(d)" "✘(c)"))
@@ -97,7 +108,8 @@
   (set-face-attribute 'org-todo nil :bold nil)
   (set-face-attribute 'org-done nil :bold nil)
 
-  (define-key org-mode-map (kbd "C-c t") #'~/org/check-before-or-on-date)
+  (define-key org-mode-map (kbd "C-c [") #'~/org/reftex)
+  (define-key org-mode-map (kbd "C-c C-t") #'~/org/check-before-or-on-date)
 
   ;; Move usual S-* commands to keypad
   (define-key org-mode-map (kbd "<S-kp-right>") #'org-shiftright)
@@ -202,9 +214,19 @@ That is, change hard-coded prettifications to regular keywords."
                   org-block-begin-line
                   org-block-end-line))
     (~/fonts/add-inheritance face 'fixed-pitch))
+  (set-face-attribute 'org-block nil :inherit 'fixed-pitch)
   (dolist (re (list "^[[:space:]]+\\(\\([0-9]+\\.\\|[*+-]\\)? +\\)?"
                     (format "^\\*+ +\\(%s +\\)?" org-todo-regexp)))
     (font-lock-add-keywords nil `((,re 0 '(face fixed-pitch) append)) 'append)))
+
+;; Fixed in Org 9
+;;
+;; (defun ~/org/make-region-monospace (_lang start end)
+;;   "Add a fixed-pitch face to START..END."
+;;   (font-lock-append-text-property start end 'face 'fixed-pitch))
+;;
+;; (with-eval-after-load 'org-src
+;;   (advice-add #'org-src-font-lock-fontify-block :after #'~/org/make-region-monospace))
 
 (defun ~/org/update-cookies ()
   (interactive)
@@ -222,7 +244,7 @@ That is, change hard-coded prettifications to regular keywords."
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
-               '("thesis"
+               '("mitthesis"
                  "\\documentclass{mitthesis}"
                  ("\\chapter{%s}" . "\\chapter*{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
@@ -231,12 +253,63 @@ That is, change hard-coded prettifications to regular keywords."
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
+(with-eval-after-load 'org
+  (setq org-latex-default-packages-alist
+        '(("AUTO" "polyglossia" t)
+          ("" "fontspec" t)
+          ("" "fixltx2e" nil)
+          ("" "graphicx" t)
+          ("" "grffile" t)
+          ("" "longtable" nil)
+          ("" "wrapfig" nil)
+          ("" "rotating" nil)
+          ("normalem" "ulem" t)
+          ("" "amsmath" t)
+          ("" "textcomp" t)
+          ("" "amssymb" t)
+          ("" "capt-of" nil)
+          ("" "hyperref" nil))))
+
+(dolist (opt '(org-latex-title-command
+               org-latex-toc-command
+               org-html-mathjax-template))
+  (put opt 'safe-local-variable 'stringp))
+
+(dolist (opt '(org-log-done
+               org-odd-levels-only
+               org-latex-prefer-user-labels
+               org-latex-listings
+               org-html-htmlize-output-type
+               org-html-preamble
+               org-html-postamble
+               org-html-head-include-scripts
+               org-html-head-include-default-style))
+  (put opt 'safe-local-variable 'booleanp))
+
+(dolist (opt '(org-export-headline-levels))
+  (put opt 'safe-local-variable 'integerp))
+
+(with-eval-after-load 'ox-latex
+  (when (require 'esh-org nil t)
+    (esh-org-activate)))
+
+(defun ~/org/kill-fontification-buffer ()
+  "Kill org's temporary fontification buffers."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (when (string-match-p (regexp-quote " *org-src-fontification:") (buffer-name buf))
+      (kill-buffer buf))))
+
 (defun ~/org/setup ()
   "."
   (flyspell-mode)
   (~/org/add-line-spacing)
   (~/org/prettify-keywords)
   (~/org/ensure-monospace-indentation)
+  (when (file-exists-p (buffer-file-name))
+    (let ((dir (file-name-directory (buffer-file-name))))
+      (dolist (f (directory-files dir t "\\.bib\\'"))
+        (add-to-list 'reftex-default-bibliography f))))
   ;; Disable: property drawers are ugly
   ;; (add-hook 'org-after-todo-state-change-hook #'~/org/add-creation-date nil t)
   (add-hook 'before-save-hook #'~/org/update-cookies nil t))

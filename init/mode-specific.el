@@ -40,7 +40,11 @@
 (require 'elapsed "~/.emacs.d/lisp/elapsed/elapsed.el" t)
 
 ;;; ag
-(setq-default ag-highlight-search t)
+(setq-default ag-highlight-search t
+              ag-group-matches nil)
+
+;; ESH
+(add-to-list 'load-path "~/.emacs.d/lisp/esh/")
 
 ;;; Spelling
 (when-os 'windows-nt
@@ -132,6 +136,11 @@
 (with-eval-after-load 'rst
   (define-key rst-mode-map (kbd "<f12>") #'~/rst-coq-action)
   (add-hook 'rst-mode-hook #'flycheck-mode))
+
+;; Checkdoc
+
+(setq-default checkdoc-arguments-in-order-flag nil
+              checkdoc-verb-check-experimental-flag nil)
 
 ;;; All the rest
 

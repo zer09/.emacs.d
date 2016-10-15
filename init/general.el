@@ -26,6 +26,15 @@
 (trycall #'scroll-bar-mode -1)
 (setq-default overlay-arrow-string "")
 
+(defface ~/ellipsis-face
+  '((t (:slant normal :weight bold))) ;; :inherit font-lock-preprocessor-face
+  "Face used to display ellipses."
+  :group 'company-coq-faces)
+
+;; Display hidden text as …
+(let ((chars (mapcar (lambda (c) (make-glyph-code c '~/ellipsis-face)) " …")))
+  (set-display-table-slot standard-display-table 4 (vconcat chars)))
+
 ;; Interaction
 (setq-default visible-bell t
               ring-bell-function 'ignore)
@@ -36,14 +45,11 @@
               initial-scratch-message nil
               confirm-nonexistent-file-or-buffer nil)
 
-(setq kill-buffer-query-functions ;; "This buffer has a live process..."
-      (remq 'process-kill-buffer-query-function
-            kill-buffer-query-functions))
-
 ;; Behaviour
 (winner-mode)
 (xterm-mouse-mode)
 (setq-default tooltip-delay 0.15
+              confirm-kill-processes nil
               set-mark-command-repeat-pop t
               fast-but-imprecise-scrolling t
               eval-expression-print-level nil
@@ -53,6 +59,10 @@
               save-interprogram-paste-before-kill t
               apropos-do-all t
               load-prefer-newer t)
+
+(setq kill-buffer-query-functions ;; "This buffer has a live process..."
+      (remq 'process-kill-buffer-query-function
+            kill-buffer-query-functions))
 
 (add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p)
 

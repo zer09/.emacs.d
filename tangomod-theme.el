@@ -60,11 +60,13 @@ Semantic, and Ansi-Color faces are included.")
    `(isearch ((,class (:foreground "#ffffff" :background ,orange-3))))
    `(lazy-highlight ((,class (:background ,choc-1))))
    `(trailing-whitespace ((,class (:background ,red-1))))
+   ;; Paren face
+   `(show-paren-match ((,class (:background ,blue-1))))
    ;; Mode line faces
    `(mode-line ((,class (:box (:line-width -1 :style released-button)
-			 :background ,alum-2 :foreground ,alum-6))))
+                              :background ,alum-2 :foreground ,alum-6))))
    `(mode-line-inactive ((,class (:box (:line-width -1 :style released-button)
-				  :background ,alum-4 :foreground ,alum-6))))
+                                       :background ,alum-4 :foreground ,alum-6))))
    ;; Escape and prompt faces
    `(minibuffer-prompt ((,class (:weight bold :foreground ,blue-3))))
    `(escape-glyph ((,class (:foreground ,red-3))))
