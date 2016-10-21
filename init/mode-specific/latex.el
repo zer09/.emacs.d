@@ -3,8 +3,9 @@
 
   (setq-default TeX-master t ;; Use current file as master; overwrite using .dir-locals.el if needed
                 TeX-engine 'xetex
+                TeX-fold-auto t
                 reftex-plug-into-AUCTeX t
-                LaTeX-verbatim-environments-local '("lstlisting" "ESHBlock")
+                LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "ESHBlock")
                 reftex-default-bibliography '("~/documents/academia/bibliography/readings.bib")
                 ;; TeX-command-extra-options "-shell-escape"
                 bibtex-align-at-equal-sign t
@@ -35,6 +36,7 @@
   (yas-minor-mode)
   (yas-reload-all)
 
+  (TeX-fold-mode)
   (TeX-source-correlate-mode)
   (company-auctex-init)
   (turn-on-reftex))

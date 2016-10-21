@@ -30,7 +30,7 @@
   (add-to-list 'load-path "~/.emacs.d/lisp/indirect-font-lock/")
   (add-to-list 'load-path "~/.emacs.d/lisp/litpy/")
   (require 'litpy-mode)
-  (litpy-minor-mode)
+  (litpy-mode)
 
   (setq-local parens-require-spaces nil)
 
