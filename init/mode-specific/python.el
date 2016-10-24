@@ -31,16 +31,9 @@
   (add-to-list 'load-path "~/.emacs.d/lisp/litpy/")
   (require 'litpy-mode)
   (litpy-mode)
+  (hs-minor-mode)
 
   (setq-local parens-require-spaces nil)
-
-  (require 'hideshow) ;; Docstring folding setup
-  (hs-minor-mode)
-  (setq-local hs-block-start-regexp "^[ \t]+\\(\"\"\"\\)")
-  (setq-local hs-block-start-mdata-select 1)
-  (setq-local hs-block-end-regexp "\"\"\"")
-  (setq-local hs-hide-comments-when-hiding-all nil)
-  (setq-local hs-forward-sexp-func #'forward-sexp)
 
   (let* ((buffer-path (buffer-file-name))
          (true-path   (and buffer-path (file-truename buffer-path))))
