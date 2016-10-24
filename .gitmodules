@@ -19,3 +19,6 @@
 [submodule "lisp/biblio.el"]
 	path = lisp/biblio.el
 	url = git@github.com:cpitclaudel/biblio.el.git
+[submodule "lisp/compact-docstrings"]
+	path = lisp/compact-docstrings
+	url = git@github.com:cpitclaudel/compact-docstrings.git
