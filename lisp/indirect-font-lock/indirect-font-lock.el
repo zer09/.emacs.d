@@ -20,7 +20,11 @@
 
 ;;; Commentary:
 
-;;
+;; This library makes it easy to highlight parts of strings or comments as code,
+;; possibly in a different mode.  This makes it easy to get proper highlighting
+;; in docstrings, in code comments, etc.
+
+;; The main entry point is `indirect-font-lock-highlighter'.
 
 ;;; Code:
 
@@ -49,38 +53,46 @@ further calls with the same MODE-FN reuse the same buffer."
       (erase-buffer))
     buffer))
 
-(defun indirect-font-lock--copy-faces-to (buffer offset)
-  "Copy faces from current buffer to BUFFER, starting at OFFSET."
+(defun indirect-font-lock--copy-faces-and-props-to (buffer offset props)
+  "Copy faces and PROPS to BUFFER, starting at OFFSET."
   (let ((start (point-min))
         (making-progress t)
         (offset (- offset (point-min))))
     (while making-progress
-      (let ((end (next-single-property-change start 'face nil (point-max))))
-        (if (< start end)
-            (font-lock-prepend-text-property (+ start offset) (+ end offset)
-                                     'face (get-text-property start 'face)
-                                     buffer)
-          (setq making-progress nil))
+      (let ((end (next-property-change start nil (point-max))))
+        (when (setq making-progress (< start end))
+          (dolist (prop (cons 'face props))
+            (let ((propval (get-text-property start prop)))
+              (font-lock-prepend-text-property (+ start offset) (+ end offset)
+                                       prop propval buffer))))
         (setq start end)))))
 
-(defun indirect-font-lock--fontify-as (mode-fn from to)
+(defun indirect-font-lock--fontify-as (mode-fn from to reset props)
   "Use buffer in MODE-FN to fontify FROM..TO.
 
-In other word, fontify FROM..TO would as if it had been alone in its own
-buffer, in major mode MODE-FN."
+In other word, fontify FROM..TO would as if it had been alone in
+its own buffer, in major mode MODE-FN.  If RESET is non-nil,
+erase existing fontification before applying new properties.
+Copy fontification and extra PROPS."
   (let ((str (buffer-substring-no-properties from to))
         (original-buffer (current-buffer)))
+    (when reset (remove-text-properties from to (cons 'face props)))
     (with-current-buffer (indirect-font-lock--make-buffer-for-mode mode-fn)
       (insert str)
       (font-lock-fontify-region (point-min) (point-max))
-      (indirect-font-lock--copy-faces-to original-buffer from))))
+      (indirect-font-lock--copy-faces-and-props-to original-buffer from props)
+      ;; Disable “save buffer?” prompts from `save-some-buffers'.
+      (set-buffer-modified-p nil))
+    (setq font-lock-extra-managed-props (cl-union font-lock-extra-managed-props props))))
 
-(defun indirect-font-lock-highlighter (group mode-fn)
+(defun indirect-font-lock-highlighter (group mode-fn &optional reset &rest props)
   "Font-lock highlighter using an indirect buffer.
 Fontify GROUP as if it had been alone in its own buffer, in major
-mode MODE-FN."
+mode MODE-FN.  If RESET is non-nil, erase existing fontification
+before applying new properties.  Copy fontification and extra
+PROPS."
   (save-match-data
-    (indirect-font-lock--fontify-as mode-fn (match-beginning group) (match-end group)))
+    (indirect-font-lock--fontify-as mode-fn (match-beginning group) (match-end group) reset props))
   '(face nil))
 
 (provide 'indirect-font-lock)
