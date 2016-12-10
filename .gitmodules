@@ -22,3 +22,18 @@
 [submodule "lisp/compact-docstrings"]
 	path = lisp/compact-docstrings
 	url = git@github.com:cpitclaudel/compact-docstrings.git
+[submodule "lisp/litpy"]
+	path = lisp/litpy
+	url = git@github.com:cpitclaudel/litpy.git
+[submodule "lisp/fstar.el"]
+	path = lisp/fstar.el
+	url = ssh://git@github.com/FStarLang/fstar-mode.el
+[submodule "lisp/indirect-font-lock"]
+	path = lisp/indirect-font-lock
+	url = git@github.com:cpitclaudel/indirect-font-lock.git
+[submodule "lisp/quick-peek"]
+	path = lisp/quick-peek
+	url = git@github.com:cpitclaudel/quick-peek.git
+[submodule "lisp/presenter-mode/"]
+	path = lisp/presenter-mode
+	url = git@github.com:cpitclaudel/presenter-mode.git
