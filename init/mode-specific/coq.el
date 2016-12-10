@@ -8,8 +8,6 @@
 (ignore-errors (load-file "/home/clement/documents/mit/frap/frap.el"))
 (require 'proof-site "~/.emacs.d/lisp/PG/generic/proof-site" t)
 
-(require 'presenter-mode nil t)
-
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
               proof-three-window-mode-policy 'hybrid

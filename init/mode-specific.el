@@ -4,6 +4,7 @@
 
 (require 'easy-escape "~/.emacs.d/lisp/easy-escape/easy-escape.el" t)
 (require 'always-make-directory "~/.emacs.d/lisp/always-make-directory/always-make-directory.el" t)
+(require 'presenter-mode "~/.emacs.d/lisp/presenter-mode/presenter-mode.el" t)
 
 (add-to-list 'load-path "~/.emacs.d/lisp/biblio.el/")
 (require 'biblio)
