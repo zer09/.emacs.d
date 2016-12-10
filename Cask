@@ -19,6 +19,7 @@
 (depends-on "fill-column-indicator")
 (depends-on "flycheck")
 (depends-on "flycheck-cask")
+(depends-on "flycheck-ocaml")
 (depends-on "flycheck-rust")
 (depends-on "flycheck-package")
 (depends-on "graphviz-dot-mode")

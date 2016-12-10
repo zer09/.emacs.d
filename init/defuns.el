@@ -122,6 +122,11 @@
 
 ;;; Navigation
 
+;; Needed because kill-this-buffer sometimes refuses to work when the menu bar is hidden
+(defun ~/kill-this-buffer ()
+  (interactive)
+  (kill-buffer (current-buffer)))
+
 (defun find-file-here ()
   (interactive)
   (let ((ido-use-filename-at-point 'guess)
@@ -225,6 +230,18 @@ With prefix REPEAT, repeat process twice."
     (kill-new
      (if current-prefix-arg quoted
        (substring quoted 1 (- (length quoted) 1))))))
+
+(defun ~/fontify-esh-macros ()
+  "Setup indirect fontification in current LaTeX buffer based on ESH patterns."
+  (interactive)
+  (require 'esh)
+  (require 'indirect-font-lock)
+  (pcase-dolist (`(,verb . ,fn) esh-latex-inline-macro-alist)
+    (let ((matcher (format "%s\\(.\\)\\(.*?\\)\\1" (regexp-quote verb))))
+      (esh-add-keywords
+        `((,matcher (0 (indirect-font-lock-highlighter
+                        2 #',fn 'display 'composition 'invisible))))
+        'append))))
 
 (defun ~/coqtop (beg end)
   (interactive (list (region-beginning) (region-end)))

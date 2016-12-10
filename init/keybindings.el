@@ -24,7 +24,7 @@
 ;; Unoverridable shortcuts from http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
 (defvar keybindings-minor-mode-map (make-keymap))
 
-(define-key keybindings-minor-mode-map (kbd "C-x k") #'kill-this-buffer)
+(define-key keybindings-minor-mode-map (kbd "C-x k") #'~/kill-this-buffer)
 (define-key keybindings-minor-mode-map (kbd "C-x K") #'kill-buffer)
 
 (define-key keybindings-minor-mode-map (kbd "<M-up>") #'move-line-up)
@@ -155,4 +155,6 @@
 
 ;;; Unify keybindings for various occuredit-like modes
 (define-key occur-mode-map (kbd "C-c C-p") #'occur-edit-mode)
-(define-key dired-mode-map (kbd "C-c C-p") #'dired-toggle-read-only)
+
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-c C-p") #'dired-toggle-read-only))

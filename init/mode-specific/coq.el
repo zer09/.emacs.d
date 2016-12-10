@@ -74,4 +74,5 @@
 
 (with-eval-after-load 'coq
   (load-file "~/.emacs.d/lisp/company-coq/experiments/pg-vst/pg-vst.el")
+  (load-file "~/.emacs.d/lisp/company-coq-bedrock.el")
   (add-hook #'coq-mode-hook #'pg-vst-mode))

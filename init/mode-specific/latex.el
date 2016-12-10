@@ -4,8 +4,12 @@
   (setq-default TeX-master t ;; Use current file as master; overwrite using .dir-locals.el if needed
                 TeX-engine 'xetex
                 TeX-fold-auto t
+                TeX-parse-self t ; Enable parse on load.
+                TeX-auto-save t ; Enable parse on save.
+                TeX-auto-local ".auctex"
                 reftex-plug-into-AUCTeX t
-                LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting" "ESHBlock")
+                LaTeX-verbatim-environments '("verbatim" "verbatim*" "lstlisting")
+                LaTeX-verbatim-macros-with-delims-local '("py")
                 reftex-default-bibliography '("~/documents/academia/bibliography/readings.bib")
                 ;; TeX-command-extra-options "-shell-escape"
                 bibtex-align-at-equal-sign t

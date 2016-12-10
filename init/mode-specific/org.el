@@ -306,7 +306,7 @@ That is, change hard-coded prettifications to regular keywords."
   (~/org/add-line-spacing)
   (~/org/prettify-keywords)
   (~/org/ensure-monospace-indentation)
-  (when (file-exists-p (buffer-file-name))
+  (when (and buffer-file-name (file-exists-p buffer-file-name))
     (let ((dir (file-name-directory (buffer-file-name))))
       (dolist (f (directory-files dir t "\\.bib\\'"))
         (add-to-list 'reftex-default-bibliography f))))

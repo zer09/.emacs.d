@@ -50,6 +50,10 @@
 (when-os 'windows-nt
   (setq-default ispell-program-name "c:/Program Files (x86)/Aspell/bin/aspell.exe"))
 
+;;; Directory tracking
+(setq-default dirtrack-list '("^\\[01;32m[0-9][0-9]:[0-9][0-9]:[0-9][0-9] \\[00;31m\\[01;35m\\[00;33m\\(.*\\)\n\\[01;34m\\$\\[00m" 1))
+(add-hook 'shell-mode-hook #'dirtrack-mode)
+
 ;;; Compilation
 (setq-default compilation-scroll-output 'first-error)
 (with-eval-after-load 'compile
@@ -62,6 +66,10 @@
 ;;; Occur and read-regexp
 (setq-default read-regexp-defaults-function
               (lambda () (regexp-quote (symbol-name (symbol-at-point)))))
+
+;;; TiML
+;; (load "/build/lambda-c/emacs/timl")
+;; (add-to-list 'auto-mode-alist '("\\.timl\\'" . timl-mode))
 
 ;;; Which key
 (trycall #'which-key-mode)

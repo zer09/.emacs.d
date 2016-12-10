@@ -10,10 +10,12 @@
          (base-spec (apply #'font-spec :name ~/main-font size))
          (emoji-spec (apply #'font-spec :name (format "Segoe UI Emoji monospacified for %s" ~/main-font) size))
          (symbol-spec (apply #'font-spec :name (format "XITS Math monospacified for %s" ~/main-font) size))
+         (fallback-spec (apply #'font-spec :name (format "Symbola monospacified for %s" ~/main-font) size))
          (cjk-spec (apply #'font-spec :name "WenQuanYi Micro Hei Mono" size)))
     (set-fontset-font fontset 'unicode base-spec nil)
     (set-fontset-font fontset 'unicode emoji-spec nil 'append)
     (set-fontset-font fontset 'unicode symbol-spec nil 'append)
+    (set-fontset-font fontset 'unicode fallback-spec nil 'append)
     (set-fontset-font fontset (cons ?😱 ?😱) "Symbola" nil 'prepend)
     (set-fontset-font fontset (cons #x2009 #x2009) "Symbola" nil 'prepend) ;; Thin space
     (dolist (cjk-block '((#x3000 . #x303F)

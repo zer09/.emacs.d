@@ -19,7 +19,7 @@
   `(let* ((start-time (current-time)))
      (prog1
          ,@body
-       (message "%.2fs [%s]" (float-time (time-since start-time)) ,message))))
+       (message "%.4fs [%s]" (float-time (time-since start-time)) ,message))))
 
 (defun ~/load-file (relative-path)
   "Load `~/init-dir'/RELATIVE-PATH."

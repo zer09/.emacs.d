@@ -1,5 +1,4 @@
 (when-os 'gnu/linux
-  (setq-default python-shell-interpreter "python")
   (setq-default python-shell-interpreter "python3"))
 
 (when-os 'windows-nt
@@ -9,9 +8,10 @@
   (put 'pyvenv-workon 'safe-local-variable #'stringp)
 
   (let ((elpy-disabled '(elpy-module-highlight-indentation elpy-module-flymake)))
-    (setq-default elpy-rpc-backend "jedi"
-                  elpy-rpc-python-command "python3"
-                  elpy-modules (cl-set-difference elpy-modules elpy-disabled)))
+    (setq-default elpy-modules (cl-set-difference elpy-modules elpy-disabled)))
+
+  (setq elpy-rpc-backend "jedi")
+  (defvaralias 'elpy-rpc-python-command 'python-shell-interpreter)
 
   (let ((elpy-disabled-bindings '("<S-return>" "<C-S-return>" "<C-return>" "M-TAB"
                                   "<C-down>" "<C-up>" "<C-left>" "<C-right>"
@@ -81,7 +81,6 @@ With non-nil FLIP, return opposite of VALUE."
          (~/flycheck-verification-result-y/n "blacklisted" blacklisted t)))
     (flycheck-verification-result-new
      :label "Buffer file name" :message "Unspecified" :face 'error)))
-
 
 (flycheck-def-option-var flycheck-python-mypy-use-python-2 nil (python-mypy)
   "Whether to pass --py2 to mypy."
