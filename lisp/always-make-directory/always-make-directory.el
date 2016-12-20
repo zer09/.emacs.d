@@ -16,7 +16,6 @@
         (with-demoted-errors "Could not auto-create directory: %S"
           (make-directory fdir t))))))
 
-(pop find-file-not-found-functions)
 (add-to-list 'find-file-not-found-functions #'amkdir-file-not-found-function)
 
 (provide 'always-make-directory)

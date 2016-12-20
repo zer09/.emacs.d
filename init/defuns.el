@@ -240,7 +240,7 @@ With prefix REPEAT, repeat process twice."
     (let ((matcher (format "%s\\(.\\)\\(.*?\\)\\1" (regexp-quote verb))))
       (esh-add-keywords
         `((,matcher (0 (indirect-font-lock-highlighter
-                        2 #',fn 'display 'composition 'invisible))))
+                        2 #',fn t 'display 'composition 'invisible))))
         'append))))
 
 (defun ~/coqtop (beg end)

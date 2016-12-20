@@ -5,6 +5,8 @@
 (require 'easy-escape "~/.emacs.d/lisp/easy-escape/easy-escape.el" t)
 (require 'always-make-directory "~/.emacs.d/lisp/always-make-directory/always-make-directory.el" t)
 (require 'presenter-mode "~/.emacs.d/lisp/presenter-mode/presenter-mode.el" t)
+(require 'quick-peek "~/.emacs.d/lisp/quick-peek/quick-peek.el")
+(require 'indirect-font-lock "~/.emacs.d/lisp/indirect-font-lock/indirect-font-lock.el")
 
 (add-to-list 'load-path "~/.emacs.d/lisp/biblio.el/")
 (require 'biblio)
@@ -16,6 +18,10 @@
 ;;; diff
 (setq-default diff-switches '("-u" "-Z"))
 (add-hook 'diff-mode-hook #'hide-trailing-whitespace)
+
+;; ASM
+
+(setq-default asm-comment-char ?\#)
 
 ;;; comint
 

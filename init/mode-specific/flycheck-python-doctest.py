@@ -36,7 +36,7 @@ def load(fpath, code):
 
     return mod
 
-class CheckstyleRunner(doctest.DocTestRunner,object):
+class CheckstyleRunner(doctest.DocTestRunner, object):
     """A variant of DocTestRunner that uses Checkstyle format."""
 
     def __init__(self, *args, **kwargs):

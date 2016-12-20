@@ -26,8 +26,6 @@
   (setq-local prettify-symbols-alist python-prettify-symbols-alist)
   (prettify-symbols-mode)
 
-  (add-to-list 'load-path "~/.emacs.d/lisp/quick-peek/")
-  (add-to-list 'load-path "~/.emacs.d/lisp/indirect-font-lock/")
   (add-to-list 'load-path "~/.emacs.d/lisp/litpy/")
   (require 'litpy-mode)
   (litpy-mode)
