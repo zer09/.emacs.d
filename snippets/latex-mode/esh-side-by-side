@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: esh-side-by-side
+# key: sider
+# --
+\\begin{sidebysideRefactoring}
+  \\begin{beforeRefactoring}
+%% ESH: ${1:python}
+\\begin{verbatim}
+$0\\end{verbatim}
+  \\end{beforeRefactoring}
+  \\begin{afterRefactoring}
+%% ESH: $1
+\\begin{verbatim}
+\\end{verbatim}
+  \\end{afterRefactoring}
+\\end{sidebysideRefactoring}

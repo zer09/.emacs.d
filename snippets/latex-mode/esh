@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: esh
+# key: esh
+# --
+%% ESH: $1
+\\begin{verbatim}
+$0
+\\end{verbatim}

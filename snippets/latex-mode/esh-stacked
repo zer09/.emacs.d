@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: esh-stacked
+# key: stackr
+# --
+\\begin{stackedRefactoring}
+  \\begin{beforeRefactoring}
+%% ESH: ${1:python}
+\\begin{verbatim}
+$0\\end{verbatim}
+  \\end{beforeRefactoring}
+
+  \\medskip
+
+  \\begin{afterRefactoring}
+%% ESH: $1
+\\begin{verbatim}
+\\end{verbatim}
+  \\end{afterRefactoring}
+\\end{stackedRefactoring}
