@@ -67,12 +67,5 @@ Former SIZE argument removed because it broke
 ;;   (set-face-attribute 'which-func nil :inherit font-lock-doc-face))
 
 ;; Font selection ;;
-;; Faster than custom-set-faces
-;; But still slower than using .Xresources
-;; ;; (set-face-attribute 'default nil
-;; ;;                     :inherit nil
-;; ;;                     :background "#ffffff"
-;; ;;                     :foreground "#000000"
-;; ;;                     :height 98
-;; ;;                     :family "Ubuntu Mono")
 ;; Replaced by .Xresources containing "Emacs.font: Ubuntu Mono-10"
+;; + Windows-specific code in os-specific.el

@@ -6,6 +6,12 @@
   `(when (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
      ,@body))
 
+(defmacro unless-os (os &rest body)
+  (declare (indent defun)
+           (debug t))
+  `(unless (if (listp ,os) (memq system-type ,os) (eq system-type ,os))
+     ,@body))
+
 (defmacro trycall (func &rest args)
   "Call (FUNC ARGS) is FUNC is a bound function symbol."
   (declare (debug t))

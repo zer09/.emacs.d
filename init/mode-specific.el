@@ -91,7 +91,8 @@
 ;;; Modeline info
 (setq-default display-time-load-average-threshold 1)
 (display-time-mode)
-(display-battery-mode)
+(unless-os 'windows-nt
+  (display-battery-mode))
 
 ;;; Keyfreq
 
