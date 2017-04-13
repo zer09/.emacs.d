@@ -37,3 +37,6 @@
 [submodule "lisp/presenter-mode/"]
 	path = lisp/presenter-mode
 	url = git@github.com:cpitclaudel/presenter-mode.git
+[submodule "lisp/flycheck"]
+	path = lisp/flycheck
+	url = git@github.com:flycheck/flycheck.git
