@@ -123,6 +123,7 @@ See URL `http://www.mypy-lang.org/'."
 
 ;; HACK HACK HACK this ensures that flycheck runs the right python instance
 (defvaralias 'flycheck-python-pylint-executable 'python-shell-interpreter)
+(defvaralias 'flycheck-python-flake8-executable 'python-shell-interpreter)
 (defvaralias 'flycheck-python-doctest-executable 'python-shell-interpreter)
 
 (add-to-list 'flycheck-checkers 'python-doctest t)

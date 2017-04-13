@@ -82,7 +82,7 @@
     (?p (reftex-citep))))
 
 (with-eval-after-load 'org
-  (require 'org-eldoc)
+  (require 'org-eldoc nil t)
   (require 'reftex)
   (setq-default org-log-done 'time
                 org-support-shift-select t

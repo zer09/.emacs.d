@@ -1,3 +1,5 @@
+(add-to-list 'load-path "~/.emacs.d/lisp/company-quickhelp/")
+
 (defun ~/try-indent ()
   "Try indenting current line; return non-nil if something happened."
   (unless (memq indent-line-function '(indent-relative indent-relative-maybe))

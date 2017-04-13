@@ -16,6 +16,6 @@
          (flyspell flyspell-mode "abc✓")
          (holes holes-mode))))
   (pcase-dolist (`(,feature . ,args) diminished-modes)
-    (with-eval-after-load feature
-      (apply #'diminish args)))
+    (eval-after-load feature
+      (lambda () (apply #'diminish args))))
   (force-mode-line-update t))

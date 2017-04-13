@@ -20,5 +20,6 @@
   (require 'face-remap)
   (setq writeroom-global-effects
         (delq 'writeroom-set-fullscreen writeroom-global-effects))
-  (advice-add 'writeroom--enable :before #'~/writeroom/adjust-font-size)
-  (advice-add 'writeroom--disable :after #'~/writeroom/reset-font-size))
+  (when (fboundp 'advice-add)
+    (advice-add 'writeroom--enable :before #'~/writeroom/adjust-font-size)
+    (advice-add 'writeroom--disable :after #'~/writeroom/reset-font-size)))

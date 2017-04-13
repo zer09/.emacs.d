@@ -6,7 +6,12 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/company-coq/experiments/company-coq-LaTeX/")
 
 (ignore-errors (load-file "/home/clement/documents/mit/frap/frap.el"))
-(require 'proof-site "~/.emacs.d/lisp/PG/generic/proof-site" t)
+
+(require 'proof-site
+         (if (getenv "PGXML")
+             "/build/coq/xml-pg/generic/proof-site"
+           "~/.emacs.d/lisp/PG/generic/proof-site")
+         t)
 
 (setq-default proof-silence-compatibility-warning t
               proof-splash-enable nil
@@ -41,9 +46,10 @@
                                  ("Qed" . ?■) ("Defined" . ?□) ;; ("Admitted" . ?😱) ("Fail" . ?⛐)
                                  ("Time" . ?⏱)
                                  ,@prettify-symbols-greek-alist)) ;;☢
-  (require 'company-coq)
-  (company-coq-mode)
-  (load "company-coq-goal-diffs.el"))
+  (unless (getenv "PGXML")
+    (require 'company-coq)
+    (company-coq-mode)
+    (load "company-coq-goal-diffs.el")))
 
 (add-hook 'coq-mode-hook #'setup-coq)
 
@@ -54,8 +60,9 @@
 (defconst coq-bin-dirs-alist
   ;; FIXME don't use dist/bin and make install; instead compile with -local -with-doc no
   '(("default" . "")
-    ("trunk" . "/build/coq/bin/")
+    ("trunk" . "/build/coq/trunk/bin/")
     ("coq-8.5" . "/build/coq/8.5/bin/")
+    ("coq-8.6" . "/build/coq/8.6/bin/")
     ("coq-8.4pl6" . "/build/coq/8.4pl6/bin/")))
 
 (defun coq-change-compiler (coq-bin-dir)

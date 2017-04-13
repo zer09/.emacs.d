@@ -107,10 +107,12 @@
 (define-key keybindings-minor-mode-map (kbd "C-M-%") 'vr/query-replace)
 
 ;; Zoom settings
-(define-key keybindings-minor-mode-map [\C-mouse-4] 'zoom-in)
-(define-key keybindings-minor-mode-map [\C-mouse-5] 'zoom-out)
-(define-key keybindings-minor-mode-map [\C-kp-add] 'zoom-in)
-(define-key keybindings-minor-mode-map [\C-kp-subtract] 'zoom-out)
+(define-key keybindings-minor-mode-map (kbd "<C-mouse-4>") 'zoom-increment)
+(define-key keybindings-minor-mode-map (kbd "<C-mouse-5>") 'zoom-decrement)
+(define-key keybindings-minor-mode-map (kbd "<C-kp-add>") 'zoom-increment)
+(define-key keybindings-minor-mode-map (kbd "<C-kp-subtract>") 'zoom-decrement)
+(define-key keybindings-minor-mode-map (kbd "<C-kp-multiply>") 'zoom-multiply)
+(define-key keybindings-minor-mode-map (kbd "<C-kp-divide>") 'zoom-divide)
 (define-key keybindings-minor-mode-map (kbd "<C-kp-0>") 'zoom-reset)
 
 ;; Get rid of left-word, right-word

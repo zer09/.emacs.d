@@ -7,7 +7,7 @@
 
 (defun setup-emacs-lisp ()
   (setup-lisp)
-  (nameless-mode))
+  (trycall #'nameless-mode))
 
 (add-hook 'lisp-mode-hook 'setup-lisp)
 (add-hook 'emacs-lisp-mode-hook 'setup-emacs-lisp)
@@ -24,20 +24,16 @@
   ;; Preserve the return value.
   value)
 
-(advice-add 'eval-region :around
-            (lambda (f beg end &rest r)
-              (endless/eval-overlay
-               (apply f beg end r)
-               end)))
+(when (fboundp 'advice-add)
+  (advice-add 'eval-region :around
+              (lambda (f beg end &rest r) (endless/eval-overlay
+                                      (apply f beg end r)
+                                      end)))
 
-(advice-add 'eval-last-sexp :filter-return
-            (lambda (r)
-              (endless/eval-overlay r (point))))
+  (advice-add 'eval-last-sexp :filter-return
+              (lambda (r) (endless/eval-overlay r (point))))
 
-(advice-add 'eval-defun :filter-return
-            (lambda (r)
-              (endless/eval-overlay
-               r
-               (save-excursion
-                 (end-of-defun)
-                 (point)))))
+  (advice-add 'eval-defun :filter-return
+              (lambda (r) (endless/eval-overlay r (save-excursion
+                                               (end-of-defun)
+                                               (point))))))

@@ -15,5 +15,6 @@
   ;; regardless of how the prefix string was obtained, it always is displayed in
   ;; fixed-pitch font.  This ensures that, even if the Org mode buffer is in
   ;; variable-pitch mode, the continuation lines are still indented properly.
-  (advice-add 'adaptive-wrap-fill-context-prefix
-              :filter-return #'~/adaptive-wrap/add-fixed-pitch))
+  (when (fboundp 'advice-add)
+    (advice-add 'adaptive-wrap-fill-context-prefix
+                :filter-return #'~/adaptive-wrap/add-fixed-pitch)))

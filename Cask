@@ -3,11 +3,11 @@
 ;; (source org)
 
 (depends-on "ag")
+(depends-on "avy")
 (depends-on "adaptive-wrap")
 (depends-on "aggressive-indent")
 (depends-on "buttercup")
 (depends-on "cask") ;; Causes a stack overflow
-(depends-on "cider")
 (depends-on "dash")
 (depends-on "color-theme-solarized")
 (depends-on "company")
@@ -56,10 +56,12 @@
 (depends-on "writeroom-mode")
 (depends-on "ws-butler")
 (depends-on "yasnippet")
-(depends-on "org-ref")
+(depends-on "seq")
+;; (depends-on "org-ref")
 
 ;; (depends-on "org-plus-contrib")
 (development
+ (depends-on "cider")
  (depends-on "company-quickhelp")
  (depends-on "git-commit") ;; Causes errors
  (depends-on "keyfreq")

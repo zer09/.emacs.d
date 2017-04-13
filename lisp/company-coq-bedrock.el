@@ -30,8 +30,8 @@
 
 (require 'company-coq)
 
-(defface company-coq-bedrock-face
-  '((t :slant italic))
+(defface company-coq-bedrock-word-face
+  '((t :underline "white"))
   "Face used to highlight bedrock words."
   :group 'company-coq-faces)
 

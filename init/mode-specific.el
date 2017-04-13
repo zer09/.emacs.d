@@ -37,6 +37,9 @@
 (when-os 'windows-nt
   (setq tramp-mode nil))
 
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
 ;; Presentations
 (require 'demo-mode  "~/.emacs.d/lisp/demo-mode/demo-mode.el" t)
 
@@ -49,6 +52,11 @@
 ;;; ag
 (setq-default ag-highlight-search t
               ag-group-matches nil)
+
+(defun ~/ag-truncate-lines ()
+  (setq truncate-lines t))
+
+(add-hook 'ag-mode-hook #'~/ag-truncate-lines)
 
 ;; ESH
 (add-to-list 'load-path "~/.emacs.d/lisp/esh/")
@@ -104,6 +112,20 @@
 ;;; Page breaks
 (global-page-break-lines-mode)
 
+;; Prettification
+(trycall #'global-prettify-symbols-mode)
+
+;;; F*
+
+(require 'fstar-mode "~/.emacs.d/lisp/fstar.el/fstar-mode.el" t)
+
+;;; F#
+
+(defun ~/fsharp ()
+  (setq-local prettify-symbols-alist fstar-symbols-alist)
+  (prettify-symbols-mode 1))
+(add-hook 'fsharp-mode-hook #'~/fsharp)
+
 ;;; smart-mode-line
 
 (setq-default sml/theme 'dark
@@ -141,7 +163,8 @@
   (setq-default ispell-parser 'use-mode-name))
 
 ;;; Dired
-(setq-default dired-listing-switches "-alh"
+(setq-default wdired-allow-to-change-permissions t
+              dired-listing-switches "-alh"
               dired-dwim-target t)
 (require 'dired-x) ;; C-x C-j
 
@@ -157,6 +180,15 @@
 
 (setq-default checkdoc-arguments-in-order-flag nil
               checkdoc-verb-check-experimental-flag nil)
+
+;; ENWC
+
+(when (>= emacs-major-version 25)
+  (add-to-list 'load-path "~/.emacs.d/lisp/enwc/")
+  (require 'enwc nil t)
+  (setq enwc-default-backend 'nm)
+  (setq enwc-wired-device "enp0s25")
+  (setq enwc-wireless-device "wlp5s0"))
 
 ;;; All the rest
 

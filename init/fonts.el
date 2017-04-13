@@ -35,11 +35,11 @@
   "Set fallbacks for all fontsets.
 Former SIZE argument removed because it broke
 `text-scale-adjust'."
-  (interactive)
+  (interactive '(t))
+  (message "Configuring fontsets.")
   (when (fboundp 'fontset-list)
     (mapc #'my-configure-one-fontset (fontset-list))))
 
-(my-configure-all-fontsets)
 (add-to-list 'after-make-frame-functions #'my-configure-all-fontsets)
 
 (defun ~/fonts/add-inheritance (face new-parent)

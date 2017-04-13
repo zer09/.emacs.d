@@ -303,20 +303,28 @@ If there are no other frames, or with prefix ARG, kill Emacs."
   (dolist (frame (frame-list))
     (set-face-attribute 'default frame :height size)))
 
-(defun adjust-font-size (delta)
+(defun adjust-font-size (by)
   (let* ((old-size (face-attribute 'default :height))
-         (new-size (max (max delta (- delta)) (min 400 (+ delta old-size)))))
+         (new-size (max 10 (min 400 (funcall by old-size)))))
     (setq original-font-size (or original-font-size old-size))
     (set-font-size-in-all-fontsets new-size)
     (message "Font size set to %d (%d → %d)" (face-attribute 'default :height) old-size new-size)))
 
-(defun zoom-in ()
+(defun zoom-increment ()
   (interactive)
-  (adjust-font-size +10))
+  (adjust-font-size (lambda (x) (+ x 10))))
 
-(defun zoom-out ()
+(defun zoom-decrement ()
   (interactive)
-  (adjust-font-size -10))
+  (adjust-font-size (lambda (x) (- x 10))))
+
+(defun zoom-multiply ()
+  (interactive)
+  (adjust-font-size (lambda (x) (/ (* x 3) 2))))
+
+(defun zoom-divide ()
+  (interactive)
+  (adjust-font-size (lambda (x) (/ (* x 2) 3))))
 
 (defun zoom-reset ()
   (interactive)
@@ -412,3 +420,17 @@ Example: (~/check.5 (a 1) (b (+ 0.5 2)) (c 3)) ⇒ 3.25."
                              (float-time (time-since start))
                              (quote ,form))))
                body)))
+
+(defun ~/macroexpand-last-sexp (full)
+  "Macroexpand last sexp.
+FULL: see `cl-prettyexpand'."
+  (interactive '(nil))
+  (let* ((cl--compiling-file t)
+         (byte-compile-macro-environment nil)
+         (form (macroexpand-all (elisp--preceding-sexp)
+                                (unless full '((cl-block) (cl-eval-when))))))
+    (with-current-buffer (get-buffer-create "*expansion*")
+      (erase-buffer)
+      (emacs-lisp-mode)
+      (cl-prettyprint form)
+      (pop-to-buffer (current-buffer)))))
